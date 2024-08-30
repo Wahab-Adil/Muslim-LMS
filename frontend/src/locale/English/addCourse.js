@@ -1,0 +1,33 @@
+const addCourse = {
+  "Create A New Course": "Create A New Course",
+  "What would you like to name your course? Don't worry, you can always change this later.":
+    "What would you like to name your course? Don't worry, you can always change this later.",
+  "Course Title": "Course Title",
+  "type course name": "Type course name",
+  "Course subtitle": "Course subtitle",
+  Back: "Back",
+  Next: "Next",
+  "Select Languages": "Select Languages",
+  "Select category": "Select category",
+  Languages: "Languages",
+  Description: "Description",
+  pashto: "Pashto",
+  dari: "Dari",
+  english: "English",
+  arabic: "Arabic",
+  "Congratulation's Your Course Created.":
+    "Congratulations, your course has been created.",
+  "Add Chapters To Course": "Add Chapters To Course",
+  "Skip For Nows": "Skip For Now",
+  "Create Course": "Create Course",
+  Upload: "Upload",
+  "Course Image": "Select Course Image",
+  "Course Description": "Course Description",
+  "Course Title": "Course Title",
+  "title is a required field": "Title is a required field",
+  "subtitle is a required field": "Subtitle is a required field",
+  "category is a required field": "Category is a required field",
+  "language is a required field": "Language is a required field",
+  create: "Create",
+};
+export default addCourse;

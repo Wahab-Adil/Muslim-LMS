@@ -1,0 +1,31 @@
+const LandingPage = {
+  "Search Courses": "اموزش ها را بیابید",
+  "Courses For you": "اموزش ها برای شما",
+  "Most Populer": "زیاد دیده شده",
+  Read: "خواندن",
+  "Top Categories": "طبقه های اموزشی",
+  "What Our Happy Clients Say About Us": "نظریات دانش اموزان ما",
+  "Our Achievements": "دست اورد ها",
+  Teachers: "معلم ها",
+  Videos: "ویدیو های اموزشی",
+  "App Users": "کسان فعال",
+  Home: "خانه",
+  About: "درباره ما",
+  Courses: "اموزش ها",
+  Articles: "مقاله ها",
+  Dashboard: "دشبورد",
+  Contact: "تماس با ما",
+  profile: "مشخصات",
+
+  "See details": "درباره",
+  "Add to Playlist": "پسندیدن",
+  courses: "اموزش ویدیوی",
+  Article: "مقاله ها",
+  Teachers: "معلمان",
+  Videos: "ویدیوها",
+  Students: "شاگردان",
+  "App Users": "کاربران",
+  "filter courses": "فیلټر",
+};
+
+export default LandingPage;
