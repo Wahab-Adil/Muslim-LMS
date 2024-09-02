@@ -2,15 +2,14 @@ import React from "react";
 import Hero from "../components/Hero";
 
 import { pageCss } from "./PageCss";
-import { Box, Container, Grid, Rating, Stack, Typography } from "@mui/material";
+import { Box, Container, Grid, Rating, Typography } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import ArticleIcon from "@mui/icons-material/Article";
 import MovieIcon from "@mui/icons-material/Movie";
 import { Link } from "react-router-dom";
-import { home_count } from "../data";
+import home_count from "../data";
 import Course from "../components/Course";
-// import courses from "../utils/data";
 import Category from "../components/Category";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -100,6 +99,10 @@ function a11yProps(index) {
 }
 import baseUrl from "../utils/baseUrl";
 import useRedirectLoggedOutUser from "../hook/useRedirectLoggedOutUser";
+import {
+  getAdminProfile,
+  selectAdminProfile,
+} from "../store/auth/admin/adminSlice";
 
 const Home = () => {
   //
@@ -112,6 +115,7 @@ const Home = () => {
   const AllArticles = useSelector(selectAllArticles);
   const video_Category = useSelector(selectVideoAllCategories);
   const ArticleCategories = useSelector(selectAllArticleCategories);
+  const adminProfile = useSelector(selectAdminProfile);
   const data = useSelector(selectAllGlobalReviews);
   const AllGlobalReview = data.AllReviews;
 
@@ -128,6 +132,7 @@ const Home = () => {
     dispatch(getAllArticles());
     dispatch(ArticleAllCategory());
     dispatch(AllGlobalReviews());
+    dispatch(getAdminProfile);
   }, []);
 
   const { translate, currentLang } = useLocale();
@@ -539,11 +544,12 @@ const Home = () => {
               sx={{
                 direction:
                   document.documentElement.dir === "rtl" ? "ltr" : "ltr",
+                justifyContent: "center",
               }}
               container
               spacing={2}
             >
-              {home_count.map((item, index) => (
+              {home_count(adminProfile).map((item, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Box
                     className={classes.count_icon_box}
