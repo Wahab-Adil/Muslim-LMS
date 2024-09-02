@@ -15,6 +15,7 @@ import * as Yup from "yup";
 
 const LoginPage = () => {
   const { translate } = useLocale();
+  const navigate = useNavigate();
 
   // Validation schema
   const validationSchema = Yup.object({
@@ -45,8 +46,12 @@ const LoginPage = () => {
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            dispatch(loginUser(values));
+          onSubmit={async (values) => {
+            const data = await dispatch(loginUser(values));
+            if (data?.meta?.requestStatus) {
+              navigate("/");
+            }
+            console.log("🚀 ~ LoginPage ~ data:", data?.meta?.requestStatus);
           }}
         >
           {({ setFieldValue, values }) => (
