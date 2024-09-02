@@ -6,7 +6,7 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { comCss } from "./ComponentsCss";
 import { Link } from "react-router-dom";
 import logo from "../image/logo.svg";
@@ -16,8 +16,19 @@ import facebook from "../image/facebook.svg";
 import linkedin from "../image/linkedin.svg";
 import youtube from "../image/youtube.svg";
 import instagram from "../image/instagram.svg";
+import {
+  getAdminProfile,
+  selectAdminProfile,
+} from "../store/auth/admin/adminSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Footer = () => {
+  const dispatch = useDispatch();
+  const adminProfile = useSelector(selectAdminProfile);
+
+  useEffect(() => {
+    dispatch(getAdminProfile());
+  }, []);
   const classes = comCss();
   return (
     <Box className={classes.footer}>
@@ -57,31 +68,31 @@ const Footer = () => {
                   component="h3"
                   className={classes.footer_title}
                 >
-                  Company
+                  Links
                 </Typography>
                 <Link
                   to="/"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Career
+                  Home
                 </Link>
                 <Link
-                  to="/privacypolicy"
+                  to={`/user/${adminProfile?.user?._id}`}
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Privacy policy
+                  Profile
                 </Link>
                 <Link
-                  to="/"
+                  to="/contact"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Become an Affiliate
+                  Contact Us
                 </Link>
                 <Link
-                  to="/"
+                  to="/about"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Refund policy
+                  About Us
                 </Link>
               </Box>
             </Grid>
@@ -92,31 +103,31 @@ const Footer = () => {
                   component="h3"
                   className={classes.footer_title}
                 >
-                  Others
+                  Easy Access
                 </Typography>
                 <Link
-                  to="/faq"
+                  to="/courses"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Faq
+                  Courses
                 </Link>
                 <Link
-                  to="/"
+                  to="/articles"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Notes and Guides
+                  Articles
                 </Link>
                 <Link
-                  to="/blog"
+                  to="/login"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Blog
+                  Login
                 </Link>
                 <Link
-                  to="/"
+                  to="/register"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Crash Courses
+                  Register
                 </Link>
               </Box>
             </Grid>
@@ -132,21 +143,19 @@ const Footer = () => {
                 <List className={classes.footer_4_list}>
                   <ListItem>
                     <strong>Call: &nbsp;</strong>
-                    <Link to="/"> 16910</Link>&nbsp; (8AM - 11PM)
+                    &nbsp; (+93700640171)
                   </ListItem>
                   <ListItem>
-                    <strong>SMS: &nbsp;</strong>
-                    <strong>10MSHelp</strong> &nbsp; to 26969
+                    <strong>What's App: &nbsp;</strong>
+                    &nbsp; (+93700640171)
                   </ListItem>
                   <ListItem>
                     <strong>Email:</strong> &nbsp;
-                    <Link to="/">support@gmail.com</Link>
+                    <Link to="/">{adminProfile?.user?.email}</Link>
                   </ListItem>
                 </List>
                 <Box className={classes.footer_4_sosial_media}>
-                  <Link
-                    to="/"
-                  >
+                  <Link to="/">
                     <img
                       src={facebook}
                       alt="logo"
@@ -180,7 +189,7 @@ const Footer = () => {
           </Grid>
         </Box>
         <Typography variant="h5" component="p">
-          © 2022 Geeks. All Rights Reserved
+          © 2024 Muslim Afghan. All Rights Reserved
         </Typography>
       </Container>
     </Box>
