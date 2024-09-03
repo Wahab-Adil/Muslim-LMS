@@ -25,7 +25,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 
 // assets
-import img1 from "../../../assets/images/marketing_1.jpg";
 import Loader from "../../../components/loader/Loader";
 import moment from "moment";
 import baseUrl from "../../../utils/baseUrl";
@@ -74,7 +73,9 @@ export default function Video_Section() {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle sx={{ px: "10rem" }}>{translate("Section Alert")}</DialogTitle>
+        <DialogTitle sx={{ px: "10rem" }}>
+          {translate("Section Alert")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             {translate("Are You Sure To Delete Section")}

@@ -11,7 +11,6 @@ import { Provider } from "react-redux";
 import { motion } from "framer-motion";
 
 import App from "./App";
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>

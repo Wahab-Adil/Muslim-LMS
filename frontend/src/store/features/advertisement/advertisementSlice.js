@@ -222,7 +222,6 @@ const Video_CategorySlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.AllAdvertisement = action.payload.allAdvertisement;
-        toast.success(i18n.t(action?.payload?.message));
       })
       .addCase(getAllAdvertisement.rejected, (state, action) => {
         state.isLoading = false;

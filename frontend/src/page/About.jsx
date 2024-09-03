@@ -5,7 +5,6 @@ import blogimg from "../image/blog.jpg";
 import { Box, Container, Typography } from "@mui/material";
 import { background } from "@chakra-ui/react";
 import Footer from "../components/Footer";
-import muslim from "../assets/images/muslimafghan.png";
 import useLocale from "../hook/useLocales";
 import useRedirectLoggedOutUser from "../hook/useRedirectLoggedOutUser";
 
@@ -46,7 +45,7 @@ const About = () => {
 
               <img
                 className="relative w-full xl:max-w-lg xl:mx-auto 2xl:origin-bottom 2xl:scale-110"
-                src={muslim}
+                src={"muslim"}
                 alt=""
               />
             </div>

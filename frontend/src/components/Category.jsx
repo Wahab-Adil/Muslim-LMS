@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import baseUrl from "../utils/baseUrl";
-import { motion } from "framer-motion"; // Import motion
+import { motion } from "framer-motion";
 
 // Define scale and shadow animations
 const hoverAnimation = {
@@ -63,10 +63,21 @@ const CategoryItemWrapper = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  min-height: 250px; /* Set a consistent minimum height */
+  max-height: 300px; /* Optional: Set a maximum height for the container */
 
   .category-item-img {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure full width */
+    max-height: 150px; /* Set a max height for the image container */
+
     img {
-      max-width: 104px;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain; /* Maintain aspect ratio */
       transition: transform 0.3s ease-in-out;
     }
   }
