@@ -6,9 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
-
 import { AddBoxSharp } from "@mui/icons-material";
-
 import {
   Video_DeleteReview,
   Video_AllReviews,
@@ -33,6 +31,7 @@ const ReviewCard = ({ review, AllGlobalReviews }) => {
     await dispatch(Video_DeleteReview(id));
     await dispatch(Video_AllReviews());
   };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -40,6 +39,7 @@ const ReviewCard = ({ review, AllGlobalReviews }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleSelectReview = (id) => {
     dispatch(SelectGlobalReview(id));
   };
@@ -75,60 +75,46 @@ const ReviewCard = ({ review, AllGlobalReviews }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="flex flex-col overflow-hidden shadow-xl border-indigo-500 border-2 rounded-md">
-        <div
-          className="flex flex-col justify-between flex-1 p-6 bg-white lg:py-8 lg:px-7"
-          style={{
-            minWidth: "293px",
-            minHeight: "295px",
-          }}
-        >
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <Rating readOnly value={review?.rating} precision={0.5} />
-              <AddBoxSharp
-                title="select Article"
-                onClick={() => {
-                  handleSelectReview(review?._id);
-                }}
-              />
-              <button
-                title="delete"
-                onClick={() => {
-                  setId(review?._id);
-                  handleClickOpen();
-                }}
-                type="button"
-                data-modal-target="delete-modal"
-                data-modal-toggle="delete-modal"
-                class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+      <div className="flex flex-col overflow-hidden border-2 border-indigo-500 rounded-md shadow-lg hover:shadow-2xl transition-shadow duration-300">
+        <div className="flex flex-col p-6 bg-white lg:py-8 lg:px-7 min-w-[293px] min-h-[295px]">
+          <div className="flex items-center justify-between mb-4">
+            <Rating readOnly value={review?.rating} precision={0.5} />
+            <AddBoxSharp
+              title="Select Article"
+              onClick={() => {
+                handleSelectReview(review?._id);
+              }}
+            />
+            <button
+              title="Delete"
+              onClick={() => {
+                setId(review?._id);
+                handleClickOpen();
+              }}
+              type="button"
+              className="flex items-center text-red-700 border border-red-700 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-300 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 mr-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 mr-2 -ml-0.5"
-                  viewbox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  style={{
-                    width: "26px",
-                    height: "22px",
-                  }}
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            <blockquote className="flex-1 mt-8">
-              <p className="text-lg leading-relaxed text-gray-900 font-pj">
-                {review?.comment}
-              </p>
-            </blockquote>
+                <path
+                  fillRule="evenodd"
+                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
           </div>
+
+          <blockquote className="flex-1 mt-8">
+            <p className="text-lg leading-relaxed text-gray-900 font-pj">
+              {review?.comment}
+            </p>
+          </blockquote>
 
           <div className="flex items-center mt-8">
             <img
@@ -150,4 +136,5 @@ const ReviewCard = ({ review, AllGlobalReviews }) => {
     </>
   );
 };
+
 export default ReviewCard;
