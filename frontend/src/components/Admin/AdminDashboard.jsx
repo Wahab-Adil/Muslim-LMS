@@ -61,6 +61,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const transitionVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
 const sidebarVariants = {
   open: { width: "16rem", opacity: 1, transition: { duration: 0.3 } },
   closed: { width: "4rem", opacity: 0.8, transition: { duration: 0.3 } },
@@ -346,7 +351,7 @@ export default function AdminDashboard() {
                   <img
                     title={translate("profile")}
                     class="object-cover w-8 h-8 rounded-full"
-                    src={baseUrl(AdminProf?.user?.avatar,8)}
+                    src={baseUrl(AdminProf?.user?.avatar, 8)}
                     alt="profile page"
                   />
                 </Link>
@@ -410,35 +415,75 @@ export default function AdminDashboard() {
                 <GrArticle size={"1.5rem"} />
               </Box>
             </div>
-
             {selectedTabOpen && (
               <Box
                 sx={{
-                  marginTop: "-30rem",
+                  marginTop: "-10rem",
                   whiteSpace: "nowrap",
                   minWidth: "200px",
-                  paddingLeft: "2 0px",
+                  paddingLeft: "20px",
                 }}
               >
-                {selectedTab === "advertisement" && (
-                  <div className="mt-1 pt-1">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      {AdvertisementLink.map((item) => (
-                        <Box>
+                <motion.div
+                  initial="hidden"
+                  animate={selectedTab ? "visible" : "hidden"}
+                  exit="exit"
+                  variants={transitionVariants}
+                  transition={{ duration: 0.7 }}
+                >
+                  {selectedTab === "advertisement" && (
+                    <div className="mt-1 pt-1">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        {AdvertisementLink.map((item) => (
+                          <Box key={item.name}>
+                            <NavLink
+                              to={item.href}
+                              className="p-1.5 text-black-500 focus:outline-none transition-colors duration-200 rounded-lg focus:text-blue-400 dark:hover:bg-gray-800 hover:bg-gray-100"
+                              style={{
+                                display: "flex",
+                                gap: ".4rem",
+                                height: "2.7rem",
+                                minWidth: "165px",
+                              }}
+                            >
+                              <item.icon
+                                className="h-6 w-6"
+                                aria-hidden="true"
+                              />
+                              <Typography
+                                style={{ color: "#754FFE" }}
+                                variant="body2"
+                              >
+                                {translate(`${item.name}`)}
+                              </Typography>
+                            </NavLink>
+                          </Box>
+                        ))}
+                      </Box>
+                    </div>
+                  )}
+                  {selectedTab === "course" && (
+                    <div className="mt-1 pt-1">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        {courseLinks.map((item) => (
                           <NavLink
+                            className="p-1.5 text-black-500 focus:outline-none transition-colors duration-200 rounded-lg focus:text-blue-400 dark:hover:bg-gray-800 hover:bg-gray-100"
                             key={item.name}
                             to={item.href}
-                            className="p-1.5 text-black-500 focus:outline-nones transition-colors duration-200 rounded-lg focus:text-blue-400 dark:hover:bg-gray-800 hover:bg-gray-100"
                             style={{
                               display: "flex",
                               gap: ".4rem",
                               height: "2.7rem",
-                              minWidth: "165px",
                             }}
                           >
                             <item.icon className="h-6 w-6" aria-hidden="true" />
@@ -449,110 +494,74 @@ export default function AdminDashboard() {
                               {translate(`${item.name}`)}
                             </Typography>
                           </NavLink>
-                        </Box>
-                      ))}
-                    </Box>
-                  </div>
-                )}
-                {/* courses links desktop */}
-                {selectedTab === "course" && (
-                  <div className="mt-1 pt-1">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      {courseLinks.map((item) => (
-                        <NavLink
-                          className="p-1.5 text-black-500 focus:outline-nones transition-colors duration-200 rounded-lg focus:text-blue-400 dark:hover:bg-gray-800 hover:bg-gray-100"
-                          key={item.name}
-                          to={item.href}
-                          style={{
-                            display: "flex",
-                            gap: ".4rem",
-                            height: "2.7rem",
-                          }}
-                        >
-                          <item.icon className="h-6 w-6" aria-hidden="true" />
-                          <Typography
-                            style={{ color: "#754FFE" }}
-                            variant="body2"
+                        ))}
+                      </Box>
+                    </div>
+                  )}
+                  {selectedTab === "category" && (
+                    <div style={{ marginTop: "-5rem" }} className="pt-1">
+                      <Box
+                        className="space-y-1 px-2"
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        {CategoryLink.map((item) => (
+                          <NavLink
+                            className="p-1.5 text-black-500 focus:outline-none transition-colors duration-200 rounded-lg focus:text-blue-400 dark:hover:bg-gray-800 hover:bg-gray-100"
+                            key={item.name}
+                            to={item.href}
+                            style={{
+                              display: "flex",
+                              gap: ".4rem",
+                              height: "2.7rem",
+                            }}
                           >
-                            {translate(`${item.name}`)}
-                          </Typography>
-                        </NavLink>
-                      ))}
-                    </Box>
-                  </div>
-                )}
-
-                {/* category links */}
-                {selectedTab === "category" && (
-                  <div style={{ marginTop: "-5rem" }} className="pt-1">
-                    <Box
-                      className="space-y-1 px-2"
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      {CategoryLink.map((item) => (
-                        <NavLink
-                          className="p-1.5 text-black-500 focus:outline-nones transition-colors duration-200 rounded-lg focus:text-blue-400 dark:hover:bg-gray-800 hover:bg-gray-100"
-                          key={item.name}
-                          to={item.href}
-                          style={{
-                            display: "flex",
-                            gap: ".4rem",
-                            height: "2.7rem",
-                          }}
-                        >
-                          <item.icon className="h-6 w-6" aria-hidden="true" />
-                          <Typography
-                            style={{ color: "#754FFE" }}
-                            variant="body2"
+                            <item.icon className="h-6 w-6" aria-hidden="true" />
+                            <Typography
+                              style={{ color: "#754FFE" }}
+                              variant="body2"
+                            >
+                              {translate(`${item.name}`)}
+                            </Typography>
+                          </NavLink>
+                        ))}
+                      </Box>
+                    </div>
+                  )}
+                  {selectedTab === "article" && (
+                    <div className="mt-1 pt-1">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        {articleLinks.map((item) => (
+                          <NavLink
+                            className="p-1.5 text-black-500 focus:outline-none transition-colors duration-200 rounded-lg focus:text-blue-400 dark:hover:bg-gray-800 hover:bg-gray-100"
+                            key={item.name}
+                            to={item.href}
+                            style={{
+                              display: "flex",
+                              gap: ".4rem",
+                              height: "2.7rem",
+                            }}
                           >
-                            {translate(`${item.name}`)}
-                          </Typography>
-                        </NavLink>
-                      ))}
-                    </Box>
-                  </div>
-                )}
-
-                {/* articles links */}
-                {selectedTab === "article" && (
-                  <div className="mt-1 pt-1">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      {articleLinks.map((item) => (
-                        <NavLink
-                          className="p-1.5 text-black-500 focus:outline-nones transition-colors duration-200 rounded-lg focus:text-blue-400 dark:hover:bg-gray-800 hover:bg-gray-100"
-                          key={item.name}
-                          to={item.href}
-                          style={{
-                            display: "flex",
-                            gap: ".4rem",
-                            height: "2.7rem",
-                          }}
-                        >
-                          <item.icon className="h-6 w-6" aria-hidden="true" />
-                          <Typography
-                            style={{ color: "#754FFE" }}
-                            variant="body2"
-                          >
-                            {translate(`${item.name}`)}
-                          </Typography>
-                        </NavLink>
-                      ))}
-                    </Box>
-                  </div>
-                )}
+                            <item.icon className="h-6 w-6" aria-hidden="true" />
+                            <Typography
+                              style={{ color: "#754FFE" }}
+                              variant="body2"
+                            >
+                              {translate(`${item.name}`)}
+                            </Typography>
+                          </NavLink>
+                        ))}
+                      </Box>
+                    </div>
+                  )}
+                </motion.div>
               </Box>
             )}
           </aside>
