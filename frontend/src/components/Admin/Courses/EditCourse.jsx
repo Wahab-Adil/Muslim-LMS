@@ -20,6 +20,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
+import { motion } from "framer-motion";
 
 //    ---------store----------
 
@@ -64,6 +65,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const boxVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
 export default function EditCourse() {
   // redux
   const courseId = useParams();
@@ -77,6 +88,12 @@ export default function EditCourse() {
     dispatch(Video_CourseDetails(courseId?.id));
     dispatch(Video_AllCategories());
   }, []);
+
+  useEffect(() => {
+    if (Course) {
+      setDescripitonValue(Course?.description || "");
+    }
+  }, [Course]);
 
   // state
   const [open, setOpen] = useState(false);
@@ -110,6 +127,7 @@ export default function EditCourse() {
     handleChange,
   } = useFormik({
     initialValues,
+    enableReinitialize: true,
     validationSchema: RegisterSchema,
     onSubmit: async () => {},
   });
@@ -168,8 +186,6 @@ export default function EditCourse() {
 
   return (
     <>
-      {/* {error && <ErrorMsg message={error?.message} />} */}
-      {/* {isAdded && <SuccessMsg message="Product Added Successfully" />} */}
       {isLoading && <Loader />}
       <Dialog
         open={open}
@@ -198,172 +214,170 @@ export default function EditCourse() {
           </Button>
         </DialogActions>
       </Dialog>
-      <Box>
-        <section class="bg-white dark:bg-gray-900">
-          <div class="py-8 px-10 lg:py-16">
-            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+      <Box
+        as={motion.div}
+        initial="hidden"
+        animate="visible"
+        variants={boxVariants}
+        transition={{ duration: 0.5 }}
+      >
+        <section className="bg-white dark:bg-gray-900">
+          <div className="py-8 px-10 lg:py-16">
+            <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
               Edit this Course
             </h2>
 
             <Box
+              as={motion.div}
+              variants={sectionVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 1.5 }}
+              className="w-full"
               sx={{
                 display: "flex",
-                gap: "3rem",
-                flexDirection: { xs: "column", md: "row" },
+                flexDirection: "column",
+                gap: "2rem",
               }}
             >
-              <Box
-                className="w-full"
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "2rem",
-                }}
-              >
-                <div>
-                  <label
-                    for="name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Course Title
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    onCreateTodo
-                    id="name"
-                    class="bg-indigo-100 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Course name"
-                    required=""
-                    value={values?.title}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                  />
-                  {formError.title ? (
-                    <TextError error={formError.title} />
-                  ) : null}
-                </div>
-
-                <div>
-                  <label
-                    for="category"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Category
-                  </label>
-                  <select
-                    id="category"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    name="category"
-                    class="bg-indigo-100 border border-gray-300 text-gray-900 text-sm rounded-md  focus:ring-primary-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  >
-                    <option value="">Select category</option>
-
-                    {AllCategories?.map((cate) => {
-                      return (
-                        <>
-                          <option value={cate?.name}>{cate?.name}</option>
-                        </>
-                      );
-                    })}
-                  </select>
-                  {formError?.category ? (
-                    <TextError error={formError.category} />
-                  ) : null}
-                </div>
-
-                <div className="w-full">
-                  <label
-                    for="description"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Description
-                  </label>
-                  <ReactQuill
-                    style={{ color: "black" }}
-                    ref={quillRef}
-                    modules={{
-                      toolbar: toolbarOptions,
-                    }}
-                    theme="snow"
-                    value={descriptionValue}
-                    onChange={handleOnChange}
-                  />
-                  {descriptionValue === "" ? (
-                    <TextError error={"Description Required"} />
-                  ) : null}
-                </div>
-
-                {/* upload image */}
-
+              <div>
                 <label
-                  for="dropzone-file"
-                  className={`flex flex-col items-center justify-center w-full border border-gray-300 border-dashed cursor-pointer bg-gray-50 ${
-                    ImageUrl ? "0" : "py-16"
-                  } `}
+                  htmlFor="name"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Course Title
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  id="name"
+                  className="bg-indigo-100 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Type Course name"
+                  required
+                  value={values?.title}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+                {formError.title ? <TextError error={formError.title} /> : null}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="category"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Category
+                </label>
+                <select
+                  id="category"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="category"
+                  className="bg-indigo-100 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                >
+                  <option value={values.category}>Select category</option>
+
+                  {AllCategories?.map((cate) => (
+                    <option key={cate?.name} value={cate?.name}>
+                      {cate?.name}
+                    </option>
+                  ))}
+                </select>
+                {formError?.category ? (
+                  <TextError error={formError.category} />
+                ) : null}
+              </div>
+
+              <div className="w-full">
+                <label
+                  htmlFor="description"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Description
+                </label>
+                <ReactQuill
+                  style={{ color: "black" }}
+                  ref={quillRef}
+                  modules={{ toolbar: toolbarOptions }}
+                  theme="snow"
+                  value={descriptionValue}
+                  onChange={handleOnChange}
+                />
+                {descriptionValue === "" ? (
+                  <TextError error={"Description Required"} />
+                ) : null}
+              </div>
+
+              {/* upload image */}
+              <label
+                htmlFor="dropzone-file"
+                className={`flex flex-col items-center justify-center w-full border border-gray-300 border-dashed cursor-pointer bg-gray-50 ${
+                  ImageUrl ? "0" : "py-16"
+                }`}
+              >
+                <Box
+                  as={motion.div}
+                  variants={sectionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ duration: 0.5 }}
+                  sx={{
+                    borderRadius: "4px",
+                  }}
                 >
                   <Box
-                    // className="bg-indigo-100 px-6 pb-4"
                     sx={{
-                      borderRadius: "4px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  ></Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: ".6rem",
                     }}
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    ></Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: ".6rem",
-                      }}
-                    >
-                      {ImageUrl.image || ImageUrl.thumbnail ? (
-                        <>
-                          <Button
-                            sx={{
+                    {ImageUrl.image || ImageUrl.thumbnail ? (
+                      <>
+                        <Button
+                          sx={{
+                            color: "red",
+                            "&:hover": {
                               color: "red",
-                              "&:hover": {
-                                color: "red",
-                              },
-                              alignSelf: "end",
-                              mt: "1rem",
+                            },
+                            alignSelf: "end",
+                            mt: "1rem",
+                          }}
+                          onClick={handleDeleteImage}
+                        >
+                          <AiOutlineDelete
+                            style={{
+                              width: "1.22rem",
+                              height: "1.22rem",
                             }}
-                            onClick={handleDeleteImage}
-                          >
-                            <AiOutlineDelete
-                              style={{
-                                width: "1.22rem",
-                                height: "1.22rem",
-                              }}
-                            />
-                          </Button>
-
-                          <img
-                            src={
-                              ImageUrl.thumbnail
-                                ? baseUrl(ImageUrl.thumbnail, 8)
-                                : !ImageUrl.thumbnail
-                                ? showImg
-                                : null
-                            }
-                            class="w-full rounded border bg-white p-1 dark:border-neutral-700 dark:bg-neutral-800"
-                            alt="..."
                           />
-                        </>
-                      ) : null}
+                        </Button>
 
-                      {/* <img src={imageUrl} width={"100%"} /> */}
-                    </Box>
+                        <img
+                          src={
+                            ImageUrl.thumbnail
+                              ? baseUrl(ImageUrl.thumbnail, 8)
+                              : !ImageUrl.thumbnail
+                              ? showImg
+                              : null
+                          }
+                          className="w-full rounded border bg-white p-1 dark:border-neutral-700 dark:bg-neutral-800"
+                          alt="..."
+                        />
+                      </>
+                    ) : null}
+
                     {!ImageUrl.image && !ImageUrl.thumbnail ? (
                       <>
-                        <div class="mb-3 flex items-center justify-center">
+                        <div className="mb-3 flex items-center justify-center">
                           <BsImages
                             style={{
                               width: "3rem",
@@ -373,10 +387,10 @@ export default function EditCourse() {
                             }}
                           />
                         </div>
-                        <h2 class="text-center text-gray-400   text-xs font-normal leading-4 mb-1">
+                        <h2 className="text-center text-gray-400 text-xs font-normal leading-4 mb-1">
                           image smaller than 15mb
                         </h2>
-                        <h4 class="text-center text-gray-900 text-sm font-medium leading-snug">
+                        <h4 className="text-center text-gray-900 text-sm font-medium leading-snug">
                           Drag and Drop your file here or
                         </h4>
                         <input
@@ -384,33 +398,35 @@ export default function EditCourse() {
                           accept="image/*"
                           onChange={handleFileChange}
                           id="dropzone-file"
-                          class="hidden"
+                          className="hidden"
                           required
                         />
                       </>
                     ) : null}
                   </Box>
-                </label>
-                {/* )}   */}
-                {/*  */}
-              </Box>
+                </Box>
+              </label>
 
               {/* Chapters block */}
-
               <div className="w-full">
                 <label
-                  for="description"
+                  htmlFor="description"
                   style={{
                     display: "flex",
                     alignItems: "center",
                     gap: ".4rem",
                   }}
-                  class="block text-sm mb-2 font-medium text-gray-900 dark:text-white"
+                  className="block text-sm mb-2 font-medium text-gray-900 dark:text-white"
                 >
                   Course Chapter's
                 </label>
 
                 <Box
+                  as={motion.div}
+                  variants={sectionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ duration: 0.5 }}
                   className="bg-indigo-100 px-6 pb-4"
                   sx={{
                     borderRadius: "4px",
@@ -425,16 +441,16 @@ export default function EditCourse() {
                     }}
                   >
                     <label
-                      for="description"
-                      class="block text-xs font-medium text-gray-900 dark:text-black text-end"
+                      htmlFor="description"
+                      className="block text-xs font-medium text-gray-900 dark:text-black text-end"
                     >
                       Course Chapter's
                     </label>
 
-                    <Link to="/admin/add-chapter">
+                    <Link to={`/admin/section/ ${Course?._id}`}>
                       <button
                         type="submit"
-                        class="inline-flex  items-center px-5 py-1 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-sm focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                        className="inline-flex items-center px-5 py-1 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-sm focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
                         style={{
                           alignItems: "center",
                           backgroundColor: "#754ffe",
@@ -442,7 +458,7 @@ export default function EditCourse() {
                         }}
                       >
                         <label
-                          for="description"
+                          htmlFor="description"
                           style={{
                             display: "flex",
                             alignItems: "center",
@@ -450,7 +466,7 @@ export default function EditCourse() {
                             color: "white",
                             cursor: "pointer",
                           }}
-                          class="block text-xs font-medium text-gray-900 dark:text-white text-end"
+                          className="block text-xs font-medium text-gray-900 dark:text-white text-end"
                         >
                           <AiOutlinePlusCircle
                             style={{ width: ".9rem", height: ".9rem" }}
@@ -463,110 +479,148 @@ export default function EditCourse() {
 
                   {/* course chapters show here */}
                   <Box
+                    as={motion.div}
+                    variants={sectionVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ duration: 0.5 }}
                     sx={{
                       display: "flex",
                       flexDirection: "column",
                       gap: ".6rem",
                     }}
                   >
-                    <span class="dark:text-white">
-                      {" "}
-                      All Chapter's:({Course?.sections?.length})
+                    <span className="dark:text-white">
+                      All Chapter's: ({Course?.sections?.length})
                     </span>
-                    <tbody style={{ maxWidth: "500px", overflowY: "scroll" }}>
-                      {Course?.sections?.map((section, idx) => {
-                        return (
-                          <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <th
-                              scope="row"
-                              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    <Box
+                      component="table"
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 1,
+                        overflowY: "auto",
+                        borderCollapse: "collapse",
+                      }}
+                    >
+                      {Course?.sections?.map((section, idx) => (
+                        <Box
+                          key={section?.id}
+                          component="tr"
+                          sx={{
+                            width: "48%",
+                            backgroundColor: "white",
+                            borderColor: "gray.300",
+                            "&:hover": {
+                              backgroundColor: "gray.100",
+                            },
+                            "@media (max-width: 600px)": {
+                              width: "100%",
+                            },
+                          }}
+                        >
+                          <Box
+                            component="th"
+                            scope="row"
+                            sx={{
+                              padding: "0.5rem",
+                              fontWeight: "medium",
+                              color: "gray.900",
+                              whiteSpace: "nowrap",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "0.8rem",
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                              }}
                             >
-                              <div class="flex items-center mr-3">
-                                <Typography
+                              {idx + 1}- {section?.title}
+                            </Typography>
+                          </Box>
+                          <Box
+                            component="td"
+                            sx={{
+                              padding: "0.5rem",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Link to={`/admin/section-preview/${section?.id}`}>
+                              <button
+                                type="button"
+                                className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className="w-4 h-4 mr-2 -ml-0.5"
                                   style={{
-                                    fontSize: ".8rem",
-                                    textWrap: "wrap",
+                                    width: "26px",
                                   }}
                                 >
-                                  {idx + 1}- {section?.title}
-                                </Typography>
-                              </div>
-                            </th>
-
-                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              <div class="flex items-center justify-end space-x-4">
-                                <Link
-                                  to={`/admin/section-preview/${section?.id}`}
-                                >
-                                  <button
-                                    type="button"
-                                    data-drawer-target="drawer-read-product-advanced"
-                                    data-drawer-show="drawer-read-product-advanced"
-                                    aria-controls="drawer-read-product-advanced"
-                                    class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewbox="0 0 24 24"
-                                      fill="currentColor"
-                                      class="w-4 h-4 mr-2 -ml-0.5"
-                                      style={{
-                                        width: "26px",
-                                        height: "22px",
-                                      }}
-                                    >
-                                      <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                                      <path
-                                        fill-rule="evenodd"
-                                        clip-rule="evenodd"
-                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
-                                      />
-                                    </svg>
-                                    Preview
-                                  </button>
-                                </Link>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    handleClickOpen();
-                                    setDeleteSectionId(section?.id);
-                                  }}
-                                  class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="h-4 w-4 mr-2 -ml-0.5"
-                                    viewbox="0 0 20 20"
-                                    fill="currentColor"
-                                    aria-hidden="true"
-                                    style={{
-                                      width: "26px",
-                                      height: "22px",
-                                    }}
-                                  >
-                                    <path
-                                      fill-rule="evenodd"
-                                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                      clip-rule="evenodd"
-                                    />
-                                  </svg>
-                                  Delete
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
+                                  <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                  <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                  />
+                                </svg>
+                                Preview
+                              </button>
+                            </Link>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                handleClickOpen();
+                                setDeleteSectionId(section?.id);
+                              }}
+                              className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                              style={{
+                                fontSize: "0.75rem", // Reduced font size for smaller screens
+                              }}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4 mr-2 -ml-0.5"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true"
+                                style={{
+                                  width: "20px", // Reduced size for smaller screens
+                                  height: "20px",
+                                }}
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                              Delete
+                            </button>
+                          </Box>
+                        </Box>
+                      ))}
+                    </Box>
                   </Box>
                 </Box>
               </div>
             </Box>
+
             <button
               onClick={(e) => {
                 handleSubmit(e);
               }}
-              class="inline-flex items-center px-5 py-2.5 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+              className="inline-flex items-center px-5 py-2.5 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
               style={{
                 backgroundColor: "#754ffe",
               }}
