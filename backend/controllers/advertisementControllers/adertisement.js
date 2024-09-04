@@ -2,6 +2,14 @@ import asyncHandler from "express-async-handler";
 import Advertisement from "../../models/advertisement/Advertisement.js";
 import SelectedAdvertisement from "../../models/advertisement/SelectedAdvertisement.js";
 import User from "../../models/User.js";
+import fs from "fs-extra";
+import path from "path";
+import { dirname } from "path";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // create  Advertisement
 export const createAdvertisement = asyncHandler(async (req, res) => {
@@ -77,25 +85,37 @@ export const getSingleAdvertisement = asyncHandler(async (req, res) => {
 // delete only one Advertisement by id
 export const deleteAdvertisement = asyncHandler(async (req, res) => {
   const user = await User.findById(req.userAuthId);
-  const advertisement = await Advertisement.findByIdAndDelete(req.params.id);
-  const selectedAdvertisement = await SelectedAdvertisement.findByIdAndDelete(
-    req.params.id
-  );
-
   if (user.role === "user") {
     res.status(400);
     throw new Error("cant delete Advertisement,Admin Only.");
   }
-
+  const advertisement = await Advertisement.findById(req.params.id);
   if (!advertisement) {
     res.status(404);
     throw new Error("No advertisement Found.");
   }
-  if (selectedAdvertisement) {
-    selectedAdvertisement.deleteOne();
+
+  await advertisement.deleteOne();
+  const advetisementImage = path.join(
+    __dirname,
+    "..",
+    "..",
+    advertisement?.image
+  );
+  const advetisementBackground = path.join(
+    __dirname,
+    "..",
+    "..",
+    advertisement?.background
+  );
+
+  if (await fs.pathExists(advetisementImage)) {
+    await fs.unlink(advetisementImage);
   }
 
-  advertisement.deleteOne();
+  if (await fs.pathExists(advetisementBackground)) {
+    await fs.unlink(advetisementBackground);
+  }
 
   res.json({
     message: "advertisement deleted and unSelected.",
