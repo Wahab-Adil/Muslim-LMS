@@ -12,7 +12,13 @@ import upload from "../../config/uploadFiles.js";
 const router = express.Router();
 
 // create new course if your an admin
-router.post("/", isLoggedIn, isAdmin, upload('course').single("thumbnail"), createCourse);
+router.post(
+  "/",
+  isLoggedIn,
+  isAdmin,
+  upload("course").single("thumbnail"),
+  createCourse
+);
 router.put(
   "/update/:courseId",
   isLoggedIn,
@@ -25,6 +31,6 @@ router.get("/", getAllCourses);
 // get course details
 router.get("/:id", isLoggedIn, courseDetails);
 // delete course
-router.delete("/:id", isLoggedIn, isAdmin, deleteCourse);
+router.delete("/:id", isLoggedIn, deleteCourse);
 
 export default router;

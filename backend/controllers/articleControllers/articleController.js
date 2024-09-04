@@ -4,6 +4,14 @@ import ArticleCategory from "../../models/articleModels/articleCategory.js";
 import ArticleReview from "../../models/articleModels/ArticleReview.js";
 import User from "../../models/User.js";
 import isNotAdmin from "../../middlewares/isNotAdmin.js";
+import fs from "fs-extra";
+import path from "path";
+import { dirname } from "path";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export const createArticle = asyncHandler(async (req, res) => {
   const thumbnail = req?.file?.path;
@@ -141,6 +149,11 @@ export const deleteArticle = asyncHandler(async (req, res) => {
   user.articles = newArticles;
   await user.save();
   await article.deleteOne();
+  const thumbnailPath = path.join(__dirname, "..", "..", article?.thumbnail);
+
+  if (await fs.pathExists(thumbnailPath)) {
+    await fs.unlink(thumbnailPath);
+  }
 
   res.status(200).json({
     success: true,

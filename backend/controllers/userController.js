@@ -11,6 +11,14 @@ import Section from "../models/videoModels/Section.js";
 import Article from "../models/articleModels/Article.js";
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
+import fs from "fs-extra";
+import path from "path";
+import { dirname } from "path";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -226,7 +234,6 @@ export const updateProfile = asyncHandler(async (req, res) => {
     landingPageSubtitle,
   } = req.body;
 
-  console.log("called");
   const avatar = req?.files["avatar"]?.[0]?.path;
   const landingPagePhoto = req?.files["landingPagePhoto"]?.[0]?.path;
 
@@ -428,7 +435,7 @@ export const updateUserRole = asyncHandler(async (req, res) => {
 export const deleteUser = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   // find the user that we want to delete
-  const user = await User.findById(id);
+  const user = await User.findById(userId);
 
   if (!user) {
     res.status(404);
@@ -436,6 +443,12 @@ export const deleteUser = asyncHandler(async (req, res) => {
   }
   // delete all courses in user profile
   user.deleteOne();
+
+  const thumbnailPath = path.join(__dirname, "..", "..", user?.avatar);
+
+  if (await fs.pathExists(thumbnailPath)) {
+    await fs.unlink(thumbnailPath);
+  }
 
   res.status(200).json({
     success: true,
@@ -461,6 +474,11 @@ export const deleteMyProfile = asyncHandler(async (req, res) => {
 
   await user.save();
   await user.deleteOne();
+  const thumbnailPath = path.join(__dirname, "..", "..", user?.avatar);
+
+  if (await fs.pathExists(thumbnailPath)) {
+    await fs.unlink(thumbnailPath);
+  }
 
   res.status(200).json({
     user,

@@ -1,5 +1,13 @@
 import asyncHandler from "express-async-handler";
 import Category from "../../models/videoModels/Category.js";
+import fs from "fs-extra";
+import path from "path";
+import { dirname } from "path";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // create a category
 export const createCategory = asyncHandler(async (req, res) => {
@@ -59,11 +67,20 @@ export const getSingleCategory = asyncHandler(async (req, res) => {
 
 // delete only one category by id
 export const deleteCategory = asyncHandler(async (req, res) => {
-  const category = await Category.findByIdAndDelete(req.params.id);
+  const category = await Category.findById(req.params.id);
   if (!category) {
     res.status(404);
     throw new Error("No Category Found.");
   }
+
+  await Category.findByIdAndDelete(req.params.id);
+
+  const thumbnailPath = path.join(__dirname, "..", "..", category?.image);
+
+  if (await fs.pathExists(thumbnailPath)) {
+    await fs.unlink(thumbnailPath);
+  }
+
   res.json({
     category,
     message: "category deleted successfull.",

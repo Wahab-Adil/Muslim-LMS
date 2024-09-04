@@ -5,6 +5,14 @@ import User from "../../models/User.js";
 import Reivew from "../../models/videoModels/Review.js";
 import isNotAdmin from "../../middlewares/isNotAdmin.js";
 import asyncHandler from "express-async-handler";
+import fs from "fs-extra";
+import path from "path";
+import { dirname } from "path";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export const createCourse = asyncHandler(async (req, res) => {
   const thumbnail = req?.file?.path;
@@ -161,6 +169,7 @@ export const deleteCourse = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Course not found.");
   }
+
   // delete all the sections in the course
   for (let i = 0; i < course?.sections?.length; i++) {
     await Section.findByIdAndDelete(course?.sections[i]?._id);
@@ -180,7 +189,14 @@ export const deleteCourse = asyncHandler(async (req, res) => {
 
   user.courses = newCourses;
   await user.save();
+
   await course.deleteOne();
+
+  const thumbnailPath = path.join(__dirname, "..", "..", course?.thumbnail);
+
+  if (await fs.pathExists(thumbnailPath)) {
+    await fs.unlink(thumbnailPath);
+  }
 
   res.status(200).json({
     success: true,
