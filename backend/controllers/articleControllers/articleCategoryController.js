@@ -1,5 +1,13 @@
 import asyncHandler from "express-async-handler";
 import ArticleCategory from "../../models/articleModels/articleCategory.js";
+import fs from "fs-extra";
+import path from "path";
+import { dirname } from "path";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // create a category
 export const articleCreateCategory = asyncHandler(async (req, res) => {
@@ -63,11 +71,19 @@ export const articleGetSingleCategory = asyncHandler(async (req, res) => {
 
 // delete only one category by id
 export const articleDeleteCategory = asyncHandler(async (req, res) => {
-  const category = await ArticleCategory.findByIdAndDelete(req.params.id);
+  const category = await ArticleCategory.findById(req.params.id);
   if (!category) {
     res.status(404);
     throw new Error("Category desnt exist");
   }
+  await ArticleCategory.findByIdAndDelete(req.params.id);
+
+  const thumbnailPath = path.join(__dirname, "..", "..", category?.image);
+
+  if (await fs.pathExists(thumbnailPath)) {
+    await fs.unlink(thumbnailPath);
+  }
+
   res.status(200).send("category deleted successfull");
 });
 // update only one category by id
