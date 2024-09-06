@@ -1,6 +1,16 @@
 import Course from "../../models/videoModels/Course.js";
 import Section from "../../models/videoModels/Section.js";
 import asyncHandler from "express-async-handler";
+import ffmpeg from "fluent-ffmpeg";
+
+import fs from "fs-extra";
+import path from "path";
+import { dirname } from "path";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export const createSection = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
@@ -52,11 +62,24 @@ export const deleteSection = asyncHandler(async (req, res) => {
   const sectionId = req?.params?.sectionId;
   // find the section in the database
   const sectionExist = await Section.findById(sectionId);
+  const section = await Section.findById(sectionId);
   // check if section exist
   if (!sectionExist) {
     res.status(404);
     throw new Error("Section not found try again.");
   }
+
+  const deletePromises = section.videos.map(async (videoList) => {
+    const videoPath = path.join(__dirname, "..", "..", videoList.video.url); // Adjust path if needed
+    if (await fs.pathExists(videoPath)) {
+      await fs.unlink(videoPath);
+      console.log(`Deleted: ${videoPath}`);
+    }
+  });
+
+  // Wait for all deletions to complete
+  await Promise.all(deletePromises);
+
   // we well find the course in which this section is added
   const course = await Course.findById(sectionExist?.course);
 
@@ -69,6 +92,7 @@ export const deleteSection = asyncHandler(async (req, res) => {
   // save the change in course
   await course?.save();
   await sectionExist?.deleteOne();
+
   return res.status(200).json({
     success: true,
     message: "Lecture deleted successfully.",
@@ -81,7 +105,14 @@ export const deleteSection = asyncHandler(async (req, res) => {
 export const addVideoToSection = asyncHandler(async (req, res) => {
   const videoPath = req?.file?.path;
   const sectionId = req.params.sectionId;
-  const { title, duration } = req.body;
+  const { title } = req.body;
+
+  // Validate if video path exists
+  if (!videoPath) {
+    res.status(400);
+    throw new Error("Video file is required.");
+  }
+
   const section = await Section.findById(sectionId);
 
   if (!section) {
@@ -89,11 +120,29 @@ export const addVideoToSection = asyncHandler(async (req, res) => {
     throw new Error("Section not found.");
   }
 
-  section?.videos?.push({
+  // // Function to get video duration
+  // const getVideoDuration = (path) => {
+  //   return new Promise((resolve, reject) => {
+  //     ffmpeg.ffprobe(path, (err, metadata) => {
+  //       if (err) {
+  //         reject(err);
+  //       } else {
+  //         resolve(metadata.format.duration);
+  //       }
+  //     });
+  //   });
+  // };
+
+  // try {
+  //   // Get video duration
+  //   const duration = await getVideoDuration(videoPath);
+
+  // Add video details to section
+  section.videos.push({
     video: {
       title: title,
       url: videoPath,
-      duration: duration,
+      duration: "duration",
     },
   });
 
@@ -101,14 +150,21 @@ export const addVideoToSection = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: `Video added to section`,
+    message: "Video added to section",
     section,
   });
+  // } catch (error) {
+  //   res.status(500);
+  //   throw new Error(`Error processing request: ${error.message}`);
+  // }
 });
+
 // delete videos from specific sectino
 
 export const deleteVideoFromSection = asyncHandler(async (req, res) => {
   const { sectionId, videoId } = req.params;
+
+  // Find the section by its ID
   const section = await Section.findById(sectionId);
 
   if (!section) {
@@ -116,17 +172,33 @@ export const deleteVideoFromSection = asyncHandler(async (req, res) => {
     throw new Error("Section not found.");
   }
 
-  const newVideos = section?.videos?.filter(
-    (video) => video._id?.toString() !== videoId?.toString()
+  // Find the video in the section to get its path
+  const foundedVideo = section.videos.find(
+    (video) => video._id.toString() === videoId.toString()
+  );
+
+  // Filter out the video to be deleted
+  const newVideos = section.videos.filter(
+    (video) => video._id.toString() !== videoId.toString()
   );
 
   section.videos = newVideos;
 
+  // Save the updated section
   await section.save();
+
+  if (foundedVideo) {
+    // Construct the path to the video file in the uploads folder
+    const videoPath = path.join(__dirname, "..", "..", foundedVideo.video.url);
+
+    if (await fs.pathExists(videoPath)) {
+      await fs.unlink(videoPath);
+    }
+  }
 
   res.status(200).json({
     success: true,
-    message: `Video Removed From section`,
+    message: "Video removed from section",
     section,
   });
 });

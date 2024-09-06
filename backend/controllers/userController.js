@@ -156,12 +156,50 @@ export const adminProfile = asyncHandler(async (req, res) => {
   res.json({ user: newUser, totalViews });
 });
 
+// get admin profile
+export const adminPublicDetails = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  const admin = users.find((user) => user.role === "admin");
+  if (!admin) {
+    return;
+  }
+  const {
+    name,
+    email,
+    avatar,
+    landingPagePhoto,
+    landingPageHeading,
+    landingPageSubtitle,
+    address,
+    about,
+    articles,
+    totalUsers,
+    courses,
+  } = admin;
+
+  const adminPublicDetails = {
+    name,
+    email,
+    avatar,
+    landingPagePhoto,
+    landingPageHeading,
+    landingPageSubtitle,
+    address,
+    about,
+    totalUsers,
+    articles: articles?.length,
+    courses: courses?.length,
+  };
+
+  res.json({ user: adminPublicDetails });
+});
+
 // get user profile
 export const getMyProfile = asyncHandler(async (req, res) => {
   const token = getTokenFromHeader(req);
   const userId = verifyToken(token);
 
-  const user = await User.findById(userId.id)
+  let user = await User.findById(userId.id)
     .select({
       password: 0,
       courses: 0,
@@ -172,6 +210,17 @@ export const getMyProfile = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("User not found.");
   }
+  const { _id, name, avatar, email, articlesPlaylist, playlist, role } = user;
+  user = {
+    _id,
+    name,
+    avatar,
+    email,
+    role,
+    articlesPlaylist,
+    playlist,
+  };
+
   res.status(200).json({ user, message: "user profile" });
 });
 

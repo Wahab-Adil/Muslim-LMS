@@ -25,6 +25,7 @@ import {
   adminProfile,
   sendMessage,
   loginStatus,
+  adminPublicDetails,
 } from "../controllers/userController.js";
 import isAdmin from "../middlewares/isAdmin.js";
 import isLoggedIn from "../middlewares/isLoggedIn.js";
@@ -52,6 +53,7 @@ router.get("/users/login-status", loginStatus);
 router.get("/users/profile", isLoggedIn, getMyProfile);
 // admin profile
 router.get("/users/admin", isLoggedIn, isAdmin, adminProfile);
+router.get("/users/admin/public", adminPublicDetails);
 
 // get instrucotr profile
 router.get("/users/instructor/:id", instructorProfile);

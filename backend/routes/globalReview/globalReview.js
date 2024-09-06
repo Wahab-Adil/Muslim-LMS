@@ -7,13 +7,8 @@ import {
 import isLoggedIn from "../../middlewares/isLoggedIn.js";
 import isAdmin from "../../middlewares/isAdmin.js";
 const globalReviewRouter = express.Router();
-globalReviewRouter.get("/all", isLoggedIn, isAdmin, AllGlobalReviews);
+globalReviewRouter.get("/all", isLoggedIn, AllGlobalReviews);
 globalReviewRouter.get("/:id", isLoggedIn, isAdmin, SelectGlobalReview);
-globalReviewRouter.delete(
-  "/:id",
-  isLoggedIn,
-  isAdmin,
-  deleteGlobalReview
-);
+globalReviewRouter.delete("/:id", isLoggedIn, isAdmin, deleteGlobalReview);
 
 export default globalReviewRouter;
