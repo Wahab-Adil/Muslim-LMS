@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import "../App.css";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
@@ -57,6 +57,7 @@ import useRedirectLoggedOutUser from "../hook/useRedirectLoggedOutUser";
 const InstructorProfile = () => {
   useRedirectLoggedOutUser("/login");
   const { translate } = useLocale();
+  const navigate = useNavigate();
   // redux
   const courseId = useParams();
   const dispatch = useDispatch();
@@ -99,6 +100,10 @@ const InstructorProfile = () => {
       return language;
     }
   };
+
+  if (userProfile.user.role === "admin") {
+    navigate("/admin");
+  }
 
   return (
     <>
