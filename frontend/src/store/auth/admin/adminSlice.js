@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 const initialState = {
   adminProfile: null,
+  adminPublicProfile: null,
   allUsers: null,
   isError: false,
   isSuccess: false,
@@ -28,6 +29,25 @@ export const getAdminProfile = createAsyncThunk(
     }
   }
 );
+
+// getting Admin public Profile
+export const getAdminPublicProfile = createAsyncThunk(
+  "admin/public/profile",
+  async (_, thunkAPI) => {
+    try {
+      return await AdminServices.getAdminPublicProfile();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // getting All Users
 export const getAllUsers = createAsyncThunk(
   "admin/all/users",
@@ -104,6 +124,22 @@ const AdminSlice = createSlice({
         state.message = action.payload;
         toast.error(action.payload);
       })
+      // getting Admin Public Profile
+      .addCase(getAdminPublicProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAdminPublicProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.adminPublicProfile = action.payload;
+      })
+      .addCase(getAdminPublicProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        toast.error(action.payload);
+      })
       // getting All Users Details
       .addCase(getAllUsers.pending, (state) => {
         state.isLoading = true;
@@ -159,4 +195,6 @@ const AdminSlice = createSlice({
 
 export const selectIsLoading = (state) => state?.admin?.isLoading;
 export const selectAdminProfile = (state) => state?.admin?.adminProfile;
+export const selectAdminPublicProfile = (state) =>
+  state?.admin?.adminPublicProfile;
 export default AdminSlice.reducer;

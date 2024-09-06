@@ -28,7 +28,6 @@ const Navbar = () => {
   const { currentLang, translate } = useLocales();
   // redux
   const isAdmin = localStorage.getItem("IsAdmin");
-  console.log("admin", isAdmin);
   const classes = comCss();
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -89,9 +88,7 @@ const Navbar = () => {
                 <NavLink to="contact" className={`${classes.nav_link}`}>
                   {translate("Contact")}
                 </NavLink>
-                <NavLink to="/user/123123" className={`${classes.nav_link}`}>
-                  {translate("profile")}
-                </NavLink>
+
                 <LanguagePopover />
                 <Box sx={{ mr: 2 }} />
                 <Profile />

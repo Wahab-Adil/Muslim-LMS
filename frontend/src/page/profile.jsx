@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   getUserProfile,
@@ -12,21 +12,41 @@ import baseUrl from "../utils/baseUrl";
 const DropdownComponent = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector(selectUserProfile);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   useEffect(() => {
     dispatch(getUserProfile());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Function to handle click outside
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    // Add event listener for clicks outside
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
-
-  console.log("user profile", userProfile);
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  console.log("");
+  // Function to handle option click
+  const handleOptionClick = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block" ref={dropdownRef}>
       {/* Image that toggles the dropdown */}
       <img
         alt="User Profile"
@@ -54,19 +74,20 @@ const DropdownComponent = () => {
               <motion.li
                 className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition duration-150 ease-in-out"
                 whileHover={{ scale: 1.05 }}
+                onClick={handleOptionClick} // Close dropdown on click
               >
                 <Link
                   className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition duration-150 ease-in-out"
                   to={`/user/${userProfile?.user?._id}`}
                 >
-                  <FaUser className="text-lg mr-2 ml-3  text-[#754FFE]" />
+                  <FaUser className="text-lg mr-2 ml-3 text-[#754FFE]" />
                   <span className="text-sm">Profile</span>
                 </Link>
               </motion.li>
               <motion.li
                 className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition duration-150 ease-in-out"
                 whileHover={{ scale: 1.05 }}
-                onClick
+                onClick={handleOptionClick} // Close dropdown on click
               >
                 <Link className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition duration-150 ease-in-out">
                   <FaSignOutAlt className="text-xl mr-2 ml-3 text-[#754FFE]" />

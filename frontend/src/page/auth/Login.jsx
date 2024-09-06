@@ -51,7 +51,6 @@ const LoginPage = () => {
             if (data?.meta?.requestStatus) {
               navigate("/");
             }
-            console.log("🚀 ~ LoginPage ~ data:", data?.meta?.requestStatus);
           }}
         >
           {({ setFieldValue, values }) => (

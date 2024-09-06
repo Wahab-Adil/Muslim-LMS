@@ -17,17 +17,19 @@ import linkedin from "../image/linkedin.svg";
 import youtube from "../image/youtube.svg";
 import instagram from "../image/instagram.svg";
 import {
-  getAdminProfile,
-  selectAdminProfile,
+  getAdminPublicProfile,
+  selectAdminPublicProfile,
 } from "../store/auth/admin/adminSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const Footer = () => {
   const dispatch = useDispatch();
-  const adminProfile = useSelector(selectAdminProfile);
+  const adminProfile = useSelector(selectAdminPublicProfile);
+
+  console.log("admin", adminProfile);
 
   useEffect(() => {
-    dispatch(getAdminProfile());
+    dispatch(getAdminPublicProfile());
   }, []);
   const classes = comCss();
   return (

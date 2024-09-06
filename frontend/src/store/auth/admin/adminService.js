@@ -12,6 +12,12 @@ const getAdminProfile = async () => {
   return response.data;
 };
 
+// get Admin Profile
+const getAdminPublicProfile = async () => {
+  const response = await axios.get(`${BACKEND_URL}/users/admin/public`);
+  return response.data;
+};
+
 // get All Users
 const getAllUsers = async () => {
   const response = await axios.get(`${API_URL}/users`);
@@ -32,6 +38,7 @@ const deleteUser = async (userId) => {
 
 const AdminServices = {
   getAdminProfile,
+  getAdminPublicProfile,
   getAllUsers,
   updateUserRole,
   deleteUser,

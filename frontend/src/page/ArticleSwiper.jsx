@@ -12,7 +12,6 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import "./slider.css";
 
-
 const ArticleSwiper = ({
   AllArticles,
   findLangLocale,
@@ -36,7 +35,7 @@ const ArticleSwiper = ({
       }}
       modules={[FreeMode, Pagination, Navigation]}
       className="mySwiper"
-      >
+    >
       <Box
         className="rounded-lg bg-white shadow relative grid max-w-lg grid-cols-1 gap-6 mx-auto md:max-w-none lg:gap-10 md:grid-cols-3"
         sx={{

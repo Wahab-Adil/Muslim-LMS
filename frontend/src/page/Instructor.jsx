@@ -1,8 +1,8 @@
 import React, { useTransition, useState, useEffect } from "react";
 import { Button, useMediaQuery } from "@mui/material";
 import {
-  getAdminProfile,
-  selectAdminProfile,
+  getAdminPublicProfile,
+  selectAdminPublicProfile,
 } from "../store/auth/admin/adminSlice";
 import { useDispatch, useSelector } from "react-redux";
 import baseUrl from "../utils/baseUrl";
@@ -10,10 +10,10 @@ import ReactQuill from "react-quill";
 
 const AboutSection = () => {
   const dispatch = useDispatch();
-  const AdminProfile = useSelector(selectAdminProfile);
+  const AdminProfile = useSelector(selectAdminPublicProfile);
   const matches_800 = useMediaQuery("(max-width:800px)");
   useEffect(() => {
-    dispatch(getAdminProfile());
+    dispatch(getAdminPublicProfile());
   }, []);
 
   return (

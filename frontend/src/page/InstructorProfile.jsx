@@ -6,6 +6,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
+import { motion } from "framer-motion";
+import moment from "moment";
 
 import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
@@ -15,7 +17,7 @@ import { Link, useParams } from "react-router-dom";
 import "../App.css";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Rating } from "@mui/material";
 import { DeleteForever, RemoveRedEyeRounded } from "@mui/icons-material";
 
 import {
@@ -60,9 +62,11 @@ const InstructorProfile = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const userProfile = useSelector(selectUserProfile);
+
+  console.log("urser", userProfile);
   useEffect(() => {
     dispatch(getUserProfile(courseId?.id));
-  }, [userProfile]);
+  }, []);
 
   const [open, setOpen] = useState(false);
 
@@ -98,6 +102,7 @@ const InstructorProfile = () => {
 
   return (
     <>
+      {isLoading && <Loader />}
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -130,9 +135,8 @@ const InstructorProfile = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
       {/* {isLoading && <Loader />} */}
-      {userProfile?.user?.role === "admin" ? (
+      {userProfile?.user?.role !== "admin" ? (
         <>
           <Box
             sx={{
@@ -228,8 +232,11 @@ const InstructorProfile = () => {
                 }}
               >
                 <Avatar
-                  alt={userProfile?.user?.avatar}
-                  src={baseUrl(userProfile?.user?.avatar, 8)}
+                  alt={userProfile?.user?.name}
+                  src={
+                    userProfile?.user?.avatar &&
+                    baseUrl(userProfile?.user?.avatar, 8)
+                  }
                   sx={{
                     width: 200,
                     height: 200,
@@ -301,129 +308,149 @@ const InstructorProfile = () => {
                 }
                 return (
                   <CourseCard>
-                    <div
+                    <motion.div
                       className="item-img"
                       style={{
                         position: "relative",
                         backgroundColor: "white",
                         padding: "0rem.5rem",
                         height: "fit-content",
+                        borderRadius: "8px", // Rounded corners for the card
+                        boxShadow: "0 4px 8px rgba(23, 0, 0, 0.1)", // Base shadow for the card
+                        transition: "box-shadow 0.3s ease, transform 0.3s ease",
                       }}
+                      initial={{
+                        opacity: 0,
+                        x: document.documentElement.dir === "rtl" ? 150 : -150,
+                        y: document.documentElement.dir === "rtl" ? 150 : -150,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        x: 0,
+                        y: 0,
+                      }}
+                      whileHover={{
+                        scale: 1.05,
+                        boxShadow: "0 8px 16px rgba(0,0,0,0.3)", // Ensure box-shadow is consistent with the hover effect
+                      }}
+                      whileTap={{ scale: 1.03 }}
                     >
-                      <Typography
-                        sx={{
-                          position: "absolute",
-                          top: "7.5rem",
-                          right: "8px",
-                          fontSize: ".9rem",
-                          backgroundColor: "#754ffe",
-                          color: "white",
-                          px: ".8rem",
-                          borderRadius: "3px",
-                        }}
-                      >
-                        {findLangLocale(item?.language)}
-                      </Typography>
-                      <img
-                        style={{ height: "200px" }}
-                        src={baseUrl(item?.thumbnail, 8)}
-                        alt={item?.title}
-                      />
-                    </div>
-                    <div className="item-body">
-                      <Typography
-                        style={{
-                          textAlign: "start",
-                          fontSize: ".9rem",
-                          fontWeight: 600,
-                        }}
-                      >
-                        {item?.title?.slice(0, 50)}
-                      </Typography>
-                      <Typography
-                        component={"p"}
-                        sx={{
-                          fontSize: "12px",
-                          textAlign: "start",
-                          mt: "8px",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        {item?.instructor?.name}
-                      </Typography>
+                      <div>
+                        <Typography
+                          sx={{
+                            position: "absolute",
+                            top: "7.5rem",
+                            right: "8px",
+                            fontSize: ".9rem",
+                            backgroundColor: "#754ffe",
+                            color: "white",
+                            px: ".8rem",
+                            borderRadius: "3px",
+                          }}
+                        >
+                          {findLangLocale(item?.language)}
+                        </Typography>
+                        <img
+                          style={{ height: "200px" }}
+                          src={baseUrl(item?.thumbnail, 8)}
+                          alt={item?.title}
+                        />
+                      </div>
+                      <div className="item-body">
+                        <Typography
+                          style={{
+                            textAlign: "start",
+                            fontSize: ".9rem",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {item?.title?.slice(0, 50)}
+                        </Typography>
+                        <Typography
+                          component={"p"}
+                          sx={{
+                            fontSize: "12px",
+                            textAlign: "start",
+                            mt: "8px",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          {item?.instructor?.name}
+                        </Typography>
 
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: ".5rem",
-                        }}
-                      >
                         <Box
                           sx={{
                             display: "flex",
                             alignItems: "center",
-                            gap: "2px",
+                            gap: ".5rem",
                           }}
                         >
                           <Box
                             sx={{
                               display: "flex",
                               alignItems: "center",
-                              gap: ".5rem",
+                              gap: "2px",
                             }}
                           >
                             <Box
                               sx={{
                                 display: "flex",
                                 alignItems: "center",
-                                gap: "2px",
+                                gap: ".5rem",
                               }}
                             >
-                              {ratings?.stars?.map((star, idx) => {
-                                return star;
-                              })}
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "2px",
+                                }}
+                              >
+                                {ratings?.stars?.map((star, idx) => {
+                                  return star;
+                                })}
+                              </Box>
                             </Box>
                           </Box>
-                        </Box>
-                        <Typography
-                          sx={{
-                            fontSize: ".9rem",
-                            fontWeight: "600",
-                          }}
-                        >
-                          <span
-                            style={{
-                              marginLeft: ".5rem",
+                          <Typography
+                            sx={{
+                              fontSize: ".9rem",
+                              fontWeight: "600",
                             }}
                           >
-                            ({item?.totalReviews})
-                          </span>
-                        </Typography>
-                      </Box>
-                    </div>
-                    <div className="item-btns flex justify-evenly">
-                      <Link
-                        to={`/course-details/${item?.id}`}
-                        className="item-btn see-details-btn"
-                      >
-                        {translate("See details")}
-                      </Link>
-                      <button
-                        onClick={() => {
-                          setDeleteAction("course");
-                          setDeleteCourseId(item?.id);
-                          setDialogMsg(
-                            " Are You Sure To Remove Course From Wish list"
-                          );
+                            <span
+                              style={{
+                                marginLeft: ".5rem",
+                              }}
+                            >
+                              ({item?.totalReviews})
+                            </span>
+                          </Typography>
+                        </Box>
+                      </div>
+                      <div className="item-btns flex justify-evenly">
+                        <Link
+                          to={`/course-details/${item?.id}`}
+                          className="item-btn see-details-btn"
+                        >
+                          {translate("See details")}
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setDeleteAction("course");
+                            setDeleteCourseId(item?.id);
+                            setDialogMsg(
+                              " Are You Sure To Remove Course From Wish list"
+                            );
 
-                          handleClickOpen();
-                        }}
-                        className="item-btn add-to-cart-btn"
-                      >
-                        {translate("Remove")}
-                      </button>
-                    </div>
+                            handleClickOpen();
+                          }}
+                          className="item-btn add-to-cart-btn"
+                        >
+                          {translate("Remove")}
+                        </button>
+                      </div>
+                    </motion.div>
                   </CourseCard>
                 );
               })}
@@ -455,145 +482,268 @@ const InstructorProfile = () => {
                 if (idx >= 5) {
                   return;
                 }
+                let countAverageRating = 0;
+                article?.reviews?.forEach((review) => {
+                  countAverageRating += review?.rating;
+                });
+                countAverageRating = (
+                  countAverageRating / article?.reviews?.length
+                ).toFixed(1);
                 return (
                   <Box
                     sx={{
                       display: "flex",
                       justifyContent: "center",
+                      width: "400px", // Ensure full width for the Box container
+                      mb: 2, // Margin bottom for spacing between cards
+                      height: "100px",
+                      marginBottom: "4rem",
                     }}
                     key={idx}
                   >
-                    <div
-                      className="flex max-w-lg overflow-hidden bg-white rounded-lg dark:bg-gray-800 "
+                    <Link
                       style={{
-                        backgroundColor: "rgba(218,228,237,.32)",
-                        maxHeight: matches_450 ? "130px" : "160px",
-                        alignItems: "start",
+                        flex: 1,
+                        width: matches_450 ? "60%" : "50%",
+                        textDecoration: "none",
                       }}
+                      to={`/article-details/${article?.id}`}
                     >
-                      <Box
+                      <motion.div
+                        className="flex max-w-lg overflow-hidden bg-white rounded-lg dark:bg-gray-800"
                         style={{
-                          width: matches_450 ? "60%" : "50%",
+                          position: "relative",
+                          backgroundColor: "white",
+                          padding: "0.5rem", // Ensure padding is consistent
+                          height: "fit-content",
+                          maxHeight: matches_450 ? "230px" : "260px",
+                          alignItems: "start",
+                          border: "1px solid rgba(100,20,0,0.3)",
+                          transition: "box-shadow 0.3s, transform 0.3s",
+                          boxShadow: "0px 0px 8px  rgba(100,20,0,0.3)",
                         }}
-                      >
-                        <img
-                          style={{ minHeight: "190px", maxHeight: "190px" }}
-                          src={baseUrl(article?.thumbnail, 8)}
-                          alt=""
-                        />
-                      </Box>
-
-                      <Box
-                        sx={{
-                          width: "15rem",
-                          px: "1rem",
-                          py: "1rem",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                          height: "100%",
+                        initial={{
+                          opacity: 0,
+                          x:
+                            document.documentElement.dir === "rtl" ? 150 : -150,
+                          y:
+                            document.documentElement.dir === "rtl" ? 150 : -150,
                         }}
+                        animate={{
+                          opacity: 1,
+                          x: 0,
+                          y: 0,
+                        }}
+                        whileHover={{
+                          scale: 1.05,
+                          boxShadow: "0 8px 16px rgba(0,0,0,0.3)", // Ensure box-shadow is consistent with the hover effect
+                        }}
+                        whileTap={{ scale: 1.03 }}
                       >
-                        <Typography
+                        <span
                           style={{
-                            textAlign: "start",
-                            fontSize: ".9rem",
-                            fontWeight: 700,
+                            backgroundColor: "#754ffe",
                           }}
+                          className="z-30 absolute top-0 left-2 w-20 translate-y-4 -translate-x-6 -rotate-45 text-center text-sm text-white"
                         >
-                          {article?.title}
-                        </Typography>
-
+                          {findLangLocale(article?.language)}
+                        </span>
+                        <Box>
+                          <img
+                            style={{
+                              minHeight: "190px",
+                              maxHeight: "190px",
+                              borderRight: "3px dotted white",
+                              maxWidth: "190px", // Ensure image fits within its container
+                              objectFit: "cover",
+                            }}
+                            src={baseUrl(article?.thumbnail, 8)}
+                            alt={article?.thumbnail}
+                          />
+                        </Box>
                         <Box
                           sx={{
+                            width: "10rem",
+                            px: "1rem",
+                            py: "1rem",
                             display: "flex",
                             flexDirection: "column",
+                            justifyContent: "space-between",
+                            height: "100%",
                           }}
                         >
-                          <Link to={`/user/${article?.writer?._id}`}>
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                              <img
-                                style={{ height: "2rem", width: "2rem" }}
-                                className="object-cover rounded-full"
-                                src={baseUrl(article?.writer?.avatar, 8)}
-                                alt={article?.writer?.name}
-                              />
-                              <Stack sx={{ ml: ".6rem", alignItems: "start" }}>
-                                <Typography
-                                  sx={{
-                                    fontSize: ".9rem",
-                                    fontWeight: "600",
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      marginLeft: ".5rem",
-                                    }}
-                                  ></span>
-                                </Typography>
+                          <Typography
+                            style={{
+                              textAlign: "start",
+                              fontSize: ".9rem",
+                              fontWeight: 700,
+                            }}
+                          >
+                            {article?.title}
+                          </Typography>
 
-                                <Typography
-                                  variant="body1"
-                                  sx={{
-                                    fontSize: ".8rem",
-                                    fontWeight: "bold",
-                                    margin: 0,
-                                    color: "#754ffe",
-                                    "&:hover": {
-                                      color: "#a190e2",
-                                    },
-                                  }}
-                                >
-                                  {article?.writer?.name}
-                                </Typography>
-                                <span
-                                  style={{
-                                    fontSize: ".7rem",
-                                    fontWeight: "bold",
-                                    margin: 0,
-                                    color: "gray",
-                                  }}
-                                >
-                                  {article?.updatedAt}
-                                </span>
-                              </Stack>
-                            </Box>
-                          </Link>
                           <Box
                             sx={{
                               display: "flex",
-                              justifyContent: "space-evenly",
+                              flexDirection: "column",
+                              gap: ".5rem", // Added spacing between elements
                             }}
                           >
-                            <Link to={`/article-details/${article?.id}`}>
-                              <Box>
-                                <RemoveRedEyeRounded />
-                              </Box>
-                            </Link>
-
-                            <Box>
-                              <DeleteForever
-                                onClick={() => {
-                                  setDeleteAction("article");
-                                  setDialogMsg(
-                                    " Are You Sure To Remove Article From Wish list"
-                                  );
-
-                                  setDeleteArticleId(article?.id);
-                                  handleClickOpen();
-                                }}
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: ".5rem",
+                              }}
+                            >
+                              <Box
                                 sx={{
-                                  color: "red",
-                                  "&:hover": {
-                                    cursor: "pointer",
-                                  },
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "2px",
                                 }}
-                              />
+                              >
+                                <Rating
+                                  sx={{ mt: ".5rem" }}
+                                  size="small"
+                                  readOnly
+                                  value={parseFloat(
+                                    article?.averageRating === "NaN"
+                                      ? 0
+                                      : article?.averageRating
+                                  )}
+                                  precision={0.5}
+                                />
+                              </Box>
+                              <Typography
+                                sx={{
+                                  fontSize: ".9rem",
+                                  fontWeight: "600",
+                                  color: "#b4690e",
+                                }}
+                              >
+                                {countAverageRating === "NaN"
+                                  ? null
+                                  : countAverageRating}
+                                <span
+                                  style={{
+                                    marginLeft: ".3rem",
+                                    color: "black",
+                                  }}
+                                >
+                                  ({article.totalReviews})
+                                </span>
+                              </Typography>
+                            </Box>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <Link to={`/user/${article?.writer?._id}`}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <img
+                                    style={{
+                                      height: "2rem",
+                                      width: "2rem",
+                                    }}
+                                    className="object-cover rounded-full"
+                                    src={baseUrl(article?.writer?.avatar, 8)}
+                                    alt="Avatar"
+                                  />
+                                  <Box
+                                    sx={{
+                                      ml: ".6rem",
+                                      alignItems: "start",
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="body1"
+                                      sx={{
+                                        fontSize: ".8rem",
+                                        fontWeight: "bold",
+                                        margin: 0,
+                                        color: "#754ffe",
+                                        "&:hover": {
+                                          color: "#a190e2",
+                                        },
+                                      }}
+                                    >
+                                      {article?.writer?.name}
+                                    </Typography>
+                                    <span
+                                      style={{
+                                        fontSize: ".7rem",
+                                        fontWeight: "bold",
+                                        margin: 0,
+                                        color: "gray",
+                                      }}
+                                    >
+                                      {moment(article?.createdAt).format(
+                                        "MMMM Do YYYY"
+                                      )}
+                                    </span>
+                                    <span
+                                      style={{
+                                        fontSize: ".7rem",
+                                        fontWeight: "bold",
+                                        margin: 0,
+                                        color: "gray",
+                                      }}
+                                    >
+                                      {moment(
+                                        moment(article?.createdAt).format(
+                                          "MMMM Do YYYY"
+                                        ),
+                                        "MMMM Do YYYY"
+                                      ).fromNow()}
+                                    </span>
+                                  </Box>
+                                </Box>
+                              </Link>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-evenly",
+                                  mt: 1, // Margin top for spacing between buttons
+                                }}
+                              >
+                                <Link to={`/article-details/${article?.id}`}>
+                                  <Box>
+                                    <RemoveRedEyeRounded />
+                                  </Box>
+                                </Link>
+
+                                <Box>
+                                  <DeleteForever
+                                    onClick={() => {
+                                      setDeleteAction("article");
+                                      setDialogMsg(
+                                        "Are You Sure To Remove Article From Wish List"
+                                      );
+                                      setDeleteArticleId(article?.id);
+                                      handleClickOpen();
+                                    }}
+                                    sx={{
+                                      color: "red",
+                                      "&:hover": {
+                                        cursor: "pointer",
+                                      },
+                                    }}
+                                  />
+                                </Box>
+                              </Box>
                             </Box>
                           </Box>
                         </Box>
-                      </Box>
-                    </div>
+                      </motion.div>
+                    </Link>
                   </Box>
                 );
               })}
@@ -627,7 +777,6 @@ const InstructorProfile = () => {
           </Typography>
         </>
       )}
-
       <Footer />
     </>
   );
@@ -636,15 +785,11 @@ const InstructorProfile = () => {
 export default InstructorProfile;
 
 const CourseCard = styled.div`
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 280px;
   box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
   display: flex;
   flex-direction: column;
 
-  background-color: #f7f7f7;
-
-  width: 290px;
-  height: 21rem;
   @media screen and (max-width: 400px) {
     width: 280px;
   }

@@ -100,8 +100,8 @@ function a11yProps(index) {
 import baseUrl from "../utils/baseUrl";
 import useRedirectLoggedOutUser from "../hook/useRedirectLoggedOutUser";
 import {
-  getAdminProfile,
-  selectAdminProfile,
+  getAdminPublicProfile,
+  selectAdminPublicProfile,
 } from "../store/auth/admin/adminSlice";
 
 const Home = () => {
@@ -115,7 +115,7 @@ const Home = () => {
   const AllArticles = useSelector(selectAllArticles);
   const video_Category = useSelector(selectVideoAllCategories);
   const ArticleCategories = useSelector(selectAllArticleCategories);
-  const adminProfile = useSelector(selectAdminProfile);
+  const adminProfile = useSelector(selectAdminPublicProfile);
   const data = useSelector(selectAllGlobalReviews);
   const AllGlobalReview = data.AllReviews;
 
@@ -132,7 +132,7 @@ const Home = () => {
     dispatch(getAllArticles());
     dispatch(ArticleAllCategory());
     dispatch(AllGlobalReviews());
-    dispatch(getAdminProfile);
+    dispatch(getAdminPublicProfile);
   }, []);
 
   const { translate, currentLang } = useLocale();

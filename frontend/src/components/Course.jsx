@@ -7,6 +7,7 @@ import baseUrl from "../utils/baseUrl";
 import useLocale from "../hook/useLocales";
 import { motion } from "framer-motion"; // Import motion
 import { useDispatch } from "react-redux";
+import { addToPlaylist } from "../store/auth/user/userSlice";
 
 // Define shake animation
 const shakeAnimation = {
