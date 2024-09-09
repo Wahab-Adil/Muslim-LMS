@@ -15,8 +15,8 @@ const __dirname = dirname(__filename);
 export const createAdvertisement = asyncHandler(async (req, res) => {
   const { title, subtitle } = req.body;
 
-  const background = req.files["background"][0].path;
-  const image = req.files["image"][0].path;
+  const background = req?.files["background"]?.[0]?.path;
+  const image = req?.files["image"]?.[0]?.path;
 
   // check if category exist or not
   const AdvertisementExist = await Advertisement.findOne({ title });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loginUser,
@@ -49,7 +49,10 @@ const LoginPage = () => {
           onSubmit={async (values) => {
             const data = await dispatch(loginUser(values));
             if (data?.meta?.requestStatus) {
+              localStorage.removeItem("IsAdmin");
+              localStorage.setItem("IsAdmin", data.payload?.user.role);
               navigate("/");
+              window.location.reload("/");
             }
           }}
         >

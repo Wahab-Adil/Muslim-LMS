@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { FaSignOutAlt, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import baseUrl from "../utils/baseUrl";
+import defaultAvatar from "../assets/avatar/Professor.png";
 
 const DropdownComponent = () => {
   const dispatch = useDispatch();
@@ -45,20 +46,30 @@ const DropdownComponent = () => {
     setIsOpen(false);
   };
 
+  console.log(
+    "userProfile?.user.avatar",
+    userProfile?.user?.avatar === "default"
+  );
+
   return (
     <div className="relative inline-block" ref={dropdownRef}>
-      {/* Image that toggles the dropdown */}
-      <img
-        alt="User Profile"
-        src={
-          userProfile?.user !== "Avatar" || userProfile?.user !== "default"
-            ? baseUrl(userProfile?.user?.avatar, 8)
-            : "https://as1.ftcdn.net/v2/jpg/05/90/59/88/1000_F_590598870_TOcGd4cUZzPoEMlxSc7XYwcupHOE0vLM.jpg"
-        }
-        title={userProfile?.user?.name}
-        className="object-cover object-center w-10 h-10 rounded-full cursor-pointer"
-        onClick={toggleDropdown}
-      />
+      {userProfile?.user?.avatar === "default" ? (
+        <img
+          alt="User Profile"
+          src={defaultAvatar}
+          title={userProfile?.user?.name}
+          className="object-cover object-center w-10 h-10 rounded-full cursor-pointer"
+          onClick={toggleDropdown}
+        />
+      ) : (
+        <img
+          alt="User Profile"
+          src={baseUrl(userProfile?.user?.avatar, 8)}
+          title={userProfile?.user?.name}
+          className="object-cover object-center w-10 h-10 rounded-full cursor-pointer"
+          onClick={toggleDropdown}
+        />
+      )}
 
       {/* Dropdown Menu */}
       <AnimatePresence>

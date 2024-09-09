@@ -1,20 +1,13 @@
 import React, { useTransition, useState, useEffect } from "react";
 import { Button, useMediaQuery } from "@mui/material";
-import {
-  getAdminPublicProfile,
-  selectAdminPublicProfile,
-} from "../store/auth/admin/adminSlice";
 import { useDispatch, useSelector } from "react-redux";
 import baseUrl from "../utils/baseUrl";
 import ReactQuill from "react-quill";
 
-const AboutSection = () => {
+const AboutSection = ({ AdminProfile }) => {
   const dispatch = useDispatch();
-  const AdminProfile = useSelector(selectAdminPublicProfile);
   const matches_800 = useMediaQuery("(max-width:800px)");
-  useEffect(() => {
-    dispatch(getAdminPublicProfile());
-  }, []);
+  console.log("admin", AdminProfile);
 
   return (
     <section>
@@ -32,7 +25,8 @@ const AboutSection = () => {
             className="md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 xl:gap-16 sm:py-16 xl:px-16"
           >
             <img
-              src={baseUrl(AdminProfile?.user?.landingPagePhoto, 8)}
+              alt={AdminProfile?.name}
+              src={baseUrl(AdminProfile?.landingPagePhoto, 8)}
               style={{
                 width: matches_800 ? "80%" : "50%",
                 height: "400px",
@@ -50,14 +44,14 @@ const AboutSection = () => {
             >
               <div
                 dangerouslySetInnerHTML={{
-                  __html: AdminProfile?.user?.landingPageHeading,
+                  __html: AdminProfile?.landingPageHeading,
                 }}
               />
               <p className="text-black lg:text-lg">
                 {" "}
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: AdminProfile?.user?.landingPageSubtitle,
+                    __html: AdminProfile?.landingPageSubtitle,
                   }}
                 />
               </p>

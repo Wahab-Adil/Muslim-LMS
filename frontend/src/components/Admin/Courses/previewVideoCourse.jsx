@@ -139,7 +139,6 @@ export default function Preview_VideoFromSection() {
                 </Box>
 
                 {/* Chapters block */}
-
                 <div className="w-full">
                   <label
                     for="description"

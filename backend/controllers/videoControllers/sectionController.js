@@ -105,7 +105,7 @@ export const deleteSection = asyncHandler(async (req, res) => {
 export const addVideoToSection = asyncHandler(async (req, res) => {
   const videoPath = req?.file?.path;
   const sectionId = req.params.sectionId;
-  const { title } = req.body;
+  const { title, duration } = req.body;
 
   // Validate if video path exists
   if (!videoPath) {
@@ -120,29 +120,12 @@ export const addVideoToSection = asyncHandler(async (req, res) => {
     throw new Error("Section not found.");
   }
 
-  // // Function to get video duration
-  // const getVideoDuration = (path) => {
-  //   return new Promise((resolve, reject) => {
-  //     ffmpeg.ffprobe(path, (err, metadata) => {
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         resolve(metadata.format.duration);
-  //       }
-  //     });
-  //   });
-  // };
-
-  // try {
-  //   // Get video duration
-  //   const duration = await getVideoDuration(videoPath);
-
   // Add video details to section
   section.videos.push({
     video: {
       title: title,
       url: videoPath,
-      duration: "duration",
+      duration: duration,
     },
   });
 
@@ -153,10 +136,6 @@ export const addVideoToSection = asyncHandler(async (req, res) => {
     message: "Video added to section",
     section,
   });
-  // } catch (error) {
-  //   res.status(500);
-  //   throw new Error(`Error processing request: ${error.message}`);
-  // }
 });
 
 // delete videos from specific sectino

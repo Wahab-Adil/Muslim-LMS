@@ -1,12 +1,8 @@
-import { Box, Container, Grid, Typography, useMediaQuery } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
+import React, { useEffect, useState, useRef } from "react";
 import { pageCss } from "../PageCss";
-import CourseSidebar from "./CourseSideBar";
-import { PlayArrow } from "@mui/icons-material";
+import { BorderBottom, PlayArrow } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
-import courseimg from "../../image/course-react.jpg";
-
-import { Video_CreateReview } from "../../store/features/video/reviews/videoReviewsSlice";
 
 import {
   Video_CourseDetails,
@@ -17,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/loader/Loader";
 import ReactPlayer from "react-player";
 import baseUrl from "../../utils/baseUrl";
+import { motion } from "framer-motion";
 
 const CourseDetails = () => {
   const dispatch = useDispatch();
@@ -27,12 +24,10 @@ const CourseDetails = () => {
   const [CourseLight, setCourseLight] = useState(
     baseUrl(VideoCourse?.thumbnail, 8)
   );
+
+  console.log("di", CourseLight);
   const classes = pageCss();
   const [open, setOpen] = useState(null);
-  const [review, setReview] = useState({
-    comment: "",
-    rating: "",
-  });
 
   const matches_340 = useMediaQuery("(max-width:340px)");
 
@@ -51,6 +46,30 @@ const CourseDetails = () => {
     dispatch(Video_CourseDetails(id));
   }, [dispatch]);
 
+  const playerRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  const togglePlayback = () => {
+    if (playerRef.current) {
+      setPlaying(!playing);
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.code === "Space") {
+      event.preventDefault();
+      togglePlayback();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [playing]);
+
   return (
     <>
       {isLoading && <Loader />}
@@ -62,7 +81,6 @@ const CourseDetails = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "10rem",
           boxShadow: "0 3px 3px rgb(3 0 71 / 14%)",
         }}
         className={classes.course_sidebar}
@@ -76,13 +94,27 @@ const CourseDetails = () => {
           className={classes.course_sidebar_box}
         >
           <Box>
-            <ReactPlayer
-              url={baseUrl(videoUrl)}
-              controls
-              light={CourseLight}
-              width={"100%"}
-              height={matches_340 ? "12rem" : "15rem"}
-            />
+            {CourseLight ? (
+              <img
+                src={CourseLight}
+                style={{
+                  width: "100%",
+                  height: matches_340 ? "12rem" : "20rem",
+                }}
+                width={"100%"}
+                alt={VideoCourse?.name}
+              />
+            ) : (
+              <ReactPlayer
+                url={baseUrl(videoUrl)}
+                controls
+                playing={playing}
+                light={CourseLight}
+                width={"100%"}
+                height={matches_340 ? "12rem" : "25rem"}
+              />
+            )}
+
             <Typography
               variant="h3"
               sx={{
@@ -112,10 +144,7 @@ const CourseDetails = () => {
                     <Box className={classes.single_course_tabs}>
                       {VideoCourse?.sections?.map((item, idx) => (
                         <div id="accordion-collapse" data-accordion="collapse">
-                          <h2
-                            id="accordion-collapse-heading-1"
-                            className="border-b"
-                          >
+                          <h2 id="accordion-collapse-heading-1">
                             <button
                               type="button"
                               class="flex items-center justify-between w-full p-4 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200  dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3 "
@@ -151,37 +180,60 @@ const CourseDetails = () => {
                               </svg>
                             </button>
                           </h2>
-                          <div
-                            id="accordion-collapse-body-1"
-                            class={open === idx ? "" : "hidden"}
-                            aria-labelledby="accordion-collapse-heading-1"
+                          <motion.div
+                            id={`accordion-collapse-body-${idx}`}
+                            aria-labelledby={`accordion-collapse-heading-${idx}`}
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{
+                              opacity: open === idx ? 1 : 0,
+                              height: open === idx ? "auto" : 0,
+                            }}
+                            transition={{ duration: 0.3 }}
+                            className={open === idx ? "" : "hidden"}
                           >
-                            <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                            <motion.div
+                              className="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+                              whileHover={{ scale: 1.02 }}
+                              transition={{ duration: 0.2 }}
+                            >
                               <p
-                                class="mb-2 text-gray-600 dark:text-gray-400"
+                                className="mb-2 text-gray-600 dark:text-gray-400"
                                 style={{
                                   fontSize: "1rem",
                                   color: "black",
                                 }}
                               >
                                 {item?.videos?.map((vdo) => (
-                                  <Box
+                                  <motion.div
+                                    key={vdo}
                                     onClick={() => {
                                       setVideoUrl(vdo?.video?.url?.slice(8));
                                       setVideoTitle(vdo?.video?.title);
                                       setCourseLight("");
                                     }}
-                                    key={vdo}
                                     className={
                                       classes.single_course_tabs_content
                                     }
+                                    style={{
+                                      marginTop: ".3rem",
+                                      marginBottom: ".5rem",
+                                      borderBottom: "1px solid gray",
+                                      cursor: "pointer",
+                                      backgroundColor: "whitesmoke",
+                                      borderRadius: "10px",
+                                      padding: "10px",
+                                    }}
+                                    whileHover={{
+                                      scale: 1.03,
+                                      backgroundColor: "#f0f0f0",
+                                    }}
+                                    transition={{ duration: 0.2 }}
                                   >
                                     <Typography
                                       variant="h3"
                                       sx={{
                                         textDecoration: "underline",
                                         color: "#411cffb5",
-                                        cursor: "pointer",
                                         textAlign: {
                                           xs: "center",
                                           sm: "start",
@@ -193,7 +245,6 @@ const CourseDetails = () => {
                                         fontWeight: 600,
                                       }}
                                     >
-                                      {/* play arrow */}
                                       <PlayArrow
                                         className={
                                           classes.single_course_tabs_icon
@@ -202,14 +253,13 @@ const CourseDetails = () => {
                                       {vdo?.video?.title}
                                     </Typography>
                                     <Typography variant="h4">
-                                      {" "}
                                       {vdo?.video?.duration}
                                     </Typography>
-                                  </Box>
+                                  </motion.div>
                                 ))}
                               </p>
-                            </div>
-                          </div>
+                            </motion.div>
+                          </motion.div>
                         </div>
                       ))}
                     </Box>

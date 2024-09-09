@@ -61,21 +61,24 @@ const ArticleSwiper = ({
             <SwiperSlide key={idx}>
               <Link
                 style={{
+                  padding: ".5rem",
                   flex: 1,
                   width: matches_450 ? "60%" : "50%",
+                  border: "3px solid white",
+                  borderRadius: "20px",
+                  boxShadow: "0px 2px 10px  #754ffe",
+                  margin: "1rem",
                 }}
                 to={`/article-details/${article?.id}`}
               >
                 <motion.div
                   className="flex max-w-lg overflow-hidden bg-white rounded-lg dark:bg-gray-800"
                   style={{
-                    position: "relative",
                     backgroundColor: "white",
                     padding: "0rem.5rem",
                     height: "fit-content",
                     maxHeight: matches_450 ? "130px" : "100%",
                     alignItems: "start",
-                    y, // Apply scroll-based vertical movement
                     transition: "box-shadow 0.3s, transform 0.3s", // Transition for hover effect
                   }}
                   initial={{
@@ -89,7 +92,7 @@ const ArticleSwiper = ({
                     y: 0,
                   }}
                   whileHover={{
-                    scale: 1.05,
+                    scale: 1.01,
                     boxShadow: "#754ffe 0px 4px 15px",
                   }}
                   whileTap={{ scale: 1.03 }}
@@ -98,7 +101,7 @@ const ArticleSwiper = ({
                     style={{
                       backgroundColor: "#754ffe",
                     }}
-                    className="z-30 absolute top-0 left-2 w-20 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white"
+                    className="z-30 absolute top-1 left-2 w-20 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white"
                   >
                     {findLangLocale(article?.language)}
                   </span>
@@ -107,6 +110,7 @@ const ArticleSwiper = ({
                       style={{
                         minHeight: "190px",
                         maxHeight: "190px",
+                        width: "100%",
                         borderRight: "3px dotted white",
                       }}
                       src={baseUrl(article?.thumbnail, 8)}
@@ -223,30 +227,29 @@ const ArticleSwiper = ({
                             </Typography>
                             <span
                               style={{
-                                fontSize: ".7rem",
+                                fontSize: ".5rem",
                                 fontWeight: "bold",
                                 margin: 0,
                                 color: "gray",
                               }}
                             >
-                              {moment(article?.createdAt).format(
-                                "MMMM Do YYYY"
-                              )}
+                              {moment(article?.createdAt).format("YYYY-MM-DD")}
                             </span>
                             <span
                               style={{
-                                fontSize: ".7rem",
+                                fontSize: ".5rem",
                                 fontWeight: "bold",
-                                margin: 0,
                                 color: "gray",
                               }}
                             >
+                              -(
                               {moment(
                                 moment(article?.createdAt).format(
                                   "MMMM Do YYYY"
                                 ),
                                 "MMMM Do YYYY"
                               ).fromNow()}
+                              )
                             </span>
                           </Box>
                         </Box>

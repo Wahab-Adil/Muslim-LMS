@@ -8,8 +8,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Swiper, SwiperSlide } from "swiper/react";
 import animationData1 from "../lotties/ویډیو ګانی سره تیریدل.json";
 import {
-  getAllAdvertisement,
-  selectAllAdvertisement,
+  getSelectedAdvertisements,
+  selectAllSelectedAdvertisments,
 } from "../store/features/advertisement/advertisementSlice";
 
 //
@@ -24,9 +24,10 @@ const Hero = () => {
   const { translate } = useLocales();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllAdvertisement());
+    dispatch(getSelectedAdvertisements());
   }, []);
-  const AllAdvertisement = useSelector(selectAllAdvertisement);
+  const AllAdvertisement = useSelector(selectAllSelectedAdvertisments);
+  console.log("all", AllAdvertisement);
   localStorage.setItem("advertisement", AllAdvertisement);
 
   const comclasses = comCss();
@@ -35,7 +36,7 @@ const Hero = () => {
 
   return (
     <Swiper className="mySwiper">
-      {AllAdvertisement?.map((advertisement) => {
+      {AllAdvertisement?.allAdvertisement?.map((advertisement) => {
         return (
           <SwiperSlide>
             <div

@@ -148,7 +148,7 @@ const Video_CategorySlice = createSlice({
       .addCase(createAdvertisement.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createAdvertisement.fulfilled, (state) => {
+      .addCase(createAdvertisement.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
@@ -182,7 +182,7 @@ const Video_CategorySlice = createSlice({
       .addCase(deleteAdvertisement.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteAdvertisement.fulfilled, (state) => {
+      .addCase(deleteAdvertisement.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;

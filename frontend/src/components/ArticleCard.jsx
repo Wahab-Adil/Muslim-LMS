@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 
 import BaseUrl from "../utils/baseUrl";
+import moment from "moment";
 
 const ArticleCard = ({ article }) => {
   const classes = pageCss();
@@ -25,80 +26,177 @@ const ArticleCard = ({ article }) => {
   };
   return (
     <>
-      <Box className={classes.blog_section_box}>
+      <Box
+        className="rounded-lg bg-white shadow relative max-w-lg mx-auto hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" }, // Stack vertically on small screens, side by side on medium and larger screens
+          gap: "1rem",
+          border: "3px solid white",
+          borderRadius: "20px",
+          margin: "1rem auto",
+          overflow: "hidden", // Ensure content stays within the box
+          position: "relative",
+
+          "&:hover": {
+            boxShadow: "0px 4px 20px #754ffe", // Darker shadow on hover
+            transform: "scale(1.01)",
+            transition: ".7s ease", // Slightly scale up on hover
+          },
+        }}
+      >
+        {/* Image Section */}
         <Box
-          sx={{ position: "relative" }}
+          sx={{
+            position: "relative",
+            flex: "1", // Takes up half the width of the container
+          }}
           className={classes.blog_section_box_thumbnail}
         >
           <Link target="__blank" to={`/article-details/${article?.id}`}>
             <span
               style={{
                 backgroundColor: "#754ffe",
+                zIndex: 30,
+                position: "absolute",
+                top: "0.5rem",
+                left: "0.5rem",
+                width: "20%",
+                transform:
+                  "translateY(0.5rem) translateX(-0.5rem) rotate(-45deg)",
+                textAlign: "center",
+                fontSize: "0.75rem",
+                color: "white",
+                padding: "0.2rem",
               }}
-              className=" z-30 absolute top-0 left-2 w-20 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white"
             >
               {findLangLocale(article?.language)}
             </span>
             <img
-              style={{ maxHeight: "220px", minHeight: "220px" }}
+              style={{
+                height: "150px",
+                width: "100%",
+                objectFit: "cover", // Ensures image covers the area without distortion
+                borderBottom: "3px dotted white",
+                transition: "transform 0.3s ease-in-out", // Smooth transition for hover effect
+              }}
               src={BaseUrl(article?.thumbnail, 8)}
               alt="img"
-              className={classes.blog_thumbnail}
             />
           </Link>
         </Box>
-        <Typography component="h4" className={classes.blog_category}>
-          {article?.category}
-        </Typography>
-        <Typography variant="h2" component="h2" className={classes.blog_title}>
-          <Link target="__blank" to={`/article-details/${article?.id}`}>
-            {article?.title}
-          </Link>
-        </Typography>
-        <Typography variant="h4" component="p" className={classes.blog_des}>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: `${article?.description?.slice(0, 77)}...`,
-            }}
-          />
-        </Typography>
-        <Link to={`/user/${article?.writer?._id}`}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              px: "1.1rem",
-              pb: "1rem",
-            }}
+
+        {/* Content Section */}
+        <Box
+          sx={{
+            padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            flex: "1", // Takes up half the width of the container
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "baseline", mb: "0.5rem" }}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z"
+                fill="#754ffe"
+              />
+            </svg>
+
+            <Typography
+              component="h4"
+              className={classes.blog_category}
+              style={{
+                fontSize: ".9rem",
+                marginLeft: "-.5rem",
+                marginTop: "-.3rem",
+                fontWeight: 700,
+              }}
+            >
+              {article?.category}
+            </Typography>
+          </Box>
+
+          <Typography
+            variant="h2"
+            component="h2"
+            className={classes.blog_title}
+            style={{ fontSize: "1.2rem", fontWeight: 700, margin: ".5rem 0" }}
           >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Link target="__blank" to={`/article-details/${article?.id}`}>
+              {article?.title}
+            </Link>
+          </Typography>
+
+          {/* Author Info */}
+          <Link to={`/user/${article?.writer?._id}`}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                mt: "1rem",
+                borderTop: "1px solid #ddd", // Optional: add a border between content and author
+                pt: "1rem", // Add padding-top
+              }}
+            >
               <img
-                style={{ height: "2rem", width: "2rem" }}
-                class="object-cover rounded-full"
+                style={{
+                  height: "2rem",
+                  width: "2rem",
+                  objectFit: "cover",
+                  borderRadius: "50%",
+                }}
                 src={BaseUrl(article?.writer?.avatar, 8)}
                 alt="Avatar"
               />
-              <Link to={`/user/${article?.writer?._id}`}>
-                <Stack sx={{ ml: ".6rem", alignItems: "start" }}>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: ".8rem",
+              <Stack sx={{ ml: ".6rem", alignItems: "start" }}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: ".8rem",
+                    fontWeight: "bold",
+                    margin: 0,
+                    color: "#754ffe",
+                    "&:hover": {
+                      color: "#a190e2",
+                    },
+                  }}
+                >
+                  {article?.writer?.name}
+                </Typography>
+                <span
+                  style={{
+                    fontSize: ".5rem",
+                    fontWeight: "bold",
+                    color: "gray",
+                  }}
+                >
+                  {moment(article?.createdAt).format("YYYY-MM-DD")}
+                  <span
+                    style={{
+                      fontSize: ".5rem",
                       fontWeight: "bold",
-                      margin: 0,
-                      color: "#754ffe",
-                      "&:hover": {
-                        color: "#a190e2",
-                      },
+                      color: "gray",
                     }}
                   >
-                    {article?.writer?.name}
-                  </Typography>
-                </Stack>
-              </Link>
+                    (
+                    {moment(
+                      moment(article?.createdAt).format("MMMM Do YYYY"),
+                      "MMMM Do YYYY"
+                    ).fromNow()}
+                    )
+                  </span>
+                </span>
+              </Stack>
             </Box>
-          </Box>
-        </Link>
+          </Link>
+        </Box>
       </Box>
     </>
   );

@@ -25,6 +25,7 @@ import {
   FILTER_Data,
   selectFilteredAdvertisement,
 } from "../../../store/features/advertisement/AdvertisementSearch";
+import { toast } from "react-toastify";
 // paginate
 
 import Paginate from "../../paginate/paginate";
@@ -93,6 +94,7 @@ export default function ManageAdvertisement() {
             color="error"
             onClick={async () => {
               handleClose();
+
               await dispatch(deleteAdvertisement(CourseId));
               await dispatch(getAllAdvertisement());
             }}

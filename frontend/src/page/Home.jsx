@@ -73,9 +73,6 @@ import {
   selectAllGlobalReviews,
 } from "../store/features/globalReviews/globalReviewSlice";
 
-// moment
-import moment from "moment";
-
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -167,6 +164,7 @@ const Home = () => {
       return language;
     }
   };
+  console.log(adminProfile);
 
   return (
     <>
@@ -271,6 +269,7 @@ const Home = () => {
                     xs: "1.4rem !important",
                     sm: "2.2rem !important",
                   },
+                  marginBottom: "10rem",
                 }}
               >
                 {translate("Read")}
@@ -292,7 +291,7 @@ const Home = () => {
                 flexWrap: "wrap",
                 justifyContent: { xs: "center", sm: "start" },
                 gap: "2rem",
-                height: "30rem",
+                minHeight: "20rem",
                 direction:
                   document.documentElement.dir === "rtl" ? "ltr" : "ltr",
               }}
@@ -580,7 +579,12 @@ const Home = () => {
             </Grid>
           </Container>
         </Box>
-        <Instructor />
+
+        {adminProfile?.user?.landingPageHeading === "default" ||
+        adminProfile?.user?.landingPagePhoto === "default" ||
+        adminProfile?.user?.landingPageSubtitle === "default" ? null : (
+          <Instructor AdminProfile={adminProfile?.user} />
+        )}
 
         {/* our achievments end */}
       </Box>

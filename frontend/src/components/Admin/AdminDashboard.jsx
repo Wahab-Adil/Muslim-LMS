@@ -45,6 +45,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { TbCategoryPlus } from "react-icons/tb";
 import { HiPencilSquare } from "react-icons/hi2";
 import { GrUserSettings } from "react-icons/gr";
+import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -101,11 +102,6 @@ export default function AdminDashboard() {
 
   const AdvertisementLink = [
     {
-      name: translate("Add Category"),
-      href: "add-article-category",
-      icon: () => <TbCategory2 size={"1.5rem"} />,
-    },
-    {
       name: translate("Add Advertisement"),
       href: "add-advertisement",
       icon: () => <TbCategory2 size={"1.5rem"} />,
@@ -113,7 +109,7 @@ export default function AdminDashboard() {
     {
       name: translate("Manage Advertisement"),
       href: "manage-advertisement",
-      icon: () => <TbCategory2 size={"1.5rem"} />,
+      icon: () => <InsertPhotoIcon size={"1.5rem"} />,
     },
   ];
 

@@ -102,20 +102,28 @@ const ArticleDetials = () => {
           className={classes.blog_post_img_box}
           sx={{
             backgroundColor: "white",
-            padding: "0rem.5rem",
+            padding: "0.5rem", // Adjusted padding value
             height: "fit-content",
+            position: "relative", // Ensure positioning context for absolute elements
+            overflow: "hidden", // Hide overflow content
           }}
         >
           <img
             src={baseUrl(ArticleDetail?.article?.thumbnail, 8)}
             alt="blog img"
             className={classes.blog_post_img}
+            style={{
+              width: "100%", // Ensure image fills container width
+              height: "auto", // Maintain aspect ratio
+              objectFit: "cover", // Cover the area without distorting the image
+              display: "block", // Remove any unwanted spacing
+            }}
           />
           <Box
             className="absolute left-0 bottom-0 w-full z-10"
             sx={{
               backgroundImage:
-                "linear-gradient(180deg,transparent,rgba(0,0,0,.7))",
+                "linear-gradient(180deg, transparent, rgba(0,0,0,.7))",
               height: "80%",
               borderRadius: "8px",
             }}
@@ -147,10 +155,11 @@ const ArticleDetials = () => {
                 dispatch(addArticleToPlayllist(ArticleDetail?.article?.id));
               }}
             >
-              <Typography> Add To PlayList</Typography>
+              <Typography>Add To PlayList</Typography>
             </Button>
           </div>
         </Box>
+
         <div className="p-4  bottom-0 left-0 z-20">
           <Typography
             variant="h4"

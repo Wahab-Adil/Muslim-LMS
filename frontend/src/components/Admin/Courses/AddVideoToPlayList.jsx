@@ -37,6 +37,7 @@ export default function AddVideoToPlayList() {
   const dispatch = useDispatch();
   const { sectionId } = useParams();
   const [videoUrl, setVideoUrl] = useState("");
+  const [videoDuration, setVideoDuration] = useState();
   const [video, setVideo] = useState("");
 
   const matches_340 = useMediaQuery("(max-width:340px)");
@@ -59,7 +60,7 @@ export default function AddVideoToPlayList() {
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("video", video);
-      formData.append("duration", "3hours");
+      formData.append("duration", videoDuration);
       const data = { id: sectionId, formData };
       dispatch(Video_AddToSection(data));
     },
@@ -75,6 +76,26 @@ export default function AddVideoToPlayList() {
   const handleDeleteVideo = () => {
     setVideoUrl("");
     setVideo("");
+  };
+  const handleDuration = (duration) => {
+    const formatDuration = (seconds) => {
+      // Calculate hours, minutes, seconds, and milliseconds
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = Math.floor(seconds % 60);
+      const millis = Math.round((seconds % 1) * 1000);
+
+      // Format the time components as strings with leading zeros if necessary
+      const hoursStr = hours > 0 ? `${hours}:` : "";
+      const minutesStr =
+        hours > 0 ? `${minutes.toString().padStart(2, "0")}:` : `${minutes}:`;
+      const secondsStr = secs.toString().padStart(2, "0");
+      const millisecondsStr = millis.toString().padStart(3, "0");
+
+      return `${hoursStr}${minutesStr}${secondsStr}`;
+    };
+
+    setVideoDuration(formatDuration(duration));
   };
 
   return (
@@ -207,6 +228,7 @@ export default function AddVideoToPlayList() {
                               <ReactPlayer
                                 url={videoUrl}
                                 controls
+                                onDuration={handleDuration}
                                 width={"100%"}
                                 height={matches_340 ? "12rem" : "15rem"}
                               />
