@@ -4,9 +4,9 @@ import {
   getSingleAdvertisement,
   getAllAdvertisement,
   getSelectedAdvertisements,
-  updateAdvertisement,
   deleteAdvertisement,
   SelectAdvertisement,
+  deleteSelectedAdvertisement,
 } from "../../controllers/advertisementControllers/adertisement.js";
 import { isLoggedIn, isAdmin } from "../../middlewares/index.js";
 import upload from "../../config/uploadFiles.js";
@@ -24,16 +24,6 @@ router.post(
   ]),
   createAdvertisement
 );
-router.put(
-  "/update/:id",
-  isLoggedIn,
-  isAdmin,
-  upload("advertisement").fields([
-    { name: "background", maxCount: 1 },
-    { name: "image", maxCount: 1 },
-  ]),
-  updateAdvertisement
-);
 
 // get all Selected Advertisement
 router.get("/show", getSelectedAdvertisements);
@@ -43,6 +33,13 @@ router.get("/", getAllAdvertisement);
 router.get("/:id", isLoggedIn, getSingleAdvertisement);
 // delete Advertisement
 router.delete("/:id", isLoggedIn, isAdmin, deleteAdvertisement);
+// delete selected Advertisement
+router.delete(
+  "/selected/:id",
+  isLoggedIn,
+  isAdmin,
+  deleteSelectedAdvertisement
+);
 // select Advertisement
 router.get("/select/:id", isLoggedIn, isAdmin, SelectAdvertisement);
 

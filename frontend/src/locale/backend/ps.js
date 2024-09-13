@@ -162,4 +162,9 @@ export default {
     "ویډیو په بریالیتوب سره برخې/سیکشن ته اضافه شوه",
   "Video Deleted From Section successfully":
     "ویډیو په بریالیتوب سره له برخې/سیکشن څخه حذف شوه",
+
+  "Category and associated courses, sections, and media deleted successfully.":
+    "test",
+  "Category and associated articles,deleted successfully.": "test2",
+  "advertisement unSelected/removed.": "test3",
 };

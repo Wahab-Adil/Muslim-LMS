@@ -253,7 +253,7 @@ export const updateCourse = asyncHandler(async (req, res) => {
     course.subtitle = subtitle;
   }
   if (language) {
-    course.subtitle = language;
+    course.language = language;
   }
   if (description) {
     course.description = description;

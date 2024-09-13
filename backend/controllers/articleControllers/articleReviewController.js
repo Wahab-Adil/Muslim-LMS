@@ -20,7 +20,6 @@ export const articleCreateReview = expressAsyncHandler(async (req, res) => {
     return review?.user.toString() === req?.userAuthId.toString();
   });
 
-  console.log(hasReviewed);
   if (hasReviewed) {
     res.status(302);
     throw new Error("You Have already reviewed");

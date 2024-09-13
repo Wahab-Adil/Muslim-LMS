@@ -50,9 +50,9 @@ export default function ManageArticleCategories() {
   }, []);
 
   //delete category handler
-  const deleteCategoryHandler = (id) => {
-    dispatch(ArticleDeleteCategory(id));
-    dispatch(ArticleAllCategory());
+  const deleteCategoryHandler = async (id) => {
+    dispatch(await ArticleDeleteCategory(id));
+    dispatch(await ArticleAllCategory());
   };
   return (
     <div className="px-4 sm:px-6 lg:px-8">

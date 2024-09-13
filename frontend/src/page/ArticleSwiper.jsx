@@ -24,6 +24,7 @@ const ArticleSwiper = ({
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 300], [0, 50]); // Adjust the scroll range and movement
 
+  console.log("article?.title.length", `${AllArticles?.article?.title}`.length);
   return (
     <Swiper
       slidesPerView={
@@ -35,6 +36,7 @@ const ArticleSwiper = ({
       }}
       modules={[FreeMode, Pagination, Navigation]}
       className="mySwiper"
+      style={{ padding: ".5rem" }}
     >
       <Box
         className="rounded-lg bg-white shadow relative grid max-w-lg grid-cols-1 gap-6 mx-auto md:max-w-none lg:gap-10 md:grid-cols-3"
@@ -67,13 +69,17 @@ const ArticleSwiper = ({
                   border: "3px solid white",
                   borderRadius: "20px",
                   boxShadow: "0px 2px 10px  #754ffe",
-                  margin: "1rem",
+                  marginRight: "1rem",
+                  marginLeft: "1rem",
+                  marginTop: "1rem",
+                  marginBottom: "3rem",
                 }}
                 to={`/article-details/${article?.id}`}
               >
                 <motion.div
                   className="flex max-w-lg overflow-hidden bg-white rounded-lg dark:bg-gray-800"
                   style={{
+                    position: "relative",
                     backgroundColor: "white",
                     padding: "0rem.5rem",
                     height: "fit-content",
@@ -125,135 +131,146 @@ const ArticleSwiper = ({
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "space-between",
-                      height: "100%",
                     }}
                   >
-                    <Typography
-                      style={{
-                        textAlign: "start",
-                        fontSize: ".9rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {article?.title}
-                    </Typography>
+                    <Box>
+                      <Typography
+                        style={{
+                          textAlign: "start",
+                          fontSize: ".7rem",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {article?.title}
+                      </Typography>
+                    </Box>
                     <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: ".5rem",
-                      }}
-                    >
+                      height={`${article?.title}`.length > 3 ? "15px" : "40px"}
+                    />
+
+                    <Box style={{ textAlign: "end" }}>
                       <Box
                         sx={{
                           display: "flex",
                           alignItems: "center",
-                          gap: "2px",
+                          gap: ".5rem",
                         }}
                       >
-                        <Rating
-                          sx={{ mt: ".5rem" }}
-                          size="small"
-                          readOnly
-                          value={parseFloat(
-                            article?.averageRating === "NaN"
-                              ? 0
-                              : article?.averageRating
-                          )}
-                          precision={0.5}
-                        />
-                      </Box>
-                      <Typography
-                        sx={{
-                          fontSize: ".9rem",
-                          fontWeight: "600",
-                          color: "#b4690e",
-                        }}
-                      >
-                        {countAverageRating === "NaN"
-                          ? null
-                          : countAverageRating}
-                        <span
-                          style={{
-                            marginLeft: ".3rem",
-                            color: "black",
-                          }}
-                        >
-                          ({article.totalReviews})
-                        </span>
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <Link to={`/user/${article?.writer?._id}`}>
                         <Box
                           sx={{
                             display: "flex",
                             alignItems: "center",
+                            gap: "2px",
                           }}
                         >
-                          <img
-                            style={{
-                              height: "2rem",
-                              width: "2rem",
-                            }}
-                            className="object-cover rounded-full"
-                            src={baseUrl(article?.writer?.avatar, 8)}
-                            alt="Avatar"
+                          <Rating
+                            sx={{ mt: ".5rem" }}
+                            size="small"
+                            readOnly
+                            value={parseFloat(
+                              article?.averageRating === "NaN"
+                                ? 0
+                                : article?.averageRating
+                            )}
+                            precision={0.5}
                           />
-                          <Box
-                            sx={{
-                              ml: ".6rem",
-                              alignItems: "start",
+                        </Box>
+                        <Typography
+                          sx={{
+                            fontSize: ".9rem",
+                            fontWeight: "600",
+                            color: "#b4690e",
+                          }}
+                        >
+                          {countAverageRating === "NaN"
+                            ? null
+                            : countAverageRating}
+                          <span
+                            style={{
+                              marginLeft: ".3rem",
+                              color: "black",
                             }}
                           >
-                            <Typography
-                              variant="body1"
+                            ({article.totalReviews})
+                          </span>
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Link to={`/user/${article?.writer?._id}`}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: -1,
+                            }}
+                          >
+                            <img
+                              style={{
+                                height: "2rem",
+                                width: "2rem",
+                              }}
+                              className="object-cover rounded-full"
+                              src={baseUrl(article?.writer?.avatar, 8)}
+                              alt="Avatar"
+                            />
+                            <Box
                               sx={{
-                                fontSize: ".8rem",
-                                fontWeight: "bold",
-                                margin: 0,
-                                color: "#754ffe",
-                                "&:hover": {
-                                  color: "#a190e2",
-                                },
+                                ml: ".6rem",
+                                alignItems: "start",
                               }}
                             >
-                              {article?.writer?.name}
-                            </Typography>
-                            <span
-                              style={{
-                                fontSize: ".5rem",
-                                fontWeight: "bold",
-                                margin: 0,
-                                color: "gray",
-                              }}
-                            >
-                              {moment(article?.createdAt).format("YYYY-MM-DD")}
-                            </span>
-                            <span
-                              style={{
-                                fontSize: ".5rem",
-                                fontWeight: "bold",
-                                color: "gray",
-                              }}
-                            >
-                              -(
-                              {moment(
-                                moment(article?.createdAt).format(
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  fontSize: ".8rem",
+                                  fontWeight: "bold",
+                                  margin: 0,
+                                  color: "#754ffe",
+                                  "&:hover": {
+                                    color: "#a190e2",
+                                  },
+                                }}
+                              >
+                                {article?.writer?.name}
+                              </Typography>
+                              <span
+                                style={{
+                                  fontSize: ".5rem",
+                                  fontWeight: "bold",
+                                  margin: 0,
+                                  color: "gray",
+                                }}
+                              >
+                                {moment(article?.createdAt).format(
+                                  "YYYY-MM-DD"
+                                )}
+                              </span>
+                              <span
+                                style={{
+                                  fontSize: ".5rem",
+                                  fontWeight: "bold",
+                                  color: "gray",
+                                }}
+                              >
+                                -(
+                                {moment(
+                                  moment(article?.createdAt).format(
+                                    "MMMM Do YYYY"
+                                  ),
                                   "MMMM Do YYYY"
-                                ),
-                                "MMMM Do YYYY"
-                              ).fromNow()}
-                              )
-                            </span>
+                                ).fromNow()}
+                                )
+                              </span>
+                            </Box>
                           </Box>
-                        </Box>
-                      </Link>
+                        </Link>
+                      </Box>
                     </Box>
                   </Box>
                 </motion.div>

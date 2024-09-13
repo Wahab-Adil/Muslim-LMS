@@ -28,7 +28,6 @@ const Hero = () => {
   }, []);
   const AllAdvertisement = useSelector(selectAllSelectedAdvertisments);
   console.log("all", AllAdvertisement);
-  localStorage.setItem("advertisement", AllAdvertisement);
 
   const comclasses = comCss();
   const classes = comCss();
@@ -36,7 +35,7 @@ const Hero = () => {
 
   return (
     <Swiper className="mySwiper">
-      {AllAdvertisement?.allAdvertisement?.map((advertisement) => {
+      {AllAdvertisement?.map((advertisement) => {
         return (
           <SwiperSlide>
             <div

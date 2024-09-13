@@ -13,7 +13,7 @@ import { addToPlaylist } from "../store/auth/user/userSlice";
 const shakeAnimation = {
   hidden: { x: 0 },
   visible: {
-    x: [0, -7, 10, -7, 10, 0],
+    x: [0, -1, 0, -1, 0, 0],
     transition: {
       duration: 1,
       ease: "easeInOut",
@@ -89,11 +89,14 @@ const Course = ({ course }) => {
 
   return (
     <MotionCourseCard
+      style={{
+        border: "1px solid 754ffe",
+        boxShadow: "1px 1px 10px 754ffe",
+      }}
       ref={courseRef}
       initial={{
         opacity: 0,
-        x: document.documentElement.dir === "rtl" ? 150 : -150,
-        y: document.documentElement.dir === "rtl" ? 150 : -150,
+        x: document.documentElement.dir === "rtl" ? 100 : -40,
       }} // Start from left or right
       animate={{
         opacity: isVisible ? 1 : 0,

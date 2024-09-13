@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import "../../../App.css";
@@ -6,6 +6,8 @@ import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { Box, Typography, Rating, Stack } from "@mui/material";
 import FaceTwoToneIcon from "@mui/icons-material/FaceTwoTone";
 import CategoryIcon from "@mui/icons-material/Category";
+import { motion } from "framer-motion";
+import useLocales from "../../../hook/useLocales";
 
 // User Store
 import {
@@ -21,8 +23,24 @@ const starsStyle = {
   color: "#b4690e",
 };
 
+// Define shake animation
+const shakeAnimation = {
+  hidden: { x: 0 },
+  visible: {
+    x: [0, -1, 0, -1, 0, 0],
+    transition: {
+      duration: 1,
+      ease: "easeInOut",
+    },
+  },
+};
+
 const Course = ({ course, width }) => {
   const dispatch = useDispatch();
+  const { translate } = useLocales();
+
+  const [isVisible, setIsVisible] = useState(false);
+  const courseRef = useRef(null);
 
   const {
     id,
@@ -33,10 +51,15 @@ const Course = ({ course, width }) => {
     reviews,
     updatedAt,
     category,
-    rating,
+    rating: averageRating,
     language,
   } = course;
 
+  let countAverageRating = 0;
+  reviews?.forEach((review) => {
+    countAverageRating += review?.rating;
+  });
+  countAverageRating = (countAverageRating / reviews?.length).toFixed(1);
   // const [langLocal, setLangLocale] = useState();
 
   const findLangLocale = (language) => {
@@ -51,38 +74,63 @@ const Course = ({ course, width }) => {
     }
   };
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+
+    if (courseRef.current) {
+      observer.observe(courseRef.current);
+    }
+
+    return () => {
+      if (courseRef.current) {
+        observer.unobserve(courseRef.current);
+      }
+    };
+  }, [courseRef]);
+
   return (
-    <CourseCard>
-      <div
-        className="item-img"
-        style={{
-          position: "relative",
-          backgroundColor: "white",
-          padding: "0rem.5rem",
-          height: "fit-content",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{
-            position: "absolute",
-            top: "7.5rem",
-            right: "8px",
-            fontSize: ".9rem",
-            backgroundColor: "#754ffe",
-            color: "white",
-            px: ".8rem",
-            borderRadius: "3px",
-          }}
-        >
-          {findLangLocale(language)}
-        </Typography>
-        <img
-          style={{ height: "200px" }}
-          src={baseUrl(thumbnail, 8)}
-          alt={title}
-        />
-      </div>
+    <MotionCourseCard
+      style={{ border: "1px solid gray" }}
+      ref={courseRef}
+      initial={{
+        opacity: 0,
+        x: document.documentElement.dir === "rtl" ? 10 : -70,
+      }} // Start from left or right
+      animate={{
+        opacity: isVisible ? 1 : 0,
+        x: isVisible ? 0 : 100,
+        y: isVisible ? 0 : 100,
+      }} // Animate to the original position
+      transition={{ duration: 1.5 }} // Duration of animation
+      whileHover={{
+        ...shakeAnimation.visible,
+        transition: { duration: 0.5 },
+        boxShadow: "#754ffe 0px 4px 15px",
+      }} // Apply shake animation on hover
+      className="rounded-lg bg-white shadow"
+    >
+      <ItemImgWrapper>
+        <div className="item-img-wrapper">
+          <span
+            style={{
+              backgroundColor: "#754ffe",
+            }}
+            className="z-30 absolute top-0 left-2 w-20 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white"
+          >
+            {findLangLocale(language)}
+          </span>
+
+          <img className="item-img" src={baseUrl(thumbnail, 8)} alt={title} />
+        </div>
+      </ItemImgWrapper>
+
       <div className="item-body">
         <Typography
           style={{
@@ -93,112 +141,17 @@ const Course = ({ course, width }) => {
         >
           {title?.slice(0, 50)}
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography
-            component={"p"}
-            sx={{
-              fontSize: "12px",
-              textAlign: "start",
-              mt: "8px",
-              textTransform: "capitalize",
-              color: "#754ffe",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <img
-                style={{
-                  height: "2rem",
-                  width: "2rem",
-                }}
-                className="object-cover rounded-full"
-                src={baseUrl(instructor?.avatar, 8)}
-                alt="Avatar"
-              />
-              <Stack
-                sx={{
-                  ml: ".6rem",
-                  alignItems: "start",
-                }}
-              >
-                <Link to={`/user/${instructor?._id}`}>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      mt: "1rem",
-                      fontSize: ".8rem",
-                      fontWeight: "bold",
-                      margin: 0,
-                      color: "#754ffe",
-                      "&:hover": {
-                        color: "#a190e2",
-                      },
-                    }}
-                  >
-                    {instructor?.name}
-                  </Typography>
-                </Link>
-                <span
-                  style={{
-                    fontSize: ".7rem",
-                    fontWeight: "bold",
-                    margin: 0,
-                    color: "gray",
-                  }}
-                >
-                  {moment(updatedAt).format("MMMM Do YYYY")}
-                </span>
-                <span
-                  style={{
-                    fontSize: ".7rem",
-                    fontWeight: "bold",
-                    margin: 0,
-                    color: "gray",
-                  }}
-                >
-                  {moment(
-                    moment(updatedAt).format("MMMM Do YYYY"),
-                    "MMMM Do YYYY"
-                  ).fromNow()}
-                </span>
-              </Stack>
-            </Box>
-          </Typography>
-          <Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "2px",
-              }}
-            >
-              <Rating
-                size="small"
-                readOnly
-                value={parseFloat(rating)}
-                precision={0.5}
-              />
-              <Typography
-                component={"p"}
-                sx={{
-                  fontSize: "12px",
-                  textAlign: "start",
-                  mt: "8px",
-                  textTransform: "capitalize",
-                  color: "#754ffe",
-                }}
-              >
-                <CategoryIcon sx={{ color: "#754ffe" }} />
-                {category?.length > 20 ? `${category?.slice(20)}...` : category}
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
+        <Typography
+          component={"p"}
+          sx={{
+            fontSize: "12px",
+            textAlign: "start",
+            mt: "8px",
+            textTransform: "capitalize",
+          }}
+        >
+          {instructor?.name}
+        </Typography>
 
         <Box
           sx={{
@@ -206,35 +159,68 @@ const Course = ({ course, width }) => {
             alignItems: "center",
             gap: ".5rem",
           }}
-        ></Box>
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "2px",
+            }}
+          >
+            <Rating
+              sx={{ mt: ".5rem" }}
+              size="small"
+              readOnly
+              value={parseFloat(averageRating === "NaN" ? 0 : averageRating)}
+              precision={0.5}
+            />
+          </Box>
+          <Typography
+            sx={{
+              fontSize: ".9rem",
+              fontWeight: "600",
+              color: starsStyle.color,
+            }}
+          >
+            {countAverageRating === "NaN" ? "" : countAverageRating}
+            <span
+              style={{
+                marginLeft: ".5rem",
+                color: "black",
+              }}
+            >
+              ({totalReviews})
+            </span>
+          </Typography>
+        </Box>
       </div>
       <div className="item-btns flex">
-        <Link to={`/course-details/${id}`} className="item-btn see-details-btn">
-          See details
+        <Link
+          to={`/course-details/${id}`}
+          className="item-btn see-details-btn rounded-md bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
+          {translate("See details")}
         </Link>
         <button
           onClick={() => {
+            console.log(id);
             dispatch(addToPlaylist(id));
           }}
-          className="item-btn add-to-cart-btn"
+          className="item-btn add-to-cart-btn flex items-center rounded-md bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
-          Add to Playlist
+          {translate("Add to Playlist")}
         </button>
       </div>
-    </CourseCard>
+    </MotionCourseCard>
   );
 };
 
-const CourseCard = styled.div`
-  border: 1px solid rgba(0, 0, 0, 0.1);
+const MotionCourseCard = styled(motion.div)`
+  width: 280px;
   box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
   display: flex;
   flex-direction: column;
 
-  background-color: #f7f7f7;
-
-  width: 320px;
-  height: 23rem;
   @media screen and (max-width: 400px) {
     width: 280px;
   }
@@ -319,6 +305,22 @@ const CourseCard = styled.div`
         }
       }
     }
+  }
+`;
+
+const ItemImgWrapper = styled.div`
+  position: relative;
+  overflow: hidden; /* Ensure image does not overflow */
+  height: 200px; /* Set a fixed height */
+  border-radius: 10px; /* Optional: Add border-radius if needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the container, cropping if necessary */
   }
 `;
 

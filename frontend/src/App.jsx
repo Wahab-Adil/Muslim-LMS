@@ -14,7 +14,7 @@ import CourseDetails from "./page/CourseDetails";
 import Privacypolicy from "./page/Privacypolicy";
 import Faq from "./page/Faq";
 import ScrollToTops from "./components/ScrollToTops";
-// import CourseFilters from "./components/ProductsFilters";
+// import CourseFilt  ers from "./components/ProductsFilters";
 import CustomerProfile from "./components/Users/Profile/CustomerProfile";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import UpdateCategory from "./components/Admin/Categories/UpdateArticleCategory";
@@ -37,7 +37,6 @@ import CourseCategory from "./components/CourseCategory";
 import ArticleCategory from "./components/ArticleCategory";
 import Section from "./components/Admin/Courses/Section";
 import SectionPreview from "./components/Admin/Courses/SectionPreview";
-import AddCourse from "./components/Admin/Courses/AddCourse";
 import ManageArticles from "./components/Admin/Articles/ManageArticles";
 import EditAminProfile from "./components/Admin/Settings";
 import AddArticle from "./components/Admin/Articles/AddArticle";
@@ -52,8 +51,8 @@ import ArticleFilter from "./page/ArticleFilter/ArticleFilter";
 import CoursePlayList from "./page/CoursePlayList/CoursePlayList";
 // advertisement
 import AddAdvertisement from "./components/Admin/advertisement/AddAdvertisement";
-import EditAdvertisement from "./components/Admin/advertisement/EditAdvertisement";
 import ManageAdvertisement from "./components/Admin/advertisement/ManageAdvertisement";
+import ManageSelectedAdvertisement from "./components/Admin/advertisement/ManageSelectedAdvertisement";
 
 // instractor home page Heading, Profile Image, subtitle Preview Component
 import PreviewHomeAminComponent from "./page/PreviewInstructor";
@@ -122,8 +121,11 @@ const AppContent = () => {
             { path: "articles/all/reviews", element: <AllArticleReviews /> },
             { path: "edit-profile", element: <EditAminProfile /> },
             { path: "add-advertisement", element: <AddAdvertisement /> },
-            { path: "edit-advertisement/:id", element: <EditAdvertisement /> },
             { path: "manage-advertisement", element: <ManageAdvertisement /> },
+            {
+              path: "manage-selected-advertisement",
+              element: <ManageSelectedAdvertisement />,
+            },
             { path: "add-course", element: <AddCourseStep /> },
             { path: "edit-course/:id", element: <EditCourse /> },
             { path: "manage-courses", element: <ManageCourses /> },

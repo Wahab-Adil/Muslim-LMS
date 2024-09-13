@@ -11,10 +11,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 
 import {
-  selectAllAdvertisement,
-  deleteAdvertisement,
+  selectAllSelectedAdvertisments,
+  deleteSelectedAdvertisement,
   selectIsLoading,
-  getAllAdvertisement,
+  getSelectedAdvertisements,
   selectadvertisement,
 } from "../../../store/features/advertisement/advertisementSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,14 +35,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 import useLocale from "../../../hook/useLocales";
-import { EyeIcon } from "@heroicons/react/24/outline";
 
 export default function ManageAdvertisement() {
   const { translate } = useLocale();
   // store
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
-  const Advertisement = useSelector(selectAllAdvertisement);
+  const Advertisement = useSelector(selectAllSelectedAdvertisments);
   const FilteredAdvertisements = useSelector(selectFilteredAdvertisement);
 
   const [currentItems, setCurrentItems] = useState([]);
@@ -60,7 +59,7 @@ export default function ManageAdvertisement() {
   };
 
   useEffect(() => {
-    dispatch(getAllAdvertisement());
+    dispatch(getSelectedAdvertisements());
   }, []);
 
   useEffect(() => {
@@ -96,8 +95,8 @@ export default function ManageAdvertisement() {
             onClick={async () => {
               handleClose();
 
-              await dispatch(deleteAdvertisement(CourseId));
-              await dispatch(getAllAdvertisement());
+              await dispatch(deleteSelectedAdvertisement(CourseId));
+              await dispatch(getSelectedAdvertisements());
             }}
           >
             {translate("Delete")}
@@ -179,18 +178,6 @@ export default function ManageAdvertisement() {
                 </form>
               </div>
               <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                <Link to={"/admin/manage-selected-advertisement"}>
-                  <button
-                    type="button"
-                    id="createProductButton"
-                    data-modal-toggle="createProductModal"
-                    class="flex items-center justify-center text-white bg-indigo-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                    style={{ backgroundColor: "#754ffe" }}
-                  >
-                    <EyeIcon width={"20px"} style={{ marginRight: 3 }} />
-                    {translate("All Selected Advertisement")}
-                  </button>
-                </Link>
                 <Link to={"/admin/add-advertisement"}>
                   <button
                     type="button"
@@ -233,11 +220,7 @@ export default function ManageAdvertisement() {
                       {translate("Title")}
                     </th>
 
-                    <th
-                      style={{ display: "flex", justifyContent: "center" }}
-                      scope="col"
-                      class="p-4"
-                    >
+                    <th scope="col" class="p-4">
                       {translate("Actions")}
                     </th>
                   </tr>
@@ -281,72 +264,7 @@ export default function ManageAdvertisement() {
                         </th>
 
                         <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          <div class="flex items-center justify-end space-x-4">
-                            <button
-                              onClick={() => {
-                                SelectAdvertisement(advertisement);
-                              }}
-                              type="button"
-                              data-drawer-target="drawer-update-product"
-                              data-drawer-show="drawer-update-product"
-                              aria-controls="drawer-update-product"
-                              class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                              style={{ backgroundColor: "#754ffe" }}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="h-4 w-4 mr-2 -ml-0.5"
-                                viewbox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
-                                style={{
-                                  width: "26px",
-                                  height: "22px",
-                                }}
-                              >
-                                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                  clip-rule="evenodd"
-                                />
-                              </svg>
-                              {translate("Select")}
-                            </button>
-
-                            <Link
-                              to={`/admin/edit-advertisement/${advertisement?._id}`}
-                            >
-                              <button
-                                type="button"
-                                data-drawer-target="drawer-update-product"
-                                data-drawer-show="drawer-update-product"
-                                aria-controls="drawer-update-product"
-                                class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                style={{ backgroundColor: "#754ffe" }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  class="h-4 w-4 mr-2 -ml-0.5"
-                                  viewbox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                  style={{
-                                    width: "26px",
-                                    height: "22px",
-                                  }}
-                                >
-                                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                  <path
-                                    fill-rule="evenodd"
-                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
-                                {translate("Edit")}
-                              </button>
-                            </Link>
-
+                          <div class="flex items-center space-x-4">
                             <button
                               onClick={() => {
                                 handleClickOpen();

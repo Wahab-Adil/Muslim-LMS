@@ -96,54 +96,9 @@ export const deleteAdvertisement = asyncHandler(async (req, res) => {
   }
 
   await advertisement.deleteOne();
-  const advetisementImage = path.join(
-    __dirname,
-    "..",
-    "..",
-    advertisement?.image
-  );
-  const advetisementBackground = path.join(
-    __dirname,
-    "..",
-    "..",
-    advertisement?.background
-  );
-
-  if (await fs.pathExists(advetisementImage)) {
-    await fs.unlink(advetisementImage);
-  }
-
-  if (await fs.pathExists(advetisementBackground)) {
-    await fs.unlink(advetisementBackground);
-  }
 
   res.json({
     message: "advertisement deleted and unSelected.",
-  });
-});
-// update only one Advertisement by id
-export const updateAdvertisement = asyncHandler(async (req, res) => {
-  const background = req?.files["background"][0]?.path;
-  const image = req?.files["image"][0]?.path;
-  const advertisement = await Advertisement.findByIdAndUpdate(
-    req.params.id,
-    {
-      title: req?.body?.title?.toLowerCase(),
-      subtitle: req?.body?.subtitle?.toLowerCase(),
-      image,
-      background,
-    },
-    { new: true }
-  );
-
-  if (!advertisement) {
-    res.status(404);
-    throw new Error("No Advertisement Found");
-  }
-
-  res.status(201).json({
-    message: "advertisement updated successfully.",
-    advertisement,
   });
 });
 
@@ -177,5 +132,72 @@ export const SelectAdvertisement = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: `advertisement Selected.`,
+  });
+});
+
+export const deleteSelectedAdvertisement = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.userAuthId);
+  if (user.role === "user") {
+    res.status(400);
+    throw new Error("cant delete Advertisement,Admin Only.");
+  }
+  const advertisement = await Advertisement.findById(req.params.id);
+  const selectedAdvertisments = await SelectedAdvertisement.findById(
+    req.params.id
+  );
+
+  if (!selectedAdvertisments) {
+    res.status(404);
+    throw new Error("No advertisement Found.");
+  }
+
+  if (advertisement) {
+    await advertisement.deleteOne();
+    const advetisementImage = path.join(
+      __dirname,
+      "..",
+      "..",
+      advertisement?.image
+    );
+    const advetisementBackground = path.join(
+      __dirname,
+      "..",
+      "..",
+      advertisement?.background
+    );
+
+    if (await fs.pathExists(advetisementImage)) {
+      await fs.unlink(advetisementImage);
+    }
+
+    if (await fs.pathExists(advetisementBackground)) {
+      await fs.unlink(advetisementBackground);
+    }
+  }
+
+  await selectedAdvertisments.deleteOne();
+  const selectedAdvertisementImage = path.join(
+    __dirname,
+    "..",
+    "..",
+    selectedAdvertisments?.image
+  );
+  const SelectedAdvetisementBackground = path.join(
+    __dirname,
+    "..",
+    "..",
+    selectedAdvertisments?.background
+  );
+
+  if (await fs.pathExists(selectedAdvertisementImage)) {
+    await fs.unlink(selectedAdvertisementImage);
+  }
+
+  if (await fs.pathExists(SelectedAdvetisementBackground)) {
+    await fs.unlink(SelectedAdvetisementBackground);
+  }
+
+  res.json({
+    message: "advertisement unSelected/removed.",
   });
 });

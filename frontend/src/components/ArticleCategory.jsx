@@ -220,7 +220,6 @@ export default function ArticleCategory() {
       {isLoading && <Loader />}
       <div>
         {/* <Pagebanner title="Search for Courses" /> */}
-
         {/* Search for courses start */}
         <Box className={classes.page_banner}>
           <Container maxWidth="lg">
@@ -242,9 +241,7 @@ export default function ArticleCategory() {
             </Typography>
           </Container>
         </Box>
-
         {/* Search for courses end  */}
-
         <div>
           {/* Mobile menu */}
           <Transition.Root show={mobileMenuOpen} as={Fragment}>

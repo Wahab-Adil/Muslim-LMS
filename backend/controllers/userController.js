@@ -14,6 +14,30 @@ import jwt from "jsonwebtoken";
 import fs from "fs-extra";
 import path from "path";
 import { dirname } from "path";
+import nodemailer from "nodemailer";
+
+// transporter
+const transporter = nodemailer.createTransport({
+  host: "smtp.ethereal.email",
+  port: 587,
+  secure: false, // true for port 465, false for other ports
+  auth: {
+    user: "maddison53@ethereal.email",
+    pass: "jn7jnAPss4f63QBp6D",
+  },
+});
+
+export const sendMessage = asyncHandler(async (req, res) => {
+  const info = await transporter.sendMail({
+    from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
+    to: "wahab.cs238@gmail.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+});
 
 import { fileURLToPath } from "url";
 
@@ -58,7 +82,6 @@ export const register = asyncHandler(async (req, res) => {
 // login
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
   // check if user is register in our database
   const user = await User.findOne({ email });
   if (!user) {
@@ -358,7 +381,6 @@ export const forgetPassword = asyncHandler(async (req, res) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       return res.status(400).json({
         error: "Something went wrong email not send.",
         err,
@@ -630,33 +652,9 @@ export const getArticlePlaylist = asyncHandler(async (req, res) => {
   });
 });
 
-export const sendMessage = asyncHandler(async (req, res) => {
-  const { name, message, recipient } = req.body;
-
-  const msg = {
-    to: recipient,
-    from: "abdulhamidbaloch100@gmail.com",
-    subject: `Message from ${name}`,
-    text: message,
-    html: `<p>${message}</p>`,
-  };
-
-  console.log(msg);
-  sgMail
-    .send(msg)
-    .then(() => {
-      res.status(200).send("Email sent successfully");
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send("Error sending email");
-    });
-});
-
 // Get Login Status
 export const loginStatus = asyncHandler(async (req, res) => {
   const token = getTokenFromHeader(req);
-  console.log(token);
   if (!token) {
     return res.json(false);
   }

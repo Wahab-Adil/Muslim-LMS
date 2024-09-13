@@ -73,7 +73,6 @@ export const deleteSection = asyncHandler(async (req, res) => {
     const videoPath = path.join(__dirname, "..", "..", videoList.video.url); // Adjust path if needed
     if (await fs.pathExists(videoPath)) {
       await fs.unlink(videoPath);
-      console.log(`Deleted: ${videoPath}`);
     }
   });
 

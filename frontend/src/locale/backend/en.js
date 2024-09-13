@@ -113,12 +113,15 @@ export default {
   "Added to playlist": "Added to playlist",
   "Article removed from playlist": "Article removed from playlist",
   "Play list Founded": "Play list Founded",
-  
+
   // Course Review
-  "Course Review created successfully": "Course review was successfully created",
+  "Course Review created successfully":
+    "Course review was successfully created",
   "All Reviews Fetched": "All reviews were retrieved",
-  "Course Review deleted successfully": "Course review was successfully deleted",
-  "Course Review updated successfully": "Course review was successfully updated",
+  "Course Review deleted successfully":
+    "Course review was successfully deleted",
+  "Course Review updated successfully":
+    "Course review was successfully updated",
 
   // Article
   "Article created successfully": "Article was successfully created",
@@ -132,9 +135,12 @@ export default {
   "Review deleted.": "Review was deleted",
 
   // Course Category
-  "Video Category created successfully": "Video category was successfully created",
-  "Video Category deleted successfully": "Video category was successfully deleted",
-  "Video Category updated successfully": "Video category was successfully updated",
+  "Video Category created successfully":
+    "Video category was successfully created",
+  "Video Category deleted successfully":
+    "Video category was successfully deleted",
+  "Video Category updated successfully":
+    "Video category was successfully updated",
 
   // Course
   "Course created successfully": "Course was successfully created",
@@ -142,16 +148,28 @@ export default {
   "Video Course updated successfully": "Video course was successfully updated",
 
   // Course Review
-  "Course Review created successfully": "Course review was successfully created",
+  "Course Review created successfully":
+    "Course review was successfully created",
   "All Reviews Fetched": "All reviews were retrieved",
-  "Course Review deleted successfully": "Course review was successfully deleted",
-  "Course Review updated successfully": "Course review was successfully updated",
+  "Course Review deleted successfully":
+    "Course review was successfully deleted",
+  "Course Review updated successfully":
+    "Course review was successfully updated",
 
   // Course Section
-  "Video Section created successfully": "Video section was successfully created",
-  "Video Section deleted successfully": "Video section was successfully deleted",
-  "Video Added To Section successfully": "Video was successfully added to the section",
-  "Video Deleted From Section successfully": "Video was successfully deleted from the section"
+  "Video Section created successfully":
+    "Video section was successfully created",
+  "Video Section deleted successfully":
+    "Video section was successfully deleted",
+  "Video Added To Section successfully":
+    "Video was successfully added to the section",
+  "Video Deleted From Section successfully":
+    "Video was successfully deleted from the section",
 
-
+  // new
+  "Category and associated courses, sections, and media deleted successfully.":
+    "Category and associated courses, sections, and media deleted successfully.",
+  "Category and associated articles,deleted successfully.":
+    "Category and associated articles,deleted successfully.",
+  "advertisement unSelected/removed.": "advertisement unSelected/removed.",
 };

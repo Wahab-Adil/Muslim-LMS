@@ -1,12 +1,15 @@
 export default {
-  "Expired/invalid token. Please login again.": "توکن منقضی شده/نامعتبر. لطفا دوباره وارد شوید.",
+  "Expired/invalid token. Please login again.":
+    "توکن منقضی شده/نامعتبر. لطفا دوباره وارد شوید.",
 
   "Advertisment already exist": "تبلیغات از قبل وجود دارد ",
   "Advertisement created successfully.": "آگهی با موفقیت ایجاد شد.",
   "No Advertisement Found.": "هیچ تبلیغی پیدا نشد",
-  "all Advertisement fetched successfully.": "همه آگهی ها با موفقیت واکشی شدند.",
+  "all Advertisement fetched successfully.":
+    "همه آگهی ها با موفقیت واکشی شدند.",
   "advertisement found.": "آگهی پیدا شد",
-  "cant delete Advertisement,Admin Only.": "شما نمی توانید تبلیغات را حذف کنید، فقط مدیر.",
+  "cant delete Advertisement,Admin Only.":
+    "شما نمی توانید تبلیغات را حذف کنید، فقط مدیر.",
   "advertisement deleted and unSelected.": "آگهی حذف شده و انتخاب نشده است.",
   "advertisement updated successfully.": "آگهی با موفقیت به روز شد",
   "advertisement Already Selected.": "تبلیغات از قبل انتخاب شده است.",
@@ -14,10 +17,13 @@ export default {
 
   "Please add all fields": "لطفا همه فیلدها را اضافه کنید",
   "Article Already Exist.": "مقاله از قبل وجود دارد",
-  "this category don't exist please add category first.": "این دسته وجود ندارد لطفاً ابتدا دسته را اضافه کنید.",
-  "Article created successfully. You can add Sections now.": "مقاله با موفقیت ایجاد شد. اکنون می توانید بخش ها را اضافه کنید.",
+  "this category don't exist please add category first.":
+    "این دسته وجود ندارد لطفاً ابتدا دسته را اضافه کنید.",
+  "Article created successfully. You can add Sections now.":
+    "مقاله با موفقیت ایجاد شد. اکنون می توانید بخش ها را اضافه کنید.",
   "article deleted successfully.": "مقاله با موفقیت حذف شد",
-  "please add category first/Or Select Category.": "لطفا ابتدا دسته را اضافه کنید/یا دسته را انتخاب کنید",
+  "please add category first/Or Select Category.":
+    "لطفا ابتدا دسته را اضافه کنید/یا دسته را انتخاب کنید",
   "Article Updated.": "مقاله به روز شد",
   "Article not found. try again.": "مقاله یافت نشد دوباره امتحان کنید",
   "Section Added to this Article": "Section Added to this Article",
@@ -26,7 +32,8 @@ export default {
   "category created successfully.": "دسته با موفقیت ایجاد شد",
   "no category exist.": "دسته بندی وجود ندارد",
   "all categories fetched successfully.": "همه دسته ها با موفقیت واکشی شدند",
-  "Category don't exist. please add first.": "دسته وجود ندارد. لطفا اول اضافه کنید",
+  "Category don't exist. please add first.":
+    "دسته وجود ندارد. لطفا اول اضافه کنید",
   "Category found.": "دسته پیدا شد",
   "Category desnt exist": "دسته بندی وجود ندارد",
   "category deleted successfull": "دسته با موفقیت حذف شد",
@@ -51,7 +58,8 @@ export default {
   "No Category Found.": "هیچ دسته ای یافت نشد",
   "category deleted successfull.": "دسته با موفقیت حذف شد",
 
-  "Course created successfully. You can add Sections now.": "دوره اموزشی با موفقیت ایجاد شد. اکنون می توانید بخش ها را اضافه کنید",
+  "Course created successfully. You can add Sections now.":
+    "دوره اموزشی با موفقیت ایجاد شد. اکنون می توانید بخش ها را اضافه کنید",
   "Course not found.": "دوره اموزشی پیدا نشد",
   "Course deleted successfully.": "دوره اموزشی با موفقیت حذف شد",
   "Course Updated.": "دوره اموزشی به روز شد",
@@ -61,7 +69,8 @@ export default {
   "Reviews Fetched Successfully.": "نظرات با موفقیت واکشی شد",
 
   "Course Created Successfully.": "دوره اموزشی با موفقیت ایجاد شد",
-  "Section not found try again.": "بخش  دوره اموزشی پیدا نشد دوباره امتحان کنید",
+  "Section not found try again.":
+    "بخش  دوره اموزشی پیدا نشد دوباره امتحان کنید",
   "Section Fetched successfully.": "بخش اموزشی با موفقیت واکشی شد",
   "Lecture deleted successfully.": "فصل با موفقیت حذف شد",
   "Section not found.": "بخش پیدا نشد",
@@ -87,7 +96,8 @@ export default {
   "to reset your password.": "برای بازنشانی رمز عبور",
   "Something went wrong email not send.": "مشکلی پیش آمد ایمیل ارسال نشد",
   "Token is invalid or has been expired": "توکن نامعتبر است یا منقضی شده است",
-  "invalid login details. please login first": "جزئیات ورود نا معتبر می باشد. لطفا ابتدا وارد شوید",
+  "invalid login details. please login first":
+    "جزئیات ورود نا معتبر می باشد. لطفا ابتدا وارد شوید",
   "Invalid course": "دوره نامعتبر",
   "Course already added to playlist": "دوره قبلاً به لیست پخش اضافه شده است",
   "Course removed from playlist": "دوره از لیست پخش حذف شد",
@@ -99,7 +109,7 @@ export default {
   "Article already added to playlist": "مقاله قبلاً به لیست پخش اضافه شده است",
   "Added to playlist": "به لیست پخش اضافه شد",
   "Article removed from playlist": "مقاله از لیست پخش حذف شد",
-  
+
   // Course Review
   "Course Review created successfully": "نقد دوره با موفقیت ایجاد شد",
   "All Reviews Fetched": "تمام نقدها بازیابی شد",
@@ -120,7 +130,8 @@ export default {
   // Course Category
   "Video Category created successfully": "دسته‌بندی ویدیو با موفقیت ایجاد شد",
   "Video Category deleted successfully": "دسته‌بندی ویدیو با موفقیت حذف شد",
-  "Video Category updated successfully": "دسته‌بندی ویدیو با موفقیت به‌روزرسانی شد",
+  "Video Category updated successfully":
+    "دسته‌بندی ویدیو با موفقیت به‌روزرسانی شد",
 
   // Course
   "Course created successfully": "دوره با موفقیت ایجاد شد",
@@ -137,7 +148,9 @@ export default {
   "Video Section created successfully": "بخش ویدیو با موفقیت ایجاد شد",
   "Video Section deleted successfully": "بخش ویدیو با موفقیت حذف شد",
   "Video Added To Section successfully": "ویدیو با موفقیت به بخش اضافه شد",
-  "Video Deleted From Section successfully": "ویدیو با موفقیت از بخش حذف شد"
-
-
-}
+  "Video Deleted From Section successfully": "ویدیو با موفقیت از بخش حذف شد",
+  "Category and associated courses, sections, and media deleted successfully.":
+    "test",
+  "Category and associated articles,deleted successfully.": "test1",
+  "advertisement unSelected/removed.": "test3",
+};

@@ -128,6 +128,6 @@ router.put("/admin/users/:id", isLoggedIn, isAdmin, updateUserRole);
 router.delete("/admin/users/:userId", isLoggedIn, isAdmin, deleteUser);
 
 // send message
-router.post("/send-message", sendMessage);
+router.get("/send-message", sendMessage);
 
 export default router;

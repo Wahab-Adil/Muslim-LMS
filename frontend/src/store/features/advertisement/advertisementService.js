@@ -19,6 +19,12 @@ const deleteAdvertisement = async (advertisementId) => {
   return response.data;
 };
 
+// Delete Advertisement
+const deleteSelectedAdvertisement = async (advertisementId) => {
+  const response = await axios.delete(`${API_URL}/selected/` + advertisementId);
+  return response.data;
+};
+
 //  All Advertisement
 const getAllAdvertisement = async () => {
   const response = await axios.get(`${API_URL}/`);
@@ -36,15 +42,6 @@ const getSingleAdvertisement = async (id) => {
   return response.data;
 };
 
-// Update Advertisement
-const updateAdvertisement = async (formData) => {
-  const response = await axios.post(
-    `${API_URL}/update/${formData?.id}`,
-    formData
-  );
-  return response.data;
-};
-
 // select Advertisement
 const selectAdvertisement = async (advertisement) => {
   const response = await axios.get(`${API_URL}/select/${advertisement}`);
@@ -54,7 +51,7 @@ const selectAdvertisement = async (advertisement) => {
 const AdvertisementService = {
   createAdvertisement,
   deleteAdvertisement,
-  updateAdvertisement,
+  deleteSelectedAdvertisement,
   getAllAdvertisement,
   getSelectedAdvertisements,
   getSingleAdvertisement,

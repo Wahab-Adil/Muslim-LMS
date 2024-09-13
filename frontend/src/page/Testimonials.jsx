@@ -10,7 +10,7 @@ const Testimonials = () => {
           <div class="relative inline-block">
             <a href="#" class="relative block">
               <img
-                alt="profil"
+                alt="profile"
                 src="/images/person/1.jpg"
                 class="mx-auto object-cover rounded-full h-16 w-16 "
               />

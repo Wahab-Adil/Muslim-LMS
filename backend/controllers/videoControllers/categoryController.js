@@ -69,7 +69,6 @@ export const getSingleCategory = asyncHandler(async (req, res) => {
 
 // export const deleteCategory = asyncHandler(async (req, res) => {
 //   const categoryId = req.params.id;
-//   console.log("called");
 
 //   // Find the category
 //   const category = await Category.findById(categoryId).populate("courses");

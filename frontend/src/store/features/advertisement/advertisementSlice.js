@@ -48,6 +48,24 @@ export const deleteAdvertisement = createAsyncThunk(
   }
 );
 
+// Delete Selected  Advertisement
+export const deleteSelectedAdvertisement = createAsyncThunk(
+  "/delete/select/advertisement",
+  async (id, thunkAPI) => {
+    try {
+      return await advertisementServices.deleteSelectedAdvertisement(id);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // get All Advertisement
 export const getAllAdvertisement = createAsyncThunk(
   "/all/advertisement",
@@ -90,24 +108,6 @@ export const getSingleAdvertisement = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       return await advertisementServices.getSingleAdvertisement(id);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-// Update Advertisement
-export const updateAdvertisement = createAsyncThunk(
-  "/update/advertisement",
-  async (formData, thunkAPI) => {
-    try {
-      return await advertisementServices.updateAdvertisement(formData);
     } catch (error) {
       const message =
         (error.response &&
@@ -194,25 +194,22 @@ const Video_CategorySlice = createSlice({
         state.message = action.payload;
         toast.error(i18n.t(action.payload));
       })
-
-      // update Advertisement
-      .addCase(updateAdvertisement.pending, (state) => {
+      // delete selected Advertisement
+      .addCase(deleteSelectedAdvertisement.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateAdvertisement.fulfilled, (state, action) => {
+      .addCase(deleteSelectedAdvertisement.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.get_advertisement = action.payload;
         toast.success(i18n.t(action?.payload?.message));
       })
-      .addCase(updateAdvertisement.rejected, (state, action) => {
+      .addCase(deleteSelectedAdvertisement.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
         toast.error(i18n.t(action.payload));
       })
-
       // get  All Advertisement
       .addCase(getAllAdvertisement.pending, (state) => {
         state.isLoading = true;
@@ -237,8 +234,7 @@ const Video_CategorySlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.selectedAdvertisments = action.payload;
-        toast.success(i18n.t(action?.payload?.message));
+        state.selectedAdvertisments = action?.payload?.allAdvertisement;
       })
       .addCase(getSelectedAdvertisements.rejected, (state, action) => {
         state.isLoading = false;
@@ -251,11 +247,10 @@ const Video_CategorySlice = createSlice({
       .addCase(selectadvertisement.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(selectadvertisement.fulfilled, (state) => {
+      .addCase(selectadvertisement.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-
         toast.success(i18n.t(action?.payload?.message));
       })
       .addCase(selectadvertisement.rejected, (state, action) => {

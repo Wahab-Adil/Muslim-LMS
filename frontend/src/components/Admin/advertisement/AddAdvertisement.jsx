@@ -80,14 +80,17 @@ export default function AddAdvertisement() {
     initialValues,
     validationSchema: RegisterSchema,
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);
     formData.append("subtitle", values.subtitle);
     formData.append("background", backgroundUrl.imageUrl);
     formData.append("image", imageUrl?.imageUrl);
-    dispatch(createAdvertisement(formData));
+    const data = await dispatch(createAdvertisement(formData));
+    if (data?.meta?.requestStatus === "fulfilled") {
+      navigate("/admin/manage-advertisement");
+    }
   };
 
   const handleOnChange = (e) => {

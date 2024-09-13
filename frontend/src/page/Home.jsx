@@ -216,7 +216,7 @@ const Home = () => {
                 display: "flex",
                 flexWrap: "wrap",
                 justifyContent: { xs: "center", sm: "start" },
-                gap: "2rem",
+                gap: "1rem",
                 height: "30rem",
                 direction:
                   document.documentElement.dir === "rtl" ? "ltr" : "ltr",
@@ -290,7 +290,7 @@ const Home = () => {
                 display: "flex",
                 flexWrap: "wrap",
                 justifyContent: { xs: "center", sm: "start" },
-                gap: "2rem",
+                gap: "1rem",
                 minHeight: "20rem",
                 direction:
                   document.documentElement.dir === "rtl" ? "ltr" : "ltr",
