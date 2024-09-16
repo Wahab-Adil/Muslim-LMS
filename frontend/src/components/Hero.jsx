@@ -42,20 +42,23 @@ const Hero = () => {
               style={{ minHeight: "600px" }}
               className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8"
             >
-              <img
-                style={{
-                  position: "absolute",
-                  zIndex: -1,
-                  top: 0,
-                  left: 0,
-                  minHeight: "500px",
-                  minWidth: "100%",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-                src={baseUrl(advertisement?.background, 8)}
-              />
+              {advertisement?.background ? (
+                <img
+                  style={{
+                    position: "absolute",
+                    zIndex: -1,
+                    top: 0,
+                    left: 0,
+                    minHeight: "500px",
+                    minWidth: "100%",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                  src={baseUrl(advertisement?.background, 8)}
+                />
+              ) : null}
+
               {/* <!-- Grid --> */}
               <div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
                 <div style={{ textAlign: "start", marginTop: 3 }}>
@@ -121,11 +124,13 @@ const Hero = () => {
                 {/* <!-- End Col --> */}
 
                 <div className="relative ms-4">
-                  <img
-                    src={baseUrl(advertisement?.image, 8)}
-                    minHeight={"500px"}
-                    width={matches_450 ? 250 : 400}
-                  />
+                  {advertisement?.image ? (
+                    <img
+                      src={baseUrl(advertisement?.image, 8)}
+                      minHeight={"500px"}
+                      width={matches_450 ? 250 : 400}
+                    />
+                  ) : null}
                 </div>
                 {/* <!-- End Col --> */}
               </div>

@@ -9,6 +9,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
+import { motion } from "framer-motion";
 
 import {
   selectAllSelectedAdvertisments,
@@ -25,7 +26,6 @@ import {
   FILTER_Data,
   selectFilteredAdvertisement,
 } from "../../../store/features/advertisement/AdvertisementSearch";
-import { toast } from "react-toastify";
 // paginate
 
 import Paginate from "../../paginate/paginate";
@@ -66,10 +66,27 @@ export default function ManageAdvertisement() {
     dispatch(FILTER_Data({ Data: Advertisement, search }));
   }, [Advertisement, search, dispatch]);
 
-  const SelectAdvertisement = (advertisement) => {
-    dispatch(selectadvertisement(advertisement?._id));
+  const inputTopAnimation = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, x: 100 },
+  };
+  const inputBottomAnimation = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, x: 100 },
   };
 
+  const inputLeftAnimation = {
+    hidden: { opacity: 0, x: -200 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 100 },
+  };
+  const inputRightAnimation = {
+    hidden: { opacity: 0, x: 200 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 100 },
+  };
   return (
     <>
       {isLoading && <Loader />}
@@ -179,7 +196,12 @@ export default function ManageAdvertisement() {
               </div>
               <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                 <Link to={"/admin/add-advertisement"}>
-                  <button
+                  <motion.button
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={inputRightAnimation}
+                    transition={{ duration: 1.5 }}
                     type="button"
                     id="createProductButton"
                     data-modal-toggle="createProductModal"
@@ -204,7 +226,7 @@ export default function ManageAdvertisement() {
                       />
                     </svg>
                     {translate("Add advertisement")}
-                  </button>
+                  </motion.button>
                 </Link>
               </div>
             </div>
@@ -228,20 +250,37 @@ export default function ManageAdvertisement() {
                 <tbody>
                   {currentItems?.map((advertisement) => {
                     return (
-                      <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                      <motion.tr
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputLeftAnimation}
+                        transition={{ duration: 1.2 }}
+                        class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
                         <th
                           scope="row"
                           class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
                           <div class="flex items-center ">
-                            <img
+                            <motion.img
+                              initial="hidden"
+                              animate="visible"
+                              exit="exit"
+                              variants={inputTopAnimation}
+                              transition={{ duration: 1.5 }}
                               src={baseUrl(advertisement?.background, 8)}
                               alt="iMac Front Image"
                               class="h-8 w-auto mr-3"
                             />
                             <div style={{ paddingRight: 39 }} />
                             <div class="flex items-center ">
-                              <img
+                              <motion.img
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                variants={inputBottomAnimation}
+                                transition={{ duration: 1.5 }}
                                 src={baseUrl(advertisement?.image, 8)}
                                 alt="iMac Front Image"
                                 class="h-8 w-auto mr-3"
@@ -295,7 +334,7 @@ export default function ManageAdvertisement() {
                             </button>
                           </div>
                         </td>
-                      </tr>
+                      </motion.tr>
                     );
                   })}
                 </tbody>

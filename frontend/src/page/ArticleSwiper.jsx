@@ -73,6 +73,8 @@ const ArticleSwiper = ({
                   marginLeft: "1rem",
                   marginTop: "1rem",
                   marginBottom: "3rem",
+                  display: "flex",
+                  justifyContent: "center",
                 }}
                 to={`/article-details/${article?.id}`}
               >

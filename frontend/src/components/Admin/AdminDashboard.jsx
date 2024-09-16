@@ -46,6 +46,7 @@ import { TbCategoryPlus } from "react-icons/tb";
 import { HiPencilSquare } from "react-icons/hi2";
 import { GrUserSettings } from "react-icons/gr";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -110,6 +111,11 @@ export default function AdminDashboard() {
       name: translate("Manage Advertisement"),
       href: "manage-advertisement",
       icon: () => <InsertPhotoIcon size={"1.5rem"} />,
+    },
+    {
+      name: translate("Manage Selected Advertisement"),
+      href: "manage-advertisement",
+      icon: () => <PhotoCamera size={"1.5rem"} />,
     },
   ];
 
@@ -196,7 +202,6 @@ export default function AdminDashboard() {
                 top={"5.5rem"}
                 right={"1.5rem"}
                 bgColor={"white"}
-                f
               />
               <Box sx={{ marginTop: "5rem" }} />
 
@@ -452,8 +457,8 @@ export default function AdminDashboard() {
                                 aria-hidden="true"
                               />
                               <Typography
-                                style={{ color: "#754FFE" }}
-                                variant="body2"
+                                style={{ color: "#754FFE", whiteSpace: "wrap" }}
+                                variant="p"
                               >
                                 {translate(`${item.name}`)}
                               </Typography>

@@ -11,6 +11,9 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import TextError from "../../../components/TextError";
 
+// framer motion
+import { motion } from "framer-motion";
+
 // yup
 const RegisterSchema = yup.object().shape({
   title: yup.string().required(),
@@ -49,6 +52,18 @@ const toolbarOptions = [
 
   ["clean"], // remove formatting button
 ];
+
+const inputLeftAnimation = {
+  hidden: { opacity: 0, x: -200 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+const inputRightAnimation = {
+  hidden: { opacity: 0, x: 200 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+
 import useLocale from "../../../hook/useLocales";
 
 export default function AddAdvertisement() {
@@ -85,8 +100,14 @@ export default function AddAdvertisement() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("subtitle", values.subtitle);
-    formData.append("background", backgroundUrl.imageUrl);
-    formData.append("image", imageUrl?.imageUrl);
+    formData.append(
+      "background",
+      backgroundUrl.imageUrl ? backgroundUrl.imageUrl : "default"
+    );
+    formData.append(
+      "image",
+      imageUrl?.imageUrl ? imageUrl.imageUrl : "default"
+    );
     const data = await dispatch(createAdvertisement(formData));
     if (data?.meta?.requestStatus === "fulfilled") {
       navigate("/admin/manage-advertisement");
@@ -148,7 +169,14 @@ export default function AddAdvertisement() {
                   gap: "2rem",
                 }}
               >
-                <div className="w-full">
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={inputLeftAnimation}
+                  transition={{ duration: 2 }}
+                  className="w-full"
+                >
                   <label
                     for="description"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -165,9 +193,15 @@ export default function AddAdvertisement() {
                     value={title}
                     onChange={handleOnChange}
                   />
-                </div>
+                </motion.div>
 
-                <div>
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={inputRightAnimation}
+                  transition={{ duration: 2.5 }}
+                >
                   <label
                     for="name"
                     class="block text-sm mb-2 font-medium text-gray-900 dark:text-white"
@@ -189,11 +223,18 @@ export default function AddAdvertisement() {
                   {formError.subtitle ? (
                     <TextError error={formError.subtitle} />
                   ) : null}
-                </div>
+                </motion.div>
 
-                <Box display="flex">
+                <motion.Box
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={inputLeftAnimation}
+                  transition={{ duration: 3 }}
+                >
                   {/* background Image */}
                   <label
+                    style={{ marginBottom: "1rem" }}
                     for="dropzone-file"
                     className={`flex flex-col items-center justify-center w-full border border-gray-300 border-dashed cursor-pointer bg-gray-50 ${
                       imageUrl ? "0" : "py-16"
@@ -364,17 +405,22 @@ export default function AddAdvertisement() {
                       </>
                     )}
                   </label>
-                </Box>
+                </motion.Box>
               </Box>
             </Box>
-            <button
+            <motion.button
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={inputRightAnimation}
+              transition={{ duration: 3 }}
               type="submit"
               onClick={(e) => handleSubmit(e)}
               class="inline-flex  items-center px-5 py-2.5 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
               style={{ backgroundColor: "#754ffe" }}
             >
               {translate("Add Advertisement")}
-            </button>
+            </motion.button>
           </div>
         </section>
       </Box>

@@ -3,7 +3,7 @@ const TextError = (props) => {
   const { translate } = useLocale();
   return (
     <h3
-      style={{ fontSize: "1rem", fontWeight: "bold" }}
+      style={{ fontSize: ".7rem", fontFamily: "Raleway", fontWeight: "bold" }}
       className="text-red-600"
     >
       {translate(props.error)}

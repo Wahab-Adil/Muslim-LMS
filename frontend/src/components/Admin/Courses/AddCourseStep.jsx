@@ -25,6 +25,8 @@ import TextError from "../../TextError";
 // yup & formik
 import * as yup from "yup";
 import { useFormik } from "formik";
+// framer motion
+import { motion } from "framer-motion";
 
 // yup
 const RegisterSchema = yup.object().shape({
@@ -51,6 +53,28 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useLocale from "../../../hook/useLocales";
+
+const inputTopAnimation = {
+  hidden: { opacity: 0, y: -50 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+const inputBottomAnimation = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+
+const inputLeftAnimation = {
+  hidden: { opacity: 0, x: -200 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+const inputRightAnimation = {
+  hidden: { opacity: 0, x: 200 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 100 },
+};
 
 const AddCourseStep = () => {
   const { translate } = useLocale();
@@ -204,7 +228,6 @@ const AddCourseStep = () => {
               `What would you like to name your course? Don't worry, you can alway change this later.`
             )}
           </p>
-
           <Box
             sx={{
               display: "flex",
@@ -256,7 +279,7 @@ const AddCourseStep = () => {
                   onCreateTodo
                   id="name"
                   class="bg-indigo-100 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder={translate("type course name")}
+                  placeholder={translate("Type course subtitle")}
                   required=""
                   value={values?.subtitle}
                   onBlur={handleBlur}

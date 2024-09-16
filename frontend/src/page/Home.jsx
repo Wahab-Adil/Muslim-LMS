@@ -137,7 +137,7 @@ const Home = () => {
   const classes = pageCss();
 
   const matches_1180 = useMediaQuery("(max-width:1180px)");
-  const matches_800 = useMediaQuery("(max-width:800px)");
+  const matches_800 = useMediaQuery("(max-width:700px)");
   const matches_500 = useMediaQuery("(max-width:500px)");
   const matches_450 = useMediaQuery("(max-width:450px)");
 
@@ -287,6 +287,7 @@ const Home = () => {
             </Box>
             <Box
               sx={{
+                width: "100%",
                 display: "flex",
                 flexWrap: "wrap",
                 justifyContent: { xs: "center", sm: "start" },
@@ -549,24 +550,24 @@ const Home = () => {
               spacing={2}
             >
               {home_count(adminProfile).map((item, index) => (
-                <Grid item xs={12} sm={6} md={3} key={index}>
+                <Grid item xs={12} sm={4} md={4} key={index}>
                   <Box
                     className={classes.count_icon_box}
                     sx={{
-                      justifyContent: { xs: "center", sm: "start" },
+                      justifyContent: "center",
                     }}
                   >
                     <Box className={classes.count_icon}>{item.icon}</Box>
                     <Box className={classes.count_content}>
                       <Typography
-                        variant="h4"
-                        component="h4"
+                        variant="subtitle1"
+                        component="h5"
                         className={classes.count_title}
                       >
                         {item.title}
                       </Typography>
                       <Typography
-                        variant="h4"
+                        variant="subtitle1"
                         component="p"
                         className={classes.count_des}
                       >

@@ -15,7 +15,6 @@ import fs from "fs-extra";
 import path from "path";
 import { dirname } from "path";
 import nodemailer from "nodemailer";
-
 // transporter
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",

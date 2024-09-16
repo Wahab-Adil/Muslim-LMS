@@ -153,48 +153,59 @@ export const deleteSelectedAdvertisement = asyncHandler(async (req, res) => {
 
   if (advertisement) {
     await advertisement.deleteOne();
-    const advetisementImage = path.join(
-      __dirname,
-      "..",
-      "..",
-      advertisement?.image
-    );
-    const advetisementBackground = path.join(
-      __dirname,
-      "..",
-      "..",
-      advertisement?.background
-    );
-
-    if (await fs.pathExists(advetisementImage)) {
-      await fs.unlink(advetisementImage);
+    if (advertisement?.image) {
+      const advetisementImage = path.join(
+        __dirname,
+        "..",
+        "..",
+        advertisement?.image
+      );
+      if (await fs.pathExists(advetisementImage)) {
+        await fs.unlink(advetisementImage);
+      }
     }
 
-    if (await fs.pathExists(advetisementBackground)) {
-      await fs.unlink(advetisementBackground);
+    if (advertisement?.background) {
+      const advetisementBackground = path.join(
+        __dirname,
+        "..",
+        "..",
+        advertisement?.background
+      );
+
+      if (await fs.pathExists(advetisementBackground)) {
+        await fs.unlink(advetisementBackground);
+      }
     }
   }
 
-  await selectedAdvertisments.deleteOne();
-  const selectedAdvertisementImage = path.join(
-    __dirname,
-    "..",
-    "..",
-    selectedAdvertisments?.image
-  );
-  const SelectedAdvetisementBackground = path.join(
-    __dirname,
-    "..",
-    "..",
-    selectedAdvertisments?.background
-  );
+  if (selectedAdvertisments) {
+    await selectedAdvertisments.deleteOne();
 
-  if (await fs.pathExists(selectedAdvertisementImage)) {
-    await fs.unlink(selectedAdvertisementImage);
-  }
+    if (selectedAdvertisments?.image) {
+      const selectedAdvertisementImage = path.join(
+        __dirname,
+        "..",
+        "..",
+        selectedAdvertisments?.image
+      );
 
-  if (await fs.pathExists(SelectedAdvetisementBackground)) {
-    await fs.unlink(SelectedAdvetisementBackground);
+      if (await fs.pathExists(selectedAdvertisementImage)) {
+        await fs.unlink(selectedAdvertisementImage);
+      }
+    }
+
+    if (selectedAdvertisments?.background) {
+      const SelectedAdvetisementBackground = path.join(
+        __dirname,
+        "..",
+        "..",
+        selectedAdvertisments?.background
+      );
+      if (await fs.pathExists(SelectedAdvetisementBackground)) {
+        await fs.unlink(SelectedAdvetisementBackground);
+      }
+    }
   }
 
   res.json({
