@@ -1,6 +1,7 @@
 .card-container {
   display: flex;
   flex-wrap: wrap;
+  word-wrap: break-word;
   margin-top: 2rem;
 }
 

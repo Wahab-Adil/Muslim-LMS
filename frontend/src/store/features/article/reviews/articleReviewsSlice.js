@@ -115,7 +115,6 @@ const ArticleReviewSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.AllArticleReviews = action.payload;
-        toast.success(i18n.t(action?.payload?.message));
       })
       .addCase(ArticleAllReviews.rejected, (state, action) => {
         state.isLoading = false;

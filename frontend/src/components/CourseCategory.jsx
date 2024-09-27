@@ -195,11 +195,10 @@ export default function CourseCategory() {
             component="h2"
             sx={{
               textAlign: { xs: "center", sm: "start" },
-              marginBottom: "3rem",
               fontWeight: "700 !important",
               fontSize: {
                 xs: "1.4rem !important",
-                sm: "3rem !important",
+                sm: "2rem !important",
               },
               color: "white",
             }}
@@ -512,17 +511,16 @@ export default function CourseCategory() {
               </div>
             </div>
           </div>
-          <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
+          <div className="flex items-baseline justify-between border-b border-gray-200 pt-10 pb-6">
             <Typography
               variant="h2"
               component="h2"
               sx={{
                 textAlign: { xs: "center", sm: "start" },
-                marginBottom: "3rem",
                 fontWeight: "600 !important",
                 fontSize: {
-                  xs: "1rem !important",
-                  sm: "1.8rem !important",
+                  xs: ".8rem !important",
+                  sm: "1.2rem !important",
                 },
               }}
             >

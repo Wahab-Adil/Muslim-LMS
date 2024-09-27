@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loginUser,
@@ -52,11 +52,10 @@ const LoginPage = () => {
               localStorage.removeItem("IsAdmin");
               localStorage.setItem("IsAdmin", data.payload?.user.role);
               navigate("/");
-              window.location.reload("/");
             }
           }}
         >
-          {({ setFieldValue, values }) => (
+          {({}) => (
             <Form className="space-y-6 bg-white p-8 rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-xl hover:shadow-[#754ffe]">
               <div>
                 <label
@@ -96,12 +95,12 @@ const LoginPage = () => {
                     {translate("Password")}
                   </label>
                   <div className="text-sm">
-                    <a
-                      href="#"
+                    <Link
+                      to="/forgot-password"
                       className="font-semibold text-indigo-600 hover:text-indigo-500"
                     >
                       {translate("Forgot password?")}
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div

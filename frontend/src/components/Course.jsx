@@ -103,7 +103,7 @@ const Course = ({ course }) => {
         x: isVisible ? 0 : 100,
         y: isVisible ? 0 : 100,
       }} // Animate to the original position
-      transition={{ duration: 1.5 }} // Duration of animation
+      transition={{ duration: 0.7 }}
       whileHover={{
         ...shakeAnimation.visible,
         transition: { duration: 0.5 },
@@ -191,11 +191,13 @@ const Course = ({ course }) => {
       </div>
       <div className="item-btns flex">
         <Link
+          reloadDocument
           to={`/course-details/${id}`}
           className="item-btn see-details-btn rounded-md bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
           {translate("See details")}
         </Link>
+
         <button
           onClick={() => {
             console.log(id);

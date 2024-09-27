@@ -39,9 +39,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 import useLocale from "../../../hook/useLocales";
 import { EyeIcon } from "@heroicons/react/24/outline";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export default function ManageAdvertisement() {
   const { translate } = useLocale();
+
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   // store
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
@@ -267,9 +271,11 @@ export default function ManageAdvertisement() {
                       {translate("Background")}
                     </th>
 
-                    <th scope="col" class="p-4">
-                      {translate("Title")}
-                    </th>
+                    {smDown ? null : (
+                      <th scope="col" class="p-4">
+                        {translate("Title")}
+                      </th>
+                    )}
 
                     <th
                       style={{ display: "flex", justifyContent: "center" }}
@@ -304,7 +310,9 @@ export default function ManageAdvertisement() {
                               transition={{ duration: 1.5 }}
                               src={baseUrl(advertisement?.background, 8)}
                               alt="iMac Front Image"
-                              class="h-8 w-auto mr-3"
+                              class={`h-8 w-auto ${
+                                smDown ? undefined : "mr-3"
+                              }`}
                             />
                             <div style={{ paddingRight: 39 }} />
                             <div class="flex items-center ">
@@ -316,24 +324,29 @@ export default function ManageAdvertisement() {
                                 transition={{ duration: 1.5 }}
                                 src={baseUrl(advertisement?.image, 8)}
                                 alt="iMac Front Image"
-                                class="h-8 w-auto mr-3"
+                                class={`h-8 w-auto ${
+                                  smDown ? "mr-60" : "mr-3"
+                                }`}
                               />
                             </div>
                           </div>
                         </th>
-                        <th
-                          scope="row"
-                          class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: `${advertisement?.title?.slice(
-                                0,
-                                30
-                              )}...`,
-                            }}
-                          />
-                        </th>
+
+                        {smDown ? null : (
+                          <th
+                            scope="row"
+                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          >
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: `${advertisement?.title?.slice(
+                                  0,
+                                  30
+                                )}...`,
+                              }}
+                            />
+                          </th>
+                        )}
 
                         <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           <div class="flex items-center justify-end space-x-4">
@@ -368,39 +381,6 @@ export default function ManageAdvertisement() {
                               </svg>
                               {translate("Select")}
                             </button>
-
-                            <Link
-                              to={`/admin/edit-advertisement/${advertisement?._id}`}
-                            >
-                              <button
-                                type="button"
-                                data-drawer-target="drawer-update-product"
-                                data-drawer-show="drawer-update-product"
-                                aria-controls="drawer-update-product"
-                                class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                style={{ backgroundColor: "#754ffe" }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  class="h-4 w-4 mr-2 -ml-0.5"
-                                  viewbox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                  style={{
-                                    width: "26px",
-                                    height: "22px",
-                                  }}
-                                >
-                                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                  <path
-                                    fill-rule="evenodd"
-                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
-                                {translate("Edit")}
-                              </button>
-                            </Link>
 
                             <button
                               onClick={() => {

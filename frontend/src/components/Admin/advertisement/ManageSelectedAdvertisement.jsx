@@ -35,9 +35,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 import useLocale from "../../../hook/useLocales";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export default function ManageAdvertisement() {
   const { translate } = useLocale();
+
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+
   // store
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
@@ -238,9 +243,11 @@ export default function ManageAdvertisement() {
                       {translate("Background")}
                     </th>
 
-                    <th scope="col" class="p-4">
-                      {translate("Title")}
-                    </th>
+                    {smDown ? null : (
+                      <th scope="col" class="p-4">
+                        {translate("Title")}
+                      </th>
+                    )}
 
                     <th scope="col" class="p-4">
                       {translate("Actions")}
@@ -271,7 +278,9 @@ export default function ManageAdvertisement() {
                               transition={{ duration: 1.5 }}
                               src={baseUrl(advertisement?.background, 8)}
                               alt="iMac Front Image"
-                              class="h-8 w-auto mr-3"
+                              class={`h-8 w-auto ${
+                                smDown ? undefined : "mr-3"
+                              }`}
                             />
                             <div style={{ paddingRight: 39 }} />
                             <div class="flex items-center ">
@@ -283,24 +292,28 @@ export default function ManageAdvertisement() {
                                 transition={{ duration: 1.5 }}
                                 src={baseUrl(advertisement?.image, 8)}
                                 alt="iMac Front Image"
-                                class="h-8 w-auto mr-3"
+                                class={`h-8 w-auto ${
+                                  smDown ? "mr-60" : "mr-3"
+                                }`}
                               />
                             </div>
                           </div>
                         </th>
-                        <th
-                          scope="row"
-                          class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: `${advertisement?.title?.slice(
-                                0,
-                                30
-                              )}...`,
-                            }}
-                          />
-                        </th>
+                        {smDown ? null : (
+                          <th
+                            scope="row"
+                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          >
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: `${advertisement?.title?.slice(
+                                  0,
+                                  30
+                                )}...`,
+                              }}
+                            />
+                          </th>
+                        )}
 
                         <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           <div class="flex items-center space-x-4">

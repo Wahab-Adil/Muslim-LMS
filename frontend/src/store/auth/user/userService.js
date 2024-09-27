@@ -64,14 +64,21 @@ const updateUserProfilePicture = async () => {
 };
 
 // forgot password
-const forgotPassword = async () => {
-  const response = await axios.post(`${API_URL}/forgetpassword`);
+const forgotPassword = async (email) => {
+  console.log(email);
+  const response = await axios.post(`${API_URL}/forgetpassword`, email);
+  return response.data;
+};
+// getting Article Playlist
+const checkOtp = async (formData) => {
+  const response = await axios.post(`${API_URL}/check-otp`, formData);
   return response.data;
 };
 
 // reset password
-const resetPassword = async (token) => {
-  const response = await axios.put(`${API_URL}/resetpassword/` + token);
+const resetPassword = async (formData) => {
+  console.log("full", formData);
+  const response = await axios.put(`${API_URL}/resetpassword/`, formData);
   return response.data;
 };
 
@@ -118,6 +125,12 @@ const getArticlePlayllist = async () => {
   return response.data;
 };
 
+// getting Article Playlist
+const sendMessage = async (formData) => {
+  const response = await axios.post(`${API_URL}/send-message`, formData);
+  return response.data;
+};
+
 const userServices = {
   registerUser,
   loginUser,
@@ -129,6 +142,7 @@ const userServices = {
   updateUserProfile,
   updateUserProfilePicture,
   forgotPassword,
+  checkOtp,
   resetPassword,
   addToPlaylist,
   RemoveFromPlaylist,
@@ -136,6 +150,7 @@ const userServices = {
   addArticleToPlayllist,
   RemoveArticleFromPlayllist,
   getArticlePlayllist,
+  sendMessage,
 };
 
 export default userServices;

@@ -1,4 +1,11 @@
-import { Box, Container, Grid, Typography, Rating } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Rating,
+  useMediaQuery,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Pagebanner from "../components/Pagebanner";
 import { pageCss } from "./PageCss";
@@ -7,7 +14,18 @@ import { PlayArrow } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import InstructCourseDetails from "../components/InstructCourseDetails";
 import Footer from "../components/Footer";
-import Course from "../components/RelatedCourses";
+import Course from "../components/Course";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { FreeMode, Pagination } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+
+import "./slider.css";
 
 import { Video_CreateReview } from "../store/features/video/reviews/videoReviewsSlice";
 
@@ -23,9 +41,15 @@ import Loader from "../components/loader/Loader";
 import baseUrl from "../utils/baseUrl";
 import useLocale from "../hook/useLocales";
 import useRedirectLoggedOutUser from "../hook/useRedirectLoggedOutUser";
+import ReactShowMoreText from "react-show-more-text";
 
 const CourseDetails = () => {
   useRedirectLoggedOutUser("/login");
+
+  const matches_1180 = useMediaQuery("(max-width:1180px)");
+  const matches_800 = useMediaQuery("(max-width:700px)");
+  const matches_500 = useMediaQuery("(max-width:500px)");
+
   const { translate } = useLocale();
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
@@ -95,7 +119,6 @@ const CourseDetails = () => {
         course_enroll={VideoCourse?.totalViews}
         course_rating={Number(VideoCourse?.rating)}
       />
-
       <Box className={classes.course_banner}></Box>
       <Container maxWidth="lg">
         <Grid
@@ -358,7 +381,7 @@ const CourseDetails = () => {
                         review.user.avatr
                       );
                       return (
-                        <div className="flex flex-col overflow-hidden shadow-xl border-indigo-500 border-2 rounded-md">
+                        <div className="flex flex-col overflow-hidden shadow-xl border-gray-300 border-2 rounded-md">
                           <div
                             className="flex flex-col justify-between flex-1 p-6 bg-white lg:py-8 lg:px-7"
                             style={{
@@ -366,7 +389,14 @@ const CourseDetails = () => {
                               minHeight: "295px",
                             }}
                           >
-                            <div className="flex-1">
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 25,
+                              }}
+                              className="flex-1"
+                            >
                               <div className="flex items-center">
                                 <Rating
                                   readOnly
@@ -374,12 +404,19 @@ const CourseDetails = () => {
                                   precision={0.5}
                                 />
                               </div>
-
-                              <blockquote className="flex-1 mt-8">
-                                <p className="text-lg leading-relaxed text-gray-900 font-pj">
+                              <Box>
+                                <ReactShowMoreText
+                                  lines={3}
+                                  more={translate("Show more")}
+                                  less={translate("Show less")}
+                                  className="content-css"
+                                  anchorClass="show-more-less-clickable"
+                                  expanded={true}
+                                  truncatedEndingComponent={"... "}
+                                >
                                   {review?.comment}
-                                </p>
-                              </blockquote>
+                                </ReactShowMoreText>
+                              </Box>
                             </div>
 
                             <div className="flex items-center mt-8">
@@ -391,9 +428,6 @@ const CourseDetails = () => {
                               <div className="ml-4">
                                 <p className="text-base font-bold text-gray-900 font-pj">
                                   {review?.user?.name}
-                                </p>
-                                <p className="mt-0.5 text-sm font-pj text-gray-600">
-                                  {review?.user?.bio}
                                 </p>
                               </div>
                             </div>
@@ -416,6 +450,7 @@ const CourseDetails = () => {
           <Box
             sx={{
               px: { xs: 0, sm: "24px" },
+              py: { xs: 0, sm: "24px" },
               mt: { xs: "3rem", sm: "6rem" },
             }}
           >
@@ -430,22 +465,33 @@ const CourseDetails = () => {
               {translate("Related Courses")}
             </Typography>
 
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: { xs: "center", sm: "start" },
-                gap: "2rem",
-                mt: "3rem",
-                mb: "3rem",
-              }}
-            >
-              {RelatedReview?.map((item, idx) => {
-                if (idx >= 5) {
-                  return;
+            <Box sx={{ width: "100%" }}>
+              <Swiper
+                slidesPerView={
+                  matches_1180 ? (matches_800 ? (matches_500 ? 1 : 2) : 3) : 4
                 }
-                return <Course width={"250px"} course={item} key={idx} />;
-              })}
+                spaceBetween={150}
+                freeMode={true}
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[FreeMode, Pagination, Navigation]}
+                className="mySwiper"
+                style={{
+                  padding: "5rem",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                {RelatedReview?.map((item, idx) => {
+                  if (idx >= 5) return null;
+                  return (
+                    <SwiperSlide key={idx}>
+                      <Course width={"250px"} course={item} />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
             </Box>
           </Box>
         )}

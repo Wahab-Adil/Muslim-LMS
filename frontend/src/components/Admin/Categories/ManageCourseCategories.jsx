@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import ErrorMsg from "../../ErrorMsg/ErrorMsg";
-import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import NoDataFound from "../../NoDataFound/NoDataFound";
-
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,6 +9,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import useLocale from "../../../hook/useLocales";
+import { useTheme } from "@mui/material";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -22,19 +19,44 @@ import {
   Video_DeleteCategory,
 } from "../../../store/features/video/category/videoCategorySlice";
 import Loader from "../../loader/Loader";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import baseUrl from "../../../utils/baseUrl";
+import { motion } from "framer-motion";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const inputTopAnimation = {
+  hidden: { opacity: 0, y: -30 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+const inputBottomAnimation = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+
+const inputLeftAnimation = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+const inputRightAnimation = {
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+
 export default function ManageCourseCategories() {
   const { translate } = useLocale();
+
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const categories = useSelector(selectVideoAllCategories);
-  console.log("alll", categories);
 
   const [categoryId, setCategoryId] = useState();
   const [open, setOpen] = useState(false);
@@ -56,7 +78,7 @@ export default function ManageCourseCategories() {
     dispatch(Video_AllCategories());
   };
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <div className="px-4 sm:px-6 lg:px-8 mt-20">
       {isLoading && <Loader />}
       <Dialog
         open={open}
@@ -85,8 +107,11 @@ export default function ManageCourseCategories() {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
+      <div
+        style={{ marginBottom: smDown ? "20px" : "15px" }}
+        className="sm:flex sm:items-center"
+      >
+        <div style={{ marginTop: "2rem" }} className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">
             {translate("All Categories")}
           </h1>
@@ -94,7 +119,15 @@ export default function ManageCourseCategories() {
             {translate("A list of all Courses Categories")}
           </p>
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={inputRightAnimation}
+          transition={{ duration: 1 }}
+          className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"
+          style={{ marginBottom: smDown ? "20px" : "15px" }}
+        >
           <Link
             to="/admin/add-course-category"
             type="button"
@@ -102,62 +135,102 @@ export default function ManageCourseCategories() {
           >
             {translate("Add New Course Category")}
           </Link>
-        </div>
+        </motion.div>
       </div>
       {
         <div
           style={{
             direction: document.documentElement.dir === "rtl" ? "ltr" : "ltr",
           }}
-          className="mt-8 flex flex-col"
+          class="mx-auto max-w-screen-2xl px-4 lg:px-12"
         >
           <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-300">
+                <table
+                  style={{ overflow: "auto" }}
+                  className="min-w-full divide-y divide-gray-300"
+                >
                   <thead className="bg-gray-50">
                     <tr>
-                      <th
+                      <motion.th
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputTopAnimation}
+                        transition={{ duration: 1.5 }}
                         scope="col"
                         className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                       >
                         {translate("image & name")}
-                      </th>
-                      <th
+                      </motion.th>
+                      <motion.th
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputTopAnimation}
+                        transition={{ duration: 1.5 }}
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         {translate("No.Courses")}
-                      </th>
-                      <th
+                      </motion.th>
+                      <motion.th
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputTopAnimation}
+                        transition={{ duration: 1.5 }}
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         {translate("Added By")}
-                      </th>
-                      <th
+                      </motion.th>
+                      <motion.th
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputTopAnimation}
+                        transition={{ duration: 1.5 }}
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         {translate("Created At")}
-                      </th>
-                      <th
+                      </motion.th>
+                      <motion.th
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputTopAnimation}
+                        transition={{ duration: 1.5 }}
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         {translate("Edit")}
-                      </th>
-                      <th
+                      </motion.th>
+                      <motion.th
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputTopAnimation}
+                        transition={{ duration: 1.5 }}
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         {translate("Preview & Delete")}
-                      </th>
+                      </motion.th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {categories?.map((category) => (
-                      <tr key={category?._id}>
+                      <motion.tr
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputLeftAnimation}
+                        transition={{ duration: 1.2 }}
+                        key={category?._id}
+                      >
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
@@ -268,7 +341,7 @@ export default function ManageCourseCategories() {
                             </button>
                           </Box>
                         </td>
-                      </tr>
+                      </motion.tr>
                     ))}
                   </tbody>
                 </table>

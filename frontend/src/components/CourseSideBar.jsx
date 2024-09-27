@@ -39,66 +39,6 @@ const CourseSidebar = ({ Course }) => {
           </Link>
         </Box>
       </Box>
-      {/* <Box className={classes.course_sidebar_box}>
-        <Box sx={{ padding: "10px !important" }}>
-          <Typography
-            variant="h4"
-            className={classes.course_sidebar_box_2_title}
-          >
-            What's included
-          </Typography>
-          <Typography
-            variant="h4"
-            className={classes.course_sidebar_box_2_content}
-          >
-            <PlayCircleOutlineIcon
-              style={{ color: "#754ffe" }}
-              className={classes.single_course_sidebar_icon}
-            />
-            12 hours video
-          </Typography>
-          <Typography
-            variant="h4"
-            className={classes.course_sidebar_box_2_content}
-          >
-            <WorkspacePremiumRoundedIcon
-              style={{ color: "#45D6DE" }}
-              className={classes.single_course_sidebar_icon}
-            />
-            Certificate
-          </Typography>
-          <Typography
-            variant="h4"
-            className={classes.course_sidebar_box_2_content}
-          >
-            <EventNoteRoundedIcon
-              style={{ color: "#83CCFA" }}
-              className={classes.single_course_sidebar_icon}
-            />
-            12 Article
-          </Typography>
-          <Typography
-            variant="h4"
-            className={classes.course_sidebar_box_2_content}
-          >
-            <VideocamRoundedIcon
-              style={{ color: "#D0CFC5" }}
-              className={classes.single_course_sidebar_icon}
-            />
-            Watch Offline
-          </Typography>
-          <Typography
-            variant="h4"
-            className={classes.course_sidebar_box_2_content}
-          >
-            <AccessTimeOutlinedIcon
-              style={{ color: "#FFAB6A" }}
-              className={classes.single_course_sidebar_icon}
-            />
-            Lifetime access
-          </Typography>
-        </Box>
-      </Box> */}
     </Box>
   );
 };

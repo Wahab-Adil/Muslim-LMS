@@ -240,6 +240,7 @@ const Video_CategorySlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+
         toast.error(i18n.t(action.payload));
       })
 

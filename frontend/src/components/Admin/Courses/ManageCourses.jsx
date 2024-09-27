@@ -33,6 +33,29 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 import Paginate from "../../paginate/paginate";
 import baseUrl from "../../../utils/baseUrl";
+import { motion } from "framer-motion";
+
+const inputTopAnimation = {
+  hidden: { opacity: 0, y: -50 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+const inputBottomAnimation = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+
+const inputLeftAnimation = {
+  hidden: { opacity: 0, x: -200 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 100 },
+};
+const inputRightAnimation = {
+  hidden: { opacity: 0, x: 200 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 100 },
+};
 
 export default function ManageCourses() {
   const { translate } = useLocale();
@@ -137,7 +160,14 @@ export default function ManageCourses() {
             </div>
             <div class="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
               <div class="w-full md:w-1/2">
-                <form class="flex items-center">
+                <motion.form
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={inputTopAnimation}
+                  transition={{ duration: 1.5 }}
+                  class="flex items-center"
+                >
                   <label for="simple-search" class="sr-only">
                     {translate("Search")}
                   </label>
@@ -167,11 +197,16 @@ export default function ManageCourses() {
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     />
                   </div>
-                </form>
+                </motion.form>
               </div>
               <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                 <Link to={"/admin/add-course"}>
-                  <button
+                  <motion.button
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={inputRightAnimation}
+                    transition={{ duration: 1.5 }}
                     type="button"
                     id="createProductButton"
                     data-modal-toggle="createProductModal"
@@ -196,7 +231,7 @@ export default function ManageCourses() {
                       />
                     </svg>
                     {translate("Add Course")}
-                  </button>
+                  </motion.button>
                 </Link>
               </div>
             </div>
@@ -229,13 +264,25 @@ export default function ManageCourses() {
                 <tbody>
                   {currentItems?.map((course) => {
                     return (
-                      <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                      <motion.tr
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={inputLeftAnimation}
+                        transition={{ duration: 1.5 }}
+                        class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
                         <th
                           scope="row"
                           class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
                           <div class="flex items-center mr-3">
-                            <img
+                            <motion.img
+                              initial="hidden"
+                              animate="visible"
+                              exit="exit"
+                              variants={inputTopAnimation}
+                              transition={{ duration: 1.5 }}
                               src={baseUrl(course?.thumbnail, 8)}
                               alt="iMac Front Image"
                               class="h-8 w-auto mr-3"
@@ -315,7 +362,12 @@ export default function ManageCourses() {
                               </button>
                             </Link>
 
-                            <button
+                            <motion.button
+                              initial="hidden"
+                              animate="visible"
+                              exit="exit"
+                              variants={inputRightAnimation}
+                              transition={{ duration: 1.5 }}
                               onClick={() => {
                                 handleClickOpen();
                                 setCourseId(course?.id);
@@ -343,10 +395,10 @@ export default function ManageCourses() {
                                 />
                               </svg>
                               {translate("Delete")}
-                            </button>
+                            </motion.button>
                           </div>
                         </td>
-                      </tr>
+                      </motion.tr>
                     );
                   })}
                 </tbody>

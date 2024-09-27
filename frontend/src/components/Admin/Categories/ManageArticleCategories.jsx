@@ -51,11 +51,11 @@ export default function ManageArticleCategories() {
 
   //delete category handler
   const deleteCategoryHandler = async (id) => {
-    dispatch(await ArticleDeleteCategory(id));
-    dispatch(await ArticleAllCategory());
+    await dispatch(ArticleDeleteCategory(id));
+    await dispatch(ArticleAllCategory());
   };
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <div className="mt-20 px-4 sm:px-6 lg:px-8 ">
       {isLoading && <Loader />}
       <Dialog
         open={open}
@@ -84,16 +84,19 @@ export default function ManageArticleCategories() {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="sm:flex sm:items-center">
+      <div className="sm:flex sm:items-center ">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">
+          <h1
+            style={{ marginTop: "1rem" }}
+            className="text-xl font-semibold text-gray-900"
+          >
             {translate("All Categories")}
           </h1>
           <p className="mt-2 text-sm text-gray-700">
             {translate("A list of all Articles Categories")}
           </p>
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+        <div className=" mb-2 mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <Link
             to="/admin/add-article-category"
             type="button"
@@ -108,12 +111,15 @@ export default function ManageArticleCategories() {
           style={{
             direction: document.documentElement.dir === "rtl" ? "ltr" : "ltr",
           }}
-          className="mt-8 flex flex-col"
+          class="mx-auto max-w-screen-2xl px-4 lg:px-12"
         >
           <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-300">
+                <table
+                  style={{ overflow: "auto" }}
+                  className="min-w-full divide-y divide-gray-300"
+                >
                   <thead className="bg-gray-50">
                     <tr>
                       <th

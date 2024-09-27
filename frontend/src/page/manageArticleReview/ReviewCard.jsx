@@ -1,4 +1,4 @@
-import { Rating } from "@mui/material";
+import { Rating, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -69,7 +69,7 @@ const ReviewCard = ({ review, ArticleDetails, articleId }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="flex flex-col overflow-hidden shadow-xl border-indigo-500 border-2 rounded-md">
+      <div className="flex flex-col  shadow-xl border-indigo-500 border-2 rounded-md">
         <div
           className="flex flex-col justify-between flex-1 p-6 bg-white lg:py-8 lg:px-7"
           style={{
@@ -116,12 +116,12 @@ const ReviewCard = ({ review, ArticleDetails, articleId }) => {
                 </svg>
               </button>
             </div>
-
-            <blockquote className="flex-1 mt-8">
-              <p className="text-lg leading-relaxed text-gray-900 font-pj">
-                {review?.comment}
-              </p>
-            </blockquote>
+            <Typography
+              style={{ wordWrap: "break-word" }}
+              className="text-lg leading-relaxed text-gray-900 font-pj"
+            >
+              {review?.comment}
+            </Typography>
           </div>
 
           <div className="flex items-center mt-8">

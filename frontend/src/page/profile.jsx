@@ -9,12 +9,15 @@ import { FaSignOutAlt, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import baseUrl from "../utils/baseUrl";
 import defaultAvatar from "../assets/avatar/Professor.png";
+import { useMediaQuery, useTheme } from "@mui/material";
 
-const DropdownComponent = () => {
+const DropdownComponent = ({ setOpenMenu, openMenu }) => {
   const dispatch = useDispatch();
   const userProfile = useSelector(selectUserProfile);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const theme = useTheme();
+  const downSm = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     dispatch(getUserProfile());
@@ -44,12 +47,8 @@ const DropdownComponent = () => {
   // Function to handle option click
   const handleOptionClick = () => {
     setIsOpen(false);
+    setOpenMenu(!openMenu);
   };
-
-  console.log(
-    "userProfile?.user.avatar",
-    userProfile?.user?.avatar === "default"
-  );
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
@@ -75,13 +74,19 @@ const DropdownComponent = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="absolute right-0 mt-2 w-38 bg-white shadow-lg rounded-lg p-4"
+            className="mt-2 w-38 bg-white shadow-lg rounded-lg"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3 }}
+            style={{
+              zIndex: 3,
+              position: "absolute",
+              top: downSm ? -100 : -65,
+              left: downSm ? -100 : -100,
+            }}
           >
-            <ul className="list-none p-0 m-0">
+            <ul style={{ display: "flex" }} className="list-none p-0 m-0">
               <motion.li
                 className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition duration-150 ease-in-out"
                 whileHover={{ scale: 1.05 }}

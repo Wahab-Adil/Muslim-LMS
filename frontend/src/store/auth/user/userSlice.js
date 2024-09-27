@@ -196,6 +196,23 @@ export const forgotPassword = createAsyncThunk(
     }
   }
 );
+// check Otp
+export const checkOtp = createAsyncThunk(
+  "check/OTP",
+  async (formData, thunkAPI) => {
+    try {
+      return await userService.checkOtp(formData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 // reset Password
 export const resetPassword = createAsyncThunk(
@@ -323,6 +340,24 @@ export const getArticlePlayllist = createAsyncThunk(
   }
 );
 
+// send Message
+export const sendMessage = createAsyncThunk(
+  "send/message",
+  async (formData, thunkAPI) => {
+    try {
+      return await userService.sendMessage(formData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const UserSlice = createSlice({
   name: "user",
   initialState,
@@ -343,7 +378,7 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // login User
@@ -363,7 +398,7 @@ const UserSlice = createSlice({
           // localStorage.setItem('UserInfo');
         }
         state.isError = false;
-        toast.success("Logged In Successfull !");
+        toast.success(t("Logged In Successfull !"));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoggedIn = false;
@@ -373,7 +408,7 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload.message;
-        toast.error("Wrong Credentials");
+        toast.error(t("Wrong Credentials"));
       })
       // login User
       .addCase(userLoginStatus.pending, (state, action) => {
@@ -393,7 +428,7 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload.message;
-        toast.error("Token Expired,Please Logged In to continous");
+        toast.error(t("Token Expired,Please Logged In to continous"));
       })
 
       // user Profile
@@ -410,7 +445,7 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // Instructor Details
@@ -427,7 +462,7 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
       // Delete User Profile
       .addCase(deleteUserProfile.pending, (state) => {
@@ -437,13 +472,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("User Deleted successfully");
+        toast.success(t("User Deleted successfully"));
       })
       .addCase(deleteUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // Change Password
@@ -454,13 +489,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("password changed successfully");
+        toast.success(t("password changed successfully"));
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // update User Profile
@@ -471,13 +506,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("User Profile updated successfully");
+        toast.success(t("User Profile updated successfully"));
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // update User Profile Picture
@@ -488,13 +523,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("User Profile Picture updated successfully");
+        toast.success(t("User Profile Picture updated successfully"));
       })
       .addCase(updateUserProfilePicture.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // update User Profile Picture
@@ -505,13 +540,29 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("password Changed successfully");
+        toast.success(t("password Changed successfully"));
       })
       .addCase(forgotPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
+      })
+      // update User Profile Picture
+      .addCase(checkOtp.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkOtp.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        toast.success(t("OTP Verified"));
+      })
+      .addCase(checkOtp.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        toast.error(t(action.payload));
       })
       // reset password
       .addCase(resetPassword.pending, (state) => {
@@ -521,13 +572,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("Password reseted successfully");
+        toast.success(t(action?.payload?.message));
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // Add to playlist
@@ -538,13 +589,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("Add to Playlist successfully");
+        toast.success(t("Add to Playlist successfully"));
       })
       .addCase(addToPlaylist.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // Remove from playlist
@@ -555,13 +606,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("Removed successfully");
+        toast.success(t("Removed successfully"));
       })
       .addCase(RemoveFromPlaylist.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // get playlist
@@ -572,13 +623,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success("playlist Fetched Successfully");
+        toast.success(t("playlist Fetched Successfully"));
       })
       .addCase(getPlaylist.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // adding article playlist
@@ -589,13 +640,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success(" Article Added Successfully");
+        toast.success(t("Article Added Successfully"));
       })
       .addCase(addArticleToPlayllist.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // remove article from playlist
@@ -606,13 +657,13 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success(" Article removed Successfully");
+        toast.success(t("Article removed Successfully"));
       })
       .addCase(RemoveArticleFromPlayllist.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
       })
 
       // getting article playlist
@@ -623,13 +674,29 @@ const UserSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success(" Article Playlist Fetched");
+        toast.success(t("Article Playlist Fetched"));
       })
       .addCase(getArticlePlayllist.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        toast.error(action.payload);
+        toast.error(t(action.payload));
+      })
+
+      // send message
+      .addCase(sendMessage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sendMessage.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        toast.success(t(action?.payload));
+      })
+      .addCase(sendMessage.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        toast.error(t("Something Went Wrong, Message Not Send"));
       });
   },
 });

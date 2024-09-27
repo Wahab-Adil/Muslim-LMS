@@ -211,7 +211,7 @@ const AddCourseStep = () => {
       content: (
         <div
           style={{
-            marginTop: "6rem",
+            marginTop: "4rem",
             height: "40vh",
           }}
         >
@@ -251,7 +251,12 @@ const AddCourseStep = () => {
                   {translate("Course Title")}
                 </label>
 
-                <input
+                <motion.input
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={inputLeftAnimation}
+                  transition={{ duration: 1.5 }}
                   type="text"
                   name="title"
                   onCreateTodo
@@ -273,7 +278,12 @@ const AddCourseStep = () => {
                   {translate("Course subtitle")}
                 </label>
 
-                <input
+                <motion.input
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={inputRightAnimation}
+                  transition={{ duration: 1.5 }}
                   type="text"
                   name="subtitle"
                   onCreateTodo
@@ -305,14 +315,24 @@ const AddCourseStep = () => {
           }}
         >
           <div>
-            <label
+            <motion.label
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={inputTopAnimation}
+              transition={{ duration: 1 }}
               for="category"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               {translate("Category")}
-            </label>
+            </motion.label>
 
-            <select
+            <motion.select
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={inputRightAnimation}
+              transition={{ duration: 1.5 }}
               id="category"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -328,7 +348,7 @@ const AddCourseStep = () => {
                   </>
                 );
               })}
-            </select>
+            </motion.select>
             {formError?.category ? (
               <TextError error={formError.category} />
             ) : null}
@@ -341,7 +361,12 @@ const AddCourseStep = () => {
               {translate("Languages")}
             </label>
 
-            <select
+            <motion.select
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={inputLeftAnimation}
+              transition={{ duration: 1 }}
               id="language"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -357,12 +382,19 @@ const AddCourseStep = () => {
                   </>
                 );
               })}
-            </select>
+            </motion.select>
             {formError?.language ? (
               <TextError error={formError.language} />
             ) : null}
           </div>
-          <div className="w-full">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={inputTopAnimation}
+            transition={{ duration: 1.5 }}
+            className="w-full"
+          >
             <label
               for="description"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -381,7 +413,7 @@ const AddCourseStep = () => {
               value={descriptionValue}
               onChange={handleOnChangeQuill}
             />
-          </div>
+          </motion.div>
         </Box>
       ),
     },
@@ -439,7 +471,12 @@ const AddCourseStep = () => {
             </Box>
           ) : (
             <>
-              <label
+              <motion.label
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={inputRightAnimation}
+                transition={{ duration: 1.5 }}
                 for="dropzone-file"
                 className={`flex flex-col items-center justify-center w-full border border-gray-300 border-dashed cursor-pointer bg-gray-50 ${
                   imageUrl ? "0" : "py-16"
@@ -448,7 +485,14 @@ const AddCourseStep = () => {
                   marginTop: "3rem",
                 }}
               >
-                <div class="mb-3 flex items-center justify-center">
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={inputTopAnimation}
+                  transition={{ duration: 1.5 }}
+                  class="mb-3 flex items-center justify-center"
+                >
                   <BsImages
                     style={{
                       width: "3rem",
@@ -457,7 +501,7 @@ const AddCourseStep = () => {
                       color: "#754ffe",
                     }}
                   />
-                </div>
+                </motion.div>
 
                 <h4 class="text-center text-gray-900 text-sm font-medium leading-snug">
                   {translate("Drag and Drop your file")}
@@ -470,7 +514,7 @@ const AddCourseStep = () => {
                   class="hidden"
                   required
                 />
-              </label>
+              </motion.label>
             </>
           )}
         </>
@@ -483,12 +527,14 @@ const AddCourseStep = () => {
       <Box
         sx={{
           width: "100%",
+
           px: { xs: "2rem", sm: "4rem" },
           minHeight: "90vh",
         }}
       >
         <Stepper
           sx={{
+            marginTop: "6rem",
             direction: document.documentElement.dir === "rtl" ? "ltr" : "ltr",
           }}
           activeStep={activeStep}

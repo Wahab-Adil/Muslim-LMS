@@ -2,7 +2,14 @@ import React from "react";
 import Hero from "../components/Hero";
 
 import { pageCss } from "./PageCss";
-import { Box, Container, Grid, Rating, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Rating,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -73,6 +80,8 @@ import {
   selectAllGlobalReviews,
 } from "../store/features/globalReviews/globalReviewSlice";
 
+import { selectIsLoggedIn } from "../store/auth/user/userSlice";
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -105,8 +114,11 @@ const Home = () => {
   //
   useRedirectLoggedOutUser("/login");
 
+  const theme = useTheme();
   // redux
   const dispatch = useDispatch();
+
+  // other api calls
   const isLoading = useSelector(selectIsLoading);
   const AllCourses = useSelector(selectAllCourses);
   const AllArticles = useSelector(selectAllArticles);
@@ -129,7 +141,6 @@ const Home = () => {
     dispatch(getAllArticles());
     dispatch(ArticleAllCategory());
     dispatch(AllGlobalReviews());
-    dispatch(getAdminPublicProfile);
   }, []);
 
   const { translate, currentLang } = useLocale();
@@ -140,6 +151,7 @@ const Home = () => {
   const matches_800 = useMediaQuery("(max-width:700px)");
   const matches_500 = useMediaQuery("(max-width:500px)");
   const matches_450 = useMediaQuery("(max-width:450px)");
+  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   // article review count
   AllArticles?.reviews?.forEach((review) => {
@@ -164,7 +176,6 @@ const Home = () => {
       return language;
     }
   };
-  console.log(adminProfile);
 
   return (
     <>
@@ -215,8 +226,7 @@ const Home = () => {
               sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                justifyContent: { xs: "center", sm: "start" },
-                gap: "1rem",
+                justifyContent: "center",
                 height: "30rem",
                 direction:
                   document.documentElement.dir === "rtl" ? "ltr" : "ltr",
@@ -226,13 +236,17 @@ const Home = () => {
                 slidesPerView={
                   matches_1180 ? (matches_800 ? (matches_500 ? 1 : 2) : 3) : 4
                 }
-                spaceBetween={30}
+                spaceBetween={10}
                 freeMode={true}
                 pagination={{
                   clickable: true,
                 }}
                 modules={[FreeMode, Pagination, Navigation]}
                 className="mySwiper"
+                style={{
+                  paddingRight: isUpSm ? "1rem" : ".5rem",
+                  paddingLeft: isUpSm ? "1rem" : ".5rem",
+                }}
               >
                 {AllCourses?.map((item, idx) => {
                   if (idx >= 15) {

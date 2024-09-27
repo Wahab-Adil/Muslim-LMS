@@ -1,13 +1,17 @@
 import React, { useTransition, useState, useEffect } from "react";
 import { Button, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+
 import baseUrl from "../utils/baseUrl";
 import ReactQuill from "react-quill";
 
 const AboutSection = ({ AdminProfile }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const matches_800 = useMediaQuery("(max-width:800px)");
-  console.log("admin", AdminProfile);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  console.log("admin", isSmallScreen);
 
   return (
     <section>
@@ -20,6 +24,7 @@ const AboutSection = ({ AdminProfile }) => {
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               flexDirection: matches_800 ? "column" : "row",
             }}
             className="md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 xl:gap-16 sm:py-16 xl:px-16"
@@ -27,9 +32,10 @@ const AboutSection = ({ AdminProfile }) => {
             <img
               alt={AdminProfile?.name}
               src={baseUrl(AdminProfile?.landingPagePhoto, 8)}
+              className="profile-image"
               style={{
-                width: matches_800 ? "80%" : "50%",
-                height: "400px",
+                width: isSmallScreen ? "80%" : "30%",
+                height: isSmallScreen ? "80%" : "30%",
                 borderRadius: "10px",
               }}
             />

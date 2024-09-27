@@ -16,12 +16,11 @@ import { NavLink } from "react-router-dom";
 import useLocales from "../hook/useLocales";
 
 import Profile from "../page/profile";
+import DesktopModeProfile from "../page/desktopModeProfile";
+
 // languaage PopOver
 import LanguagePopover from "./LanguagePopover";
 
-// store
-import { selectIsAdmin } from "../store/auth/user/userSlice";
-import { useSelector } from "react-redux";
 console.log();
 
 const Navbar = () => {
@@ -91,7 +90,7 @@ const Navbar = () => {
 
                 <LanguagePopover />
                 <Box sx={{ mr: 2 }} />
-                <Profile />
+                <DesktopModeProfile />
               </Box>
 
               <Box className={classes.navbar_link_mobail}>
@@ -112,7 +111,9 @@ const Navbar = () => {
                   >
                     <CloseIcon />
                   </IconButton>
-
+                  <Box sx={{ textAlign: "center" }}>
+                    <Profile setOpenMenu={setOpenMenu} openMenu={openMenu} />
+                  </Box>
                   {isAdmin === "admin" ? (
                     <Button
                       component={NavLink}
@@ -121,6 +122,7 @@ const Navbar = () => {
                       disableElevation
                       mb={"1rem"}
                       sx={{
+                        minWidth: "100px",
                         backgroundColor: "#754ffe",
                         "&:hover": {
                           backgroundColor: "#754ffe",
@@ -131,7 +133,6 @@ const Navbar = () => {
                       {translate("Dashboard")}
                     </Button>
                   ) : null}
-
                   <NavLink
                     style={{ marginTop: "1rem" }}
                     to="/"
@@ -139,7 +140,6 @@ const Navbar = () => {
                   >
                     {translate("Home")}
                   </NavLink>
-
                   <NavLink
                     to="courses"
                     className={`${classes.nav_link} ${classes.nav_link_mobail}`}
@@ -164,6 +164,8 @@ const Navbar = () => {
                   >
                     {translate("Contact")}
                   </NavLink>
+                  <LanguagePopover />
+                  <Box sx={{ mr: 2 }} />
                 </Drawer>
               </Box>
             </Box>

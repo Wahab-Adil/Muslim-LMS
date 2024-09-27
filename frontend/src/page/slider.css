@@ -27,7 +27,6 @@ body {
 .swiper-wrapper {
   background-color: transparent !important;
   padding-right: 1rem;
-  padding-left: 1rem;
 }
 
 .swiper-slide img {

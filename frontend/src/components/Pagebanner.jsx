@@ -22,7 +22,7 @@ const Pagebanner = (props) => {
     createdAt,
   } = props;
   const classes = comCss();
-  console.log("course_rating", course_rating);
+  console.log("course_rating", typeof course_rating === "NaN");
   return (
     <Box className={classes.page_banner}>
       <Container
@@ -95,14 +95,12 @@ const Pagebanner = (props) => {
             {course_rating ? (
               <Box>
                 <span className={classes.page_banner_rating_icon}>
-                  <span>({course_rating})</span>
                   <p
                     style={{ color: "white" }}
                     className="font-semibold text-gray-400 text-xs"
                   >
                     {moment(createdAt).format("MMMM Do YYYY")}
                   </p>
-
                   <p
                     style={{ marginLeft: "1rem", color: "white" }}
                     className="font-semibold text-gray-400 text-xs"
@@ -132,11 +130,11 @@ const Pagebanner = (props) => {
                 fontSize: "20px",
                 color: "orange",
               }}
-              value={course_rating}
+              value={isNaN(course_rating) ? 0 : course_rating}
               readOnly
             />
             <p style={{ color: "#FFAA46", padding: "0px 5px 0px 5px" }}>
-              {course_rating}
+              ( {isNaN(course_rating) ? 0 : course_rating})
             </p>
           </Box>
         </Box>

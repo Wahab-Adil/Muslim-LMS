@@ -31,7 +31,6 @@ import {
 } from "@chakra-ui/react";
 import { Box, Hidden, Button, Typography } from "@mui/material";
 import AdminProfile from "./AdminProfile";
-import FetchFromApi from "../../utils/FetchFromApi";
 
 // icons
 
@@ -190,7 +189,7 @@ export default function AdminDashboard() {
           >
             <Box
               sx={{
-                backgroundColor: "rgb(22 78 99)",
+                backgroundColor: "white",
                 height: "100%",
                 width: "100%",
               }}
@@ -201,10 +200,10 @@ export default function AdminDashboard() {
               <DrawerCloseButton
                 top={"5.5rem"}
                 right={"1.5rem"}
-                bgColor={"white"}
+                bgColor={"#754ffe"}
+                color={"white"}
               />
               <Box sx={{ marginTop: "5rem" }} />
-
               {/* mobile links */}
               <Box sx={{ pt: "2rem" }} />
               {/* courses links  */}
@@ -216,11 +215,12 @@ export default function AdminDashboard() {
                     flexDirection: "column",
                   }}
                 >
+                  Advertisement
                   {AdvertisementLink.map((item) => (
                     <NavLink
                       key={item.name}
                       to={item.href}
-                      className="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-cyan-100 hover:bg-cyan-600 hover:text-white"
+                      className="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-gray-900 hover:bg-[#754ffe] hover:text-white"
                       style={{
                         gap: ".4rem",
                         height: "2.7rem",
@@ -236,6 +236,7 @@ export default function AdminDashboard() {
                   ))}
                 </Box>
               </div>
+              <br />
               {/* courses links  */}
               <div className="mt-1 pt-1">
                 <Box
@@ -245,18 +246,19 @@ export default function AdminDashboard() {
                     flexDirection: "column",
                   }}
                 >
+                  Courses
                   {courseLinks.map((item) => (
                     <NavLink
                       key={item.name}
                       to={item.href}
-                      className="group  flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-cyan-100 hover:bg-cyan-600 hover:text-white"
+                      className="group  flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-gray-900 hover:bg-[#754ffe] hover:text-white"
                       style={{
                         gap: ".4rem",
                         height: "2.7rem",
                       }}
                     >
                       <item.icon
-                        className="h-6 w-6 text-cyan-200"
+                        className="h-6 w-6 text-gray-900"
                         aria-hidden="true"
                       />
                       {item.name}
@@ -264,6 +266,7 @@ export default function AdminDashboard() {
                   ))}
                 </Box>
               </div>
+              <br />
               {/* category links */}
               <div className="mt-1 pt-1">
                 <Box
@@ -273,18 +276,19 @@ export default function AdminDashboard() {
                     flexDirection: "column",
                   }}
                 >
+                  Category
                   {CategoryLink.map((item) => (
                     <NavLink
                       key={item.name}
                       to={item.href}
-                      className="group  flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-cyan-100 hover:bg-cyan-600 hover:text-white"
+                      className="group  flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-gray-900 hover:bg-[#754ffe] hover:text-white"
                       style={{
                         gap: ".4rem",
                         height: "2.7rem",
                       }}
                     >
                       <item.icon
-                        className="h-6 w-6 text-cyan-200"
+                        className="h-6 w-6 text-gray-900"
                         aria-hidden="true"
                       />
                       {item.name}
@@ -292,6 +296,7 @@ export default function AdminDashboard() {
                   ))}
                 </Box>
               </div>
+              <br />
               {/* articles links */}
               <div className="mt-1 pt-1">
                 <Box
@@ -301,18 +306,19 @@ export default function AdminDashboard() {
                     flexDirection: "column",
                   }}
                 >
+                  Articles
                   {articleLinks.map((item) => (
                     <NavLink
                       key={item.name}
                       to={item.href}
-                      className="group  flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-cyan-100 hover:bg-cyan-600 hover:text-white"
+                      className="group  flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-gray-900 hover:bg-[#754ffe] hover:text-white"
                       style={{
                         gap: ".4rem",
                         height: "2.7rem",
                       }}
                     >
                       <item.icon
-                        className="h-6 w-6 text-cyan-200"
+                        className="h-6 w-6 text-gray-900"
                         aria-hidden="true"
                       />
                       {item.name}
@@ -321,6 +327,7 @@ export default function AdminDashboard() {
                 </Box>
               </div>
             </Box>
+            <br />
           </DrawerContent>
         </Drawer>
       </ChakraProvider>
@@ -584,9 +591,16 @@ export default function AdminDashboard() {
                   backgroundColor: "#754ffe",
                 },
                 mt: "1rem",
+                position: "fixed",
+                top: "50%",
+                right: 0,
               }}
             >
-              <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
+              <Bars3CenterLeftIcon
+                title="Dashboard"
+                className="h-6"
+                aria-hidden="true"
+              />
             </Button>
           </Hidden>
 
@@ -605,7 +619,6 @@ export default function AdminDashboard() {
                 <Outlet />{" "}
               </Box>
             )}
-
             {/* content */}
           </main>
         </div>

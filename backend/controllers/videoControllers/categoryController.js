@@ -7,6 +7,7 @@ import { dirname } from "path";
 
 import { fileURLToPath } from "url";
 import Section from "../../models/videoModels/Section.js";
+import User from "../../models/User.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -70,8 +71,17 @@ export const getSingleCategory = asyncHandler(async (req, res) => {
 // export const deleteCategory = asyncHandler(async (req, res) => {
 //   const categoryId = req.params.id;
 
-//   // Find the category
-//   const category = await Category.findById(categoryId).populate("courses");
+//   // Find the category and populate the courses
+//   const category = await Category.findById(categoryId).populate({
+//     path: "courses",
+//     populate: {
+//       path: "sections",
+//       populate: {
+//         path: "videos",
+//       },
+//     },
+//   });
+
 //   if (!category) {
 //     res.status(404);
 //     throw new Error("No Category Found.");
@@ -79,23 +89,72 @@ export const getSingleCategory = asyncHandler(async (req, res) => {
 
 //   // Delete related courses
 //   if (category.courses.length > 0) {
-//     await Course.deleteMany({ _id: { $in: category.courses } });
+//     for (const course of category.courses) {
+//       // Delete associated thumbnail image if it exists
+//       if (course.thumbnail) {
+//         const thumbnailPath = path.join(
+//           __dirname,
+//           "..",
+//           "..",
+//           course.thumbnail
+//         );
+//         if (await fs.pathExists(thumbnailPath)) {
+//           await fs.unlink(thumbnailPath);
+//         }
+//       }
+
+//       // Delete related sections and their videos
+//       if (course.sections.length > 0) {
+//         for (const section of course.sections) {
+//           // Delete section videos
+//           if (section.videos.length > 0) {
+//             const deletePromises = section.videos.map(async (videoList) => {
+//               const videoPath = path.join(
+//                 __dirname,
+//                 "..",
+//                 "..",
+//                 videoList.video.url
+//               ); // Adjust path if needed
+//               if (await fs.pathExists(videoPath)) {
+//                 await fs.unlink(videoPath);
+//                 console.log(`Deleted: ${videoPath}`);
+//               }
+//             });
+
+//             // Wait for all deletions to complete
+//             await Promise.all(deletePromises);
+//           }
+//         }
+
+//         // Delete all related sections
+//         await Section.deleteMany({
+//           _id: { $in: course.sections.map((section) => section._id) },
+//         });
+//       }
+
+//       // Delete the course
+//       await Course.findByIdAndDelete(course._id);
+//     }
 //   }
 
-//   // Delete the category
+//   // Delete the category image if it exists
+//   if (category.image) {
+//     const categoryImagePath = path.join(__dirname, "..", "..", category.image);
+//     if (await fs.pathExists(categoryImagePath)) {
+//       await fs.unlink(categoryImagePath);
+//     }
+//   }
+
+//   // Delete the category itself
 //   await Category.findByIdAndDelete(categoryId);
 
-//   // Delete category image if it exists
-//   const thumbnailPath = path.join(__dirname, "..", "..", category?.image);
-
-//   if (await fs.pathExists(thumbnailPath)) {
-//     await fs.unlink(thumbnailPath);
-//   }
-
-//   res.status(200).json({
-//     message: "Category and associated courses deleted successfully.",
+//   res.json({
+//     message:
+//       "Category and associated courses, sections, and media deleted successfully.",
 //   });
 // });
+
+// update only one category by id
 
 export const deleteCategory = asyncHandler(async (req, res) => {
   const categoryId = req.params.id;
@@ -137,13 +196,8 @@ export const deleteCategory = asyncHandler(async (req, res) => {
         for (const section of course.sections) {
           // Delete section videos
           if (section.videos.length > 0) {
-            const deletePromises = section.videos.map(async (videoList) => {
-              const videoPath = path.join(
-                __dirname,
-                "..",
-                "..",
-                videoList.video.url
-              ); // Adjust path if needed
+            const deletePromises = section.videos.map(async (video) => {
+              const videoPath = path.join(__dirname, "..", "..", video.url);
               if (await fs.pathExists(videoPath)) {
                 await fs.unlink(videoPath);
                 console.log(`Deleted: ${videoPath}`);
@@ -159,6 +213,16 @@ export const deleteCategory = asyncHandler(async (req, res) => {
         await Section.deleteMany({
           _id: { $in: course.sections.map((section) => section._id) },
         });
+      }
+
+      // Find the instructor of the course
+      const instructor = await User.findById(course.instructor);
+      if (instructor) {
+        // Remove course ID from instructor's courses array
+        instructor.courses = instructor.courses.filter(
+          (courseId) => courseId.toString() !== course._id.toString()
+        );
+        await instructor.save();
       }
 
       // Delete the course
@@ -183,7 +247,6 @@ export const deleteCategory = asyncHandler(async (req, res) => {
   });
 });
 
-// update only one category by id
 export const updateCategory = asyncHandler(async (req, res) => {
   const category = await Category.findByIdAndUpdate(
     req.params.id,

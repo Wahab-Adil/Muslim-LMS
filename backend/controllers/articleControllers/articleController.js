@@ -128,41 +128,47 @@ export const articleDetails = asyncHandler(async (req, res) => {
 export const deleteArticle = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
+  // Find the article by ID
   const article = await Article.findById(id);
   if (!article) {
     res.status(404);
-    throw new Error("article not found.");
-  }
-  // delete all the reviews of this article
-  for (let i = 0; i < article?.reviews?.length; i++) {
-    await ArticleReview.findByIdAndDelete(article?.reviews[i]?._id);
+    throw new Error("Article not found.");
   }
 
-  // find this article in users articles array
+  // Delete all the reviews of this article
+  for (const reviewId of article?.reviews || []) {
+    await ArticleReview.findByIdAndDelete(reviewId);
+  }
+
+  // Find the user who wrote this article
   const user = await User.findById(article?.writer);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found.");
+  }
 
-  //  in this line we finded the user to who this article belongs now we well delete this article
-  const newArticles = user?.articles?.filter(
-    (articleId) => articleId?.toString() !== article?._id.toString()
+  // Remove this article from the user's articles array
+  user.articles = user.articles.filter(
+    (articleId) => articleId?.toString() !== article._id.toString()
   );
 
-  user.articles = newArticles;
   await user.save();
-  await article.deleteOne();
-  const thumbnailPath = path.join(__dirname, "..", "..", article?.thumbnail);
 
+  // Delete the article itself
+  await article.deleteOne();
+
+  // Handle the thumbnail deletion
+  const thumbnailPath = path.join(__dirname, "..", "..", article?.thumbnail);
   if (await fs.pathExists(thumbnailPath)) {
     await fs.unlink(thumbnailPath);
   }
 
   res.status(200).json({
     success: true,
-    article,
-    message: "article deleted successfully.",
+    message: "Article deleted successfully.",
   });
 });
 
-// update article
 export const updateArticle = asyncHandler(async (req, res) => {
   const articleId = req.params.articleId;
   const thumbnail = req?.file?.path;

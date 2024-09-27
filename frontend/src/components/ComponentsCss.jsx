@@ -78,6 +78,7 @@ export const comCss = makeStyles(() => ({
   drawerPaper: {
     padding: "5.4rem 15px 15px 15px",
     position: "relative",
+    width: "250px",
   },
   clossessideNav: {
     position: "absolute !important",

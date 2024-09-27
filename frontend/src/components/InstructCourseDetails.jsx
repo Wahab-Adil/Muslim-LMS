@@ -126,18 +126,15 @@ const InstructCourseDetails = ({
         }}
       >
         <ShowMoreText
-          /* Default options */
-
           lines={3}
           more={translate("Show more")}
           less={translate("Show less")}
           className="content-css"
           anchorClass="show-more-less-clickable"
-          // onClick={this.executeOnClick}
-          expanded={false}
+          expanded={true}
           truncatedEndingComponent={"... "}
         >
-          {instructor?.bio}
+          {instructor?.about}
         </ShowMoreText>
       </Box>
       {/* Description end */}

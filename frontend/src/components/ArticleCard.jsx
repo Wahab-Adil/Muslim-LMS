@@ -1,9 +1,7 @@
 import React from "react";
 import { pageCss } from "../page/PageCss";
 import { Box, Stack, Typography } from "@mui/material";
-import imgblog from "../image/course-react.jpg";
 import { Link } from "react-router-dom";
-import ReactQuill from "react-quill";
 
 import BaseUrl from "../utils/baseUrl";
 import moment from "moment";
@@ -30,14 +28,13 @@ const ArticleCard = ({ article }) => {
         className="rounded-lg bg-white shadow relative max-w-lg mx-auto hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row" }, // Stack vertically on small screens, side by side on medium and larger screens
-          gap: "1rem",
+          flexDirection: "row", // Stack vertically on small screens, side by side on medium and larger screens
           border: "3px solid white",
           borderRadius: "20px",
           margin: "1rem auto",
           overflow: "hidden", // Ensure content stays within the box
           position: "relative",
-
+          maxHeightheight: "200px",
           "&:hover": {
             boxShadow: "0px 4px 20px #754ffe", // Darker shadow on hover
             transform: "scale(1.01)",
@@ -74,7 +71,7 @@ const ArticleCard = ({ article }) => {
             </span>
             <img
               style={{
-                height: "150px",
+                height: "100%",
                 width: "100%",
                 objectFit: "cover", // Ensures image covers the area without distortion
                 borderBottom: "3px dotted white",

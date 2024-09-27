@@ -130,11 +130,11 @@ const ArticleCategorySlice = createSlice({
       .addCase(ArticleDeleteCategory.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(ArticleDeleteCategory.fulfilled, (state) => {
+      .addCase(ArticleDeleteCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        toast.success(i18n.t(action?.payload?.message));
+        toast.success(i18n.t(action?.payload));
       })
       .addCase(ArticleDeleteCategory.rejected, (state, action) => {
         state.isLoading = false;
@@ -152,7 +152,6 @@ const ArticleCategorySlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.articleCategory = action.payload;
-        toast.success(i18n.t(action?.payload?.message));
       })
       .addCase(ArticleSingleCategory.rejected, (state, action) => {
         state.isLoading = false;

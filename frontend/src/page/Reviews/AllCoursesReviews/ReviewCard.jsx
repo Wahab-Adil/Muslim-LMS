@@ -1,4 +1,4 @@
-import { Rating } from "@mui/material";
+import { Rating, useMediaQuery, useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import React, { useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
 import useLocales from "../../../hook/useLocales";
+import ReactShowMoreText from "react-show-more-text";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -26,6 +27,8 @@ const ReviewCard = ({ review, AllGlobalReviews }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [id, setId] = useState();
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const deleteReview = async (id) => {
     await dispatch(Video_DeleteReview(id));
@@ -75,18 +78,27 @@ const ReviewCard = ({ review, AllGlobalReviews }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="flex flex-col overflow-hidden border-2 border-indigo-500 rounded-md shadow-lg hover:shadow-2xl transition-shadow duration-300">
-        <div className="flex flex-col p-6 bg-white lg:py-8 lg:px-7 min-w-[293px] min-h-[295px]">
+      <div className="flex flex-col overflow-auto shadow-xl border-gray-500 border-2 rounded-md">
+        <div
+          className="flex flex-col justify-between flex-1 p-6 bg-white lg:py-8 lg:px-7"
+          style={{
+            maxWidth: smDown ? "250px" : "293px",
+            maxHeight: "295px",
+            minWidth: smDown ? "100%" : "293px",
+            minHeight: smDown ? "200px" : "295px",
+          }}
+        >
           <div className="flex items-center justify-between mb-4">
             <Rating readOnly value={review?.rating} precision={0.5} />
             <AddBoxSharp
+              titleAccess={translate("Select")}
               title="Select Article"
               onClick={() => {
                 handleSelectReview(review?._id);
               }}
             />
             <button
-              title="Delete"
+              title={translate("delete")}
               onClick={() => {
                 setId(review?._id);
                 handleClickOpen();
@@ -111,9 +123,17 @@ const ReviewCard = ({ review, AllGlobalReviews }) => {
           </div>
 
           <blockquote className="flex-1 mt-8">
-            <p className="text-lg leading-relaxed text-gray-900 font-pj">
+            <ReactShowMoreText
+              lines={3}
+              more={translate("Show more")}
+              less={translate("Show less")}
+              className="content-css"
+              anchorClass="show-more-less-clickable"
+              expanded={true}
+              truncatedEndingComponent={"... "}
+            >
               {review?.comment}
-            </p>
+            </ReactShowMoreText>
           </blockquote>
 
           <div className="flex items-center mt-8">

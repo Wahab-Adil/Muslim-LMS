@@ -3,7 +3,6 @@ const GlobalReviewtSchema = new mongoose.Schema(
   {
     user: {
       type: String,
-      required: [true, "Review must belong to a user"],
       ref: "User",
     },
     comment: {

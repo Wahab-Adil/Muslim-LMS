@@ -161,51 +161,101 @@ export const courseDetails = asyncHandler(async (req, res) => {
   });
 });
 
+// export const deleteCourse = asyncHandler(async (req, res) => {
+//   const { id } = req.params;
+
+//   const course = await Course.findById(id);
+//   if (!course) {
+//     res.status(404);
+//     throw new Error("Course not found.");
+//   }
+
+//   // delete all the sections in the course
+//   for (let i = 0; i < course?.sections?.length; i++) {
+//     await Section.findByIdAndDelete(course?.sections[i]?._id);
+//   }
+//   // delete all the reviews of this course
+//   for (let i = 0; i < course?.reviews?.length; i++) {
+//     await Reivew.findByIdAndDelete(course?.reviews[i]?._id);
+//   }
+
+//   // find this course in users courses array
+//   const user = await User.findById(course?.instructor);
+
+//   //  in this line we finded the user to who this course belongs now we well delete this course
+//   const newCourses = user?.courses?.filter(
+//     (courseId) => courseId?.toString() !== course?._id.toString()
+//   );
+
+//   user.courses = newCourses;
+//   await user.save();
+
+//   await course.deleteOne();
+
+//   const thumbnailPath = path.join(__dirname, "..", "..", course?.thumbnail);
+
+//   if (await fs.pathExists(thumbnailPath)) {
+//     await fs.unlink(thumbnailPath);
+//   }
+
+//   res.status(200).json({
+//     success: true,
+//     course,
+//     message: "Course deleted successfully.",
+//   });
+// });
+
+// update Course
+
 export const deleteCourse = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
+  // Find the course by ID
   const course = await Course.findById(id);
   if (!course) {
     res.status(404);
     throw new Error("Course not found.");
   }
 
-  // delete all the sections in the course
-  for (let i = 0; i < course?.sections?.length; i++) {
-    await Section.findByIdAndDelete(course?.sections[i]?._id);
-  }
-  // delete all the reviews of this course
-  for (let i = 0; i < course?.reviews?.length; i++) {
-    await Reivew.findByIdAndDelete(course?.reviews[i]?._id);
+  // Delete all sections in the course
+  for (const sectionId of course?.sections || []) {
+    await Section.findByIdAndDelete(sectionId);
   }
 
-  // find this course in users courses array
+  // Delete all reviews of this course
+  for (const reviewId of course?.reviews || []) {
+    await Review.findByIdAndDelete(reviewId); // fixed spelling
+  }
+
+  // Find the user who is the instructor of this course
   const user = await User.findById(course?.instructor);
+  if (!user) {
+    res.status(404);
+    throw new Error("Instructor not found.");
+  }
 
-  //  in this line we finded the user to who this course belongs now we well delete this course
-  const newCourses = user?.courses?.filter(
-    (courseId) => courseId?.toString() !== course?._id.toString()
+  // Remove this course from the user's courses array
+  user.courses = user.courses.filter(
+    (courseId) => courseId?.toString() !== course._id.toString()
   );
 
-  user.courses = newCourses;
   await user.save();
 
+  // Delete the course itself
   await course.deleteOne();
 
+  // Handle the thumbnail deletion
   const thumbnailPath = path.join(__dirname, "..", "..", course?.thumbnail);
-
   if (await fs.pathExists(thumbnailPath)) {
     await fs.unlink(thumbnailPath);
   }
 
   res.status(200).json({
     success: true,
-    course,
     message: "Course deleted successfully.",
   });
 });
 
-// update Course
 export const updateCourse = asyncHandler(async (req, res) => {
   const courseId = req.params.courseId;
   const thumbnail = req?.file?.path;

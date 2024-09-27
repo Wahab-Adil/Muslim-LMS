@@ -15,33 +15,39 @@ import fs from "fs-extra";
 import path from "path";
 import { dirname } from "path";
 import nodemailer from "nodemailer";
-// transporter
-const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
-  secure: false, // true for port 465, false for other ports
-  auth: {
-    user: "maddison53@ethereal.email",
-    pass: "jn7jnAPss4f63QBp6D",
-  },
-});
-
-export const sendMessage = asyncHandler(async (req, res) => {
-  const info = await transporter.sendMail({
-    from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-    to: "wahab.cs238@gmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
-
-  console.log("Message sent: %s", info.messageId);
-});
+import crypto from "crypto";
 
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.muslimlms_email,
+    pass: process.env.NodeMailer_App_Password,
+  },
+});
+
+export const sendMessage = asyncHandler(async (req, res) => {
+  const { email, message, name } = req.body;
+
+  let mailOptions = {
+    from: email,
+    to: process.env.muslimlms_email,
+    subject: `SMS From (${name}) To Muslim LMS Support`,
+    text: message,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      res.status(400).json("Something Went Wrong, Message Not Send");
+      return;
+    }
+    res.status(200).json("Message Sent Successfully");
+  });
+});
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -346,66 +352,106 @@ export const updateProfilePicture = asyncHandler(async (req, res) => {
   });
 });
 
+let otpStore = {
+  email: "wahab.cs238@gmail.com",
+  otp: { otpCode: 2343, expires: 1726540074604 },
+};
 export const forgetPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
+  console.log("email", email);
   const user = await User.findOne({ email });
   if (!user) {
     res.status(400);
-    throw new Error("User not found");
+    throw new Error("Email is invalid");
   }
-  const newToken = generateToken(user._id);
+  const otp = crypto.randomInt(1000, 9999).toString();
 
-  //send token via email
-
-  const msg = {
-    from: "raqibyoon2020@gmail.com",
-    to: user.email,
-    subject: "Reset password",
-    html: `
-    <p>Please use the following link to activate your account</p>
-    <p>http://localhost:5173/users/resetpassword/${newToken}</p>
-    <hr/>
-
-    <p>This email contain sensetive information</p>
-    <p>http://localhost:5173</p>
-    `,
+  // Store OTP and expiry (e.g., 10 minutes)
+  otpStore = {
+    email,
+    otp: { otpCode: otp, expires: Date.now() + 10 * 60 * 1000 },
   };
 
-  await sgMail
-    .send(msg)
-    .then((data) => {
-      res.status(200).json({
-        message: `Email has been sent to ${email} to reset your password.`,
-      });
-    })
-    .catch((err) => {
-      return res.status(400).json({
-        error: "Something went wrong email not send.",
-        err,
-      });
-    });
+  // Email content
+  const mailOptions = {
+    from: process.env.muslimlms_email,
+    to: user?.email,
+    subject: "Password Reset OTP",
+    text: `Your OTP for password reset is: ${otp}`,
+  };
+  console.log("otpStore", otpStore);
+
+  // Send email
+  transporter.sendMail(mailOptions, (error, info) => {
+    // if (error) {
+    //   return res
+    //     .status(500)
+    //     .json({ otpStore, message: "Something went wrong,OTP not Send" });
+    // }
+    res.status(200).json({ otpStore, message: "OTP sent successfully" });
+  });
+});
+
+export const checkOtp = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+  console.log(email, otp);
+  // Check if email and OTP are provided
+  if (!email || !otp) {
+    return res.status(400).json({ message: "Email and OTP are required" });
+  }
+
+  // Retrieve the stored OTP for the email
+  const storedOtp = otpStore.otp;
+  console.log(Date.now());
+
+  // Check if OTP for the email exists
+  if (!storedOtp.otpCode) {
+    return res.status(400).json({ message: "OTP not found for this email" });
+  }
+
+  if (Date.now() > storedOtp.expires) {
+    return res.status(400).json({ message: "OTP has expired" });
+  }
+
+  // Check if OTP matches
+  if (storedOtp.otpCode !== otp) {
+    return res.status(400).json({ message: "Invalid OTP" });
+  }
+
+  // If everything is correct, respond with success
+  res.status(200).json({ message: "OTP verified successfully" });
 });
 
 export const resetPassword = asyncHandler(async (req, res) => {
-  const { token } = req.params;
-  const { id } = verifyToken(token);
+  const { email, otp } = req.body;
 
-  const foundUser = await User.findById(id);
+  const foundUser = await User.findOne({ email });
 
   if (!foundUser) {
     res.status(400);
-    throw new Error("Token is invalid or has been expired");
+    throw new Error("Email is invalid or Otp has been expired");
   }
 
-  const salt = await bCrypt.genSalt(12);
-  const hashPassword = await bCrypt.hash(req.body.password, salt);
-  foundUser.password = hashPassword;
-  await foundUser.save();
-
-  res.status(200).json({
+  if (!otp) {
+    if (expiry > Date.now()) {
+      throw new Error("Otp has been expired/Or Invalid");
+    }
+  }
+  if (otpStore?.otp?.otpCode === otp) {
+    const salt = await bCrypt.genSalt(12);
+    const hashPassword = await bCrypt.hash(req.body.newPassword, salt);
+    foundUser.password = hashPassword;
+    await foundUser.save();
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+    return;
+  }
+  res.status(400).json({
     success: true,
-    message: "Password changed successfully",
+    message: "Something Went Wrong, Please Try Again",
   });
 });
 

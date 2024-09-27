@@ -66,7 +66,10 @@ export default function ArticleCategory() {
   return (
     <>
       <div className="flex min-h-full flex-col justify-center py-(-1) sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div
+          style={{ marginTop: "2rem" }}
+          className="sm:mx-auto sm:w-full sm:max-w-md"
+        >
           <svg
             className="mx-auto h-10 text-blue-600 w-auto"
             xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +116,7 @@ export default function ArticleCategory() {
                   {formError.name ? <TextError error={formError.name} /> : null}
                 </div>
                 <label
-                  style={{ marginTop: "2rem" }}
+                  style={{ marginTop: ".3rem" }}
                   for="dropzone-file"
                   className={`flex flex-col items-center justify-center w-full border border-gray-300 border-dashed cursor-pointer bg-gray-50 ${
                     imageUrl ? "0" : "py-16"

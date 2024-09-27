@@ -93,7 +93,7 @@ const AppContent = () => {
         { path: "register", element: <Register /> },
         { path: "login", element: <Login /> },
         { path: "reset", element: <Reset /> },
-        { path: "forgot", element: <Forgot /> },
+        { path: "forgot-password", element: <Forgot /> },
         { path: "", element: <Home /> },
         { path: "about", element: <About /> },
         { path: "user/:id", element: <InstructorProfile /> },

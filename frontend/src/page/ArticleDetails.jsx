@@ -40,9 +40,22 @@ import moment from "moment";
 import baseUrl from "../utils/baseUrl";
 
 import useRedirectLoggedOutUser from "../hook/useRedirectLoggedOutUser";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Pagination } from "swiper/modules";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+
+import "./slider.css";
 
 const ArticleDetials = () => {
   useRedirectLoggedOutUser("/login");
+
+  const matches_1180 = useMediaQuery("(max-width:1180px)");
+  const matches_800 = useMediaQuery("(max-width:700px)");
+  const matches_500 = useMediaQuery("(max-width:500px)");
+
   // redux
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -330,15 +343,29 @@ const ArticleDetials = () => {
           >
             Related Articles
           </Typography>
+
           <Grid container spacing={3}>
-            {ArticleDetail?.newRelatedArticle.map((artcl, idx) => {
-              if (idx >= 4) return;
-              return (
-                <Grid item xs={12} sm={4} key={artcl}>
-                  <ArticleCard article={artcl} />
-                </Grid>
-              );
-            })}
+            <Swiper
+              slidesPerView={
+                matches_1180 ? (matches_800 ? (matches_500 ? 1 : 1) : 2) : 3
+              }
+              spaceBetween={30}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[FreeMode, Pagination, Navigation]}
+              className="mySwiper"
+              style={{ padding: "2rem" }}
+            >
+              {ArticleDetail?.newRelatedArticle.map((artcl, idx) => {
+                if (idx >= 15) return null;
+                return (
+                  <SwiperSlide key={artcl.id}>
+                    <ArticleCard article={artcl} />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
           </Grid>
         </Container>
       </Box>

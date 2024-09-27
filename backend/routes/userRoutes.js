@@ -7,6 +7,7 @@ import {
   deleteMyProfile,
   deleteUser,
   forgetPassword,
+  checkOtp,
   getAllUsers,
   getMyProfile,
   getPlaylist,
@@ -87,8 +88,11 @@ router.put(
 //forget password
 router.post("/users/forgetpassword", forgetPassword);
 
+// send message
+router.post("/users/check-otp", checkOtp);
+
 //reset password
-router.put("/users/resetpassword/:token", resetPassword);
+router.put("/users/resetpassword", resetPassword);
 
 //add to playlist
 router.post("/users/addplaylist/:courseId", isLoggedIn, addToPlaylist);
@@ -128,6 +132,6 @@ router.put("/admin/users/:id", isLoggedIn, isAdmin, updateUserRole);
 router.delete("/admin/users/:userId", isLoggedIn, isAdmin, deleteUser);
 
 // send message
-router.get("/send-message", sendMessage);
+router.post("/users/send-message", sendMessage);
 
 export default router;
