@@ -1,8 +1,8 @@
-import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Grid, Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import { pageCss } from "../PageCss";
 import { BorderBottom, PlayArrow } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import {
   Video_CourseDetails,

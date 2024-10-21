@@ -2,7 +2,7 @@ const courseDetails = {
   "Course Content": "د کورس موضوعات",
   Description: "د کورس وضاحت",
   Instructor: "د ښوونکی نوم",
-  Articles: "مقاله ها",
+  Articles: "مقالي",
   "Show less": "لږ ښودل",
   "Show more": "ډیر ښودل",
   "Course Reviews & Ratings": "د کورس نظریات او ستوري",

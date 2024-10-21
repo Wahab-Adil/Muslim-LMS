@@ -7,7 +7,7 @@ const LandingPage = {
   "Most Populer": "غوره کورسونه",
   Read: "لوستل",
   "Top Categories": "طبقه بندی شوی",
-  "What Our Happy Clients Say About Us": "زموږ د زده کوونکوو رایه",
+  "Our happy clients say about us": "زموږ د زده کوونکوو رایه",
   "Our Achievements": "زموږ لاسته راوړني",
   Teachers: "ښوونکي",
   Videos: "ویدیویی درسونه",
@@ -29,6 +29,13 @@ const LandingPage = {
   Videos: "ویدیوګانی",
   Students: "شاګردان",
   "App Users": "یوزران",
+  "About Us": "زموږ په اړه",
+  Login: "لاګین کیدل",
+  Register: "رجسټر کول",
+  Call: "اړیکه",
+  "Keep up with us at": "له موږ سره پاته شی",
+  "Easy Access": "اسانه لاسرسی",
+  Links: "لینکونه",
 };
 
 export default LandingPage;

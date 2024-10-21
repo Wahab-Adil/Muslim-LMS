@@ -64,7 +64,9 @@ export default function ManageArticleCategories() {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle sx={{ px: "10rem" }}>{"Section Alert"}</DialogTitle>
+        <DialogTitle sx={{ px: "10rem" }}>
+          {translate("Section Alert")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             {translate("Are You Sure To Delete Article Category")}

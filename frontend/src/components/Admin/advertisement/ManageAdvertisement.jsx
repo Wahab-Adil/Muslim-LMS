@@ -111,7 +111,9 @@ export default function ManageAdvertisement() {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle sx={{ px: "10rem" }}>{"Section Alert"}</DialogTitle>
+        <DialogTitle sx={{ px: "10rem" }}>
+          {translate("Section Alert")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             {translate("Are You Sure To Delete Advertisement")}
@@ -238,7 +240,10 @@ export default function ManageAdvertisement() {
                       id="createProductButton"
                       data-modal-toggle="createProductModal"
                       class="flex items-center justify-center text-white bg-indigo-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                      style={{ backgroundColor: "#754ffe" }}
+                      style={{
+                        backgroundColor: "#754ffe",
+                        marginRight: 4,
+                      }}
                     >
                       <svg
                         class="h-3.5 w-3.5 mr-1.5 -ml-1"

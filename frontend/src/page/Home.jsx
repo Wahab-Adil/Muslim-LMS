@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 import home_count from "../data";
 import Course from "../components/Course";
 import Category from "../components/Category";
+import ReactShowMoreText from "react-show-more-text";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Footer from "../components/Footer";
@@ -112,7 +113,6 @@ import {
 
 const Home = () => {
   //
-  useRedirectLoggedOutUser("/login");
 
   const theme = useTheme();
   // redux
@@ -134,14 +134,16 @@ const Home = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   useEffect(() => {
-    dispatch(Video_AllCourse());
-    dispatch(Video_AllCategories());
-    dispatch(getAllArticles());
-    dispatch(ArticleAllCategory());
-    dispatch(AllGlobalReviews());
-  }, []);
+    if (isLoggedIn) {
+      dispatch(Video_AllCourse());
+      dispatch(Video_AllCategories());
+      dispatch(getAllArticles());
+      dispatch(ArticleAllCategory());
+      dispatch(AllGlobalReviews());
+    }
+  }, [isLoggedIn, dispatch]);
 
   const { translate, currentLang } = useLocale();
 
@@ -487,12 +489,20 @@ const Home = () => {
                               </div>
 
                               <blockquote
-                                style={{ whiteSpace: "pre-wrap" }}
+                                style={{ wordBreak: "break-word" }}
                                 className="flex-1 mt-8"
                               >
-                                <p className="  text-lg leading-relaxed text-gray-900 font-pj">
+                                <ReactShowMoreText
+                                  lines={3}
+                                  more={translate("Show more")}
+                                  less={translate("Show less")}
+                                  className="content-css"
+                                  anchorClass="show-more-less-clickable"
+                                  expanded={true}
+                                  truncatedEndingComponent={"... "}
+                                >
                                   {review?.comment}
-                                </p>
+                                </ReactShowMoreText>
                               </blockquote>
                             </div>
 

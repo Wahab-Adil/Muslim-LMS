@@ -13,5 +13,7 @@ const AdminProfile = {
   "total Courses": "دټول کورسونه شمیر",
   "total Views": "ټولي لیدني",
   "total Articles": "ټول د مقالو شمیر",
+  "Edit Profile": "فروفایل ایډیټ کول",
+  "Manage Selected Advertisement": "اعلاناتو ترتیب کول",
 };
 export default AdminProfile;

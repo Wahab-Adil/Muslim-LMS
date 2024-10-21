@@ -13,5 +13,6 @@ const AboutUs = {
   "Select Transparent Image": "بی زمینی عکس خوښ کړی",
   "Select Background Image": "زمینه دار عکس خوښ کړی",
   "Add Advertisement": "نوی اعلان اضافه کړی",
+  "All Selected Advertisement": "ټول انتخاب شوی اعلانات کتل",
 };
 export default AboutUs;

@@ -72,11 +72,11 @@ const CategoryItemWrapper = styled(motion.div)`
     justify-content: center;
     align-items: center;
     width: 100%; /* Ensure full width */
-    max-height: 150px; /* Set a max height for the image container */
+    max-height: 200px; /* Set a max height for the image container */
 
     img {
       max-width: 100%;
-      max-height: 100%;
+      max-height: 180px;
       object-fit: contain; /* Maintain aspect ratio */
       transition: transform 0.3s ease-in-out;
     }

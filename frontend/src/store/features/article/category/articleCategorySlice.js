@@ -174,6 +174,10 @@ const ArticleCategorySlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        console.log("me", action.payload);
+        if (action.payload === "Request failed with status code 400") {
+          return;
+        }
         toast.error(i18n.t(action.payload));
       })
 

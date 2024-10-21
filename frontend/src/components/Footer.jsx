@@ -6,6 +6,7 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
+import useLocale from "../hook/useLocales";
 import React, { useEffect } from "react";
 import { comCss } from "./ComponentsCss";
 import { Link } from "react-router-dom";
@@ -23,6 +24,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 const Footer = () => {
+  const { translate } = useLocale();
   const dispatch = useDispatch();
   const adminProfile = useSelector(selectAdminPublicProfile);
 
@@ -70,31 +72,31 @@ const Footer = () => {
                   component="h3"
                   className={classes.footer_title}
                 >
-                  Links
+                  {translate("Links")}
                 </Typography>
                 <Link
                   to="/"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Home
+                  {translate("Home")}
                 </Link>
                 <Link
                   to={`/user/${adminProfile?.user?._id}`}
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Profile
+                  {translate("profile")}
                 </Link>
                 <Link
                   to="/contact"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Contact Us
+                  {translate("Contact Us")}
                 </Link>
                 <Link
                   to="/about"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  About Us
+                  {translate("About Us")}
                 </Link>
               </Box>
             </Grid>
@@ -105,31 +107,31 @@ const Footer = () => {
                   component="h3"
                   className={classes.footer_title}
                 >
-                  Easy Access
+                  {translate("Easy Access")}
                 </Typography>
                 <Link
                   to="/courses"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Courses
+                  {translate("Courses")}
                 </Link>
                 <Link
                   to="/articles"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Articles
+                  {translate("Articles")}
                 </Link>
                 <Link
                   to="/login"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Login
+                  {translate("Login")}
                 </Link>
                 <Link
                   to="/register"
                   className={`${classes.nav_link} ${classes.footer_link}`}
                 >
-                  Register
+                  {translate("Register")}
                 </Link>
               </Box>
             </Grid>
@@ -140,19 +142,19 @@ const Footer = () => {
                   component="h3"
                   className={classes.footer_title}
                 >
-                  Keep up with us at
+                  {translate("Keep up with us at")}
                 </Typography>
                 <List className={classes.footer_4_list}>
                   <ListItem>
-                    <strong>Call: &nbsp;</strong>
-                    &nbsp; (+93700640171)
+                    <strong>{translate("Call")}: &nbsp;</strong>
+                    &nbsp; 0093700640171
                   </ListItem>
                   <ListItem>
-                    <strong>What's App: &nbsp;</strong>
-                    &nbsp; (+93700640171)
+                    <strong>{translate("What's App")}: &nbsp;</strong>
+                    &nbsp; 0093700640171
                   </ListItem>
                   <ListItem>
-                    <strong>Email:</strong> &nbsp;
+                    <strong>{translate("Email")}:</strong> &nbsp;
                     <Link to="/">{adminProfile?.user?.email}</Link>
                   </ListItem>
                 </List>
@@ -191,7 +193,7 @@ const Footer = () => {
           </Grid>
         </Box>
         <Typography variant="h5" component="p">
-          © 2024 Muslim Afghan. All Rights Reserved
+          {translate("© 2024 Muslim Afghan. All Rights Reserved")}
         </Typography>
       </Container>
     </Box>

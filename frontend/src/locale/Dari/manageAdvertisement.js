@@ -3,7 +3,7 @@ const manageAdvertisement = {
   "Search for courses": "کورس ها را سرچ کنید",
   "Are You Sure To Delete Advertisement": "ایا شما می خواهد اعلان را حذف کنید",
   Cancel: "نه",
-  Delete: "بلی, دیلیت کن",
+  Delete: "دیلیت کن",
   Showing: "مشاهده",
   "From advertisements": "از اعلانات",
   Search: "جستجو",

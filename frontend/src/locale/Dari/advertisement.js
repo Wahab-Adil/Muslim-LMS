@@ -13,5 +13,6 @@ const AboutUs = {
   "Select Transparent Image": "عکس بدون پشت نما را انتخاب کنید",
   "Select Background Image": "عکس پشت نما را انتخاب کنید",
   "Add Advertisement": "اعلان را اضافه کنید",
+  "All Selected Advertisement": "دیدن همه ی اعلانات انتخاب شده",
 };
 export default AboutUs;

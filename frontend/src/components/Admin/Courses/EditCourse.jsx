@@ -21,6 +21,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { motion } from "framer-motion";
+import useLocales from "../../../hook/useLocales";
 
 //    ---------store----------
 
@@ -76,6 +77,7 @@ const sectionVariants = {
 };
 
 export default function EditCourse() {
+  const { translate } = useLocales();
   // redux
   const courseId = useParams();
   const dispatch = useDispatch();
@@ -194,7 +196,10 @@ export default function EditCourse() {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle sx={{ px: "10rem" }}>{"Section Alert"}</DialogTitle>
+        <DialogTitle sx={{ px: "10rem" }}>
+          {" "}
+          {translate("Section Alert")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Are You Sure To Delete Section

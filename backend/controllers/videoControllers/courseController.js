@@ -2,7 +2,7 @@ import Course from "../../models/videoModels/Course.js";
 import Category from "../../models/videoModels/Category.js";
 import Section from "../../models/videoModels/Section.js";
 import User from "../../models/User.js";
-import Reivew from "../../models/videoModels/Review.js";
+import Review from "../../models/videoModels/Review.js";
 import isNotAdmin from "../../middlewares/isNotAdmin.js";
 import asyncHandler from "express-async-handler";
 import fs from "fs-extra";
@@ -224,7 +224,7 @@ export const deleteCourse = asyncHandler(async (req, res) => {
 
   // Delete all reviews of this course
   for (const reviewId of course?.reviews || []) {
-    await Review.findByIdAndDelete(reviewId); // fixed spelling
+    await Review?.findByIdAndDelete(reviewId); // fixed spelling
   }
 
   // Find the user who is the instructor of this course

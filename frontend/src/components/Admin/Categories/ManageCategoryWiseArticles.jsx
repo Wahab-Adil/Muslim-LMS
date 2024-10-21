@@ -10,6 +10,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import baseUrl from "../../../utils/baseUrl";
+import useLocales from "../../../hook/useLocales";
 
 import { ReviewsTwoTone } from "@mui/icons-material";
 
@@ -41,6 +42,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function ManageArticles() {
+  const { translate } = useLocales();
   // store
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -86,10 +88,13 @@ export default function ManageArticles() {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle sx={{ px: "10rem" }}>{"Section Alert"}</DialogTitle>
+        <DialogTitle sx={{ px: "10rem" }}>
+          {" "}
+          {translate("Section Alert")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Are You Sure To Delete Course
+            {translate("Are You Sure To Delete Course")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -103,7 +108,7 @@ export default function ManageArticles() {
               dispatch(ArticleSingleCategory(id));
             }}
           >
-            Delete
+            {translate("Delete")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -125,20 +130,13 @@ export default function ManageArticles() {
             <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
               <div class="flex-1 flex items-center space-x-2">
                 <h5>
-                  <span class="text-gray-500"> Showing :</span>(
+                  <span class="text-gray-500"> {translate("Showing")} :</span>(
                   {currentItems?.length})
-                  <span class="text-gray-500">From Articles:</span>
+                  <span class="text-gray-500">
+                    {translate("From Articles")}:
+                  </span>
                   <span class="dark:text-white"> ({AllArticles?.length})</span>
                 </h5>
-
-                <div
-                  id="results-tooltip"
-                  role="tooltip"
-                  class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
-                >
-                  Showing 1-100 of 436 results
-                  <div class="tooltip-arrow" data-popper-arrow=""></div>
-                </div>
               </div>
               <div class="flex-shrink-0 flex flex-col items-start md:flex-row md:items-center lg:justify-end space-y-3 md:space-y-0 md:space-x-3"></div>
             </div>
@@ -146,7 +144,7 @@ export default function ManageArticles() {
               <div class="w-full md:w-1/2">
                 <form class="flex items-center">
                   <label for="simple-search" class="sr-only">
-                    Search
+                    {translate("Search")}
                   </label>
                   <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -167,7 +165,7 @@ export default function ManageArticles() {
                     <input
                       type="text"
                       id="simple-search"
-                      placeholder="Search for courses"
+                      placeholder={translate("Search for courses")}
                       required
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
@@ -202,7 +200,7 @@ export default function ManageArticles() {
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                       />
                     </svg>
-                    Add Article
+                    {translate("Add Article")}
                   </button>
                 </Link>
               </div>
@@ -212,21 +210,21 @@ export default function ManageArticles() {
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" class="p-4">
-                      Article Name
+                      {translate("Article Name")}
                     </th>
                     <th scope="col" class="p-4">
-                      Category
-                    </th>
-
-                    <th scope="col" class="p-4">
-                      views
-                    </th>
-                    <th scope="col" class="p-4">
-                      Reviews
+                      {translate("Category")}
                     </th>
 
                     <th scope="col" class="p-4">
-                      Actions
+                      {translate("views")}
+                    </th>
+                    <th scope="col" class="p-4">
+                      {translate("Reviews")}
+                    </th>
+
+                    <th scope="col" class="p-4">
+                      {translate("Actions")}
                     </th>
                   </tr>
                 </thead>
@@ -267,7 +265,7 @@ export default function ManageArticles() {
                               aria-controls="drawer-read-product-advanced"
                               class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                             >
-                              <ReviewsTwoTone /> Reviews
+                              <ReviewsTwoTone /> {translate("Reviews")}
                             </button>
                           </Link>
                         </td>
@@ -300,7 +298,7 @@ export default function ManageArticles() {
                                     clip-rule="evenodd"
                                   />
                                 </svg>
-                                Edit
+                                {translate("Edit")}
                               </button>
                             </Link>
 
@@ -329,7 +327,7 @@ export default function ManageArticles() {
                                     d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
                                   />
                                 </svg>
-                                Preview
+                                {translate("Preview")}
                               </button>
                             </Link>
 

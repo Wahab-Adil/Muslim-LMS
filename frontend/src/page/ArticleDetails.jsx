@@ -15,6 +15,9 @@ import { Link, NavLink, useParams } from "react-router-dom";
 import { comCss } from "../components/ComponentsCss";
 import ArticleCard from "../components/ArticleCard";
 import Footer from "../components/Footer";
+import ReactShowMoreText from "react-show-more-text";
+//
+import useLocales from "../hook/useLocales";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -50,6 +53,7 @@ import "swiper/css/pagination";
 import "./slider.css";
 
 const ArticleDetials = () => {
+  const { translate } = useLocales();
   useRedirectLoggedOutUser("/login");
 
   const matches_1180 = useMediaQuery("(max-width:1180px)");
@@ -248,7 +252,7 @@ const ArticleDetials = () => {
         </div>
         {ArticleDetail?.article?.reviews?.length === 0 ? null : (
           <section>
-            <div className="mx-auto max-w-7xl ">
+            <div className="mx-auto max-w-7xl p-4">
               <div className="flex flex-col items-center">
                 <div className="text-center md:mt-16 md:order-3"></div>
 
@@ -284,12 +288,20 @@ const ArticleDetials = () => {
                               </div>
 
                               <blockquote
-                                style={{ whiteSpace: "pre-wrap" }}
+                                style={{ wordBreak: "break-word" }}
                                 className="flex-1 mt-8"
                               >
-                                <p className="  text-lg leading-relaxed text-gray-900 font-pj">
+                                <ReactShowMoreText
+                                  lines={3}
+                                  more={translate("Show more")}
+                                  less={translate("Show less")}
+                                  className="content-css"
+                                  anchorClass="show-more-less-clickable"
+                                  expanded={true}
+                                  truncatedEndingComponent={"... "}
+                                >
                                   {review?.comment}
-                                </p>
+                                </ReactShowMoreText>
                               </blockquote>
                             </div>
 

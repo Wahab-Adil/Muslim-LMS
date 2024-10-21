@@ -134,7 +134,7 @@ const InstructCourseDetails = ({
           expanded={true}
           truncatedEndingComponent={"... "}
         >
-          {instructor?.about}
+          <div dangerouslySetInnerHTML={{ __html: instructor?.about }} />
         </ShowMoreText>
       </Box>
       {/* Description end */}

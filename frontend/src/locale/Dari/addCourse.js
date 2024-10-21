@@ -28,5 +28,9 @@ const addCourse = {
   "category is a required field": "طبقه را انتخاب کنید",
   "language is a required field": "زبان را انتخاب کنید",
   create: "ساختن",
+  "Add a New Chapter": "فصل(چپتر) جدید اضافه کنید",
+  "Chapter Title": "عنوان",
+  "Upload Chapter": " ساختن چپتر",
+  "Add Video To Created Sections": "اضافه کردن ویدیو به فصل ",
 };
 export default addCourse;

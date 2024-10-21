@@ -211,9 +211,16 @@ function App() {
     }
   }, [currentLang.value]);
 
+  const DownloadButton = () => {
+    const handleDownload = () => {
+      alert("Your download will start shortly.");
+    };
+  };
+
   return (
     <>
       <Navbar />
+
       <Box sx={{ mt: "4rem" }} />
       <AppContent />
       <ScrollToTops />

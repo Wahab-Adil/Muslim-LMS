@@ -26,12 +26,13 @@ import {
 
 // redux & router
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 
 // yup & formik
 import * as yup from "yup";
 import { useFormik } from "formik";
 import TextError from "../../../components/TextError";
+import useLocales from "../../../hook/useLocales";
 
 // yup
 const RegisterSchema = yup.object().shape({
@@ -46,8 +47,10 @@ export default function AddChapter() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoading = useSelector(selectIsLoading);
+  const { translate } = useLocales();
   // ---------------------------------------------------
 
+  const ids = useParams();
   const [value, setValue] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [descriptionValue, setDescripitonValue] = useState("");
@@ -113,10 +116,15 @@ export default function AddChapter() {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     const { title } = values;
-    const courseId = localStorage.getItem("courseId");
-    const data = { courseId, title, description: descriptionValue };
+    const data = {
+      courseId: ids?.courseId,
+      title,
+      description: descriptionValue,
+    };
     dispatch(Video_CreateSection(data));
   };
+
+  console.log("Add Video To Created Sections", ids.courseId);
 
   return (
     <>
@@ -127,16 +135,16 @@ export default function AddChapter() {
           <div class="py-8 px-10 lg:py-16">
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-                Add a New Chapter
+                {translate("Add a New Chapter")}
               </h2>
-              <Link to={`/admin/section/${localStorage.getItem("courseId")}`}>
+              <Link to={`/admin/section/${ids?.courseId}`}>
                 <button
                   class="inline-flex items-center px-5 py-2.5 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
                   style={{
                     backgroundColor: "#754ffe",
                   }}
                 >
-                  Add Video To Created Sections
+                  {translate("Add Video To Created Sections")}
                 </button>
               </Link>
             </div>
@@ -162,7 +170,7 @@ export default function AddChapter() {
                       for="name"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Chapter Title
+                      {translate("Chapter Title")}
                     </label>
                     <input
                       type="text"
@@ -170,7 +178,7 @@ export default function AddChapter() {
                       onCreateTodo
                       id="name"
                       class="bg-indigo-100 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Type Course name"
+                      placeholder={translate("Chapter Title")}
                       required=""
                       value={values?.title}
                       onBlur={handleBlur}
@@ -187,7 +195,7 @@ export default function AddChapter() {
                       for="description"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Description
+                      {translate("Description")}
                     </label>
                     <ReactQuill
                       style={{ color: "black" }}
@@ -212,7 +220,7 @@ export default function AddChapter() {
                   marginTop: matches_450 ? "2rem" : "1rem",
                 }}
               >
-                Upload Chapter
+                {translate("Upload Chapter")}
               </button>
             </form>
           </div>

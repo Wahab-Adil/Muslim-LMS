@@ -6,5 +6,6 @@ const manageArticles = {
   "No.Articles": "موجودی مقالی",
   "A list of all Articles Categories": "د مقالو ټولی طبقه بندیان",
   "Add New Article Category": " دمقالی نوی طبقه اضافه کړی",
+  Reviews: "نظریات",
 };
 export default manageArticles;

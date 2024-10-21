@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -36,12 +36,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Video_Section() {
   const { translate } = useLocale();
+  const ids = useParams();
+  console.log("idsdd", ids);
   // redux
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const SectionIsLoading = useSelector(selectIsLoadingSection);
   const videoCourse = useSelector(selectVideoCourse);
-  console.log("video o", videoCourse);
 
   const matches_450 = useMediaQuery("(max-width:450px)");
   const [adminInfo, setAdminInfo] = useState([]);
@@ -59,8 +60,7 @@ export default function Video_Section() {
   };
 
   useEffect(() => {
-    const courseId = localStorage.getItem("courseId");
-    dispatch(Video_CourseDetails(courseId));
+    dispatch(Video_CourseDetails(ids?.id));
   }, []);
 
   return (
@@ -284,9 +284,7 @@ export default function Video_Section() {
                 </form>
               </div>
               <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                <Link
-                  to={`/admin/add-chapter/${localStorage.getItem("courseId")}`}
-                >
+                <Link to={`/admin/add-chapter/${ids.id}`}>
                   <button
                     type="button"
                     id="createProductButton"
@@ -368,7 +366,10 @@ export default function Video_Section() {
                     })
                     .map((section, idx) => {
                       return (
-                        <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <tr
+                          key={section + idx}
+                          class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
                           <th
                             scope="row"
                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"

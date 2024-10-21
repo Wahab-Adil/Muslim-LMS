@@ -13,5 +13,6 @@ const adminPrfile = {
   "total Courses": "همه درس های اموزشی",
   "total Views": "همه بازید ها",
   "total Articles": "همه مقاله ها",
+  "Edit Profile": "تغیر فروفایل",
 };
 export default adminPrfile;

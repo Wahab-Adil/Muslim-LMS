@@ -28,5 +28,9 @@ const addCourse = {
   "category is a required field": "طبقه بندی حتمی ده",
   "language is a required field": "د ژبی انتخاب حتمی دی",
   create: "جوړول",
+  "Add a New Chapter": "نوی چپټر اضافه کول",
+  "Chapter Title": "د چپټر عنوان",
+  "Upload Chapter": "چپټر جوړ کړه",
+  "Add Video To Created Sections": "ویدیو اضافه کړی و جوړ شوی فصل ته",
 };
 export default addCourse;
